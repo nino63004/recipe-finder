@@ -10,9 +10,9 @@
     --surface: #1a1a1a;
     --surface2: #222222;
     --border: #2e2e2e;
-    --gold: #c9a84c;
-    --gold-light: #e8c97a;
-    --gold-dim: rgba(201,168,76,0.15);
+    --gold: #4a9edd;
+    --gold-light: #7bbee8;
+    --gold-dim: rgba(74,158,221,0.15);
     --text: #f0ece0;
     --text-muted: #888880;
     --text-dim: #555550;
@@ -106,6 +106,49 @@
   }
   .search-box:focus { border-color: var(--gold); }
 
+  .custom-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .custom-input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 13px;
+    padding: 6px 10px;
+    outline: none;
+  }
+  .custom-input:focus { border-color: var(--gold); }
+  .custom-input::placeholder { color: var(--text-dim); }
+  .btn-add {
+    background: var(--gold-dim);
+    border: 1px solid rgba(74,158,221,0.4);
+    border-radius: var(--radius-sm);
+    color: var(--gold);
+    font-size: 18px;
+    font-weight: 400;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    line-height: 1;
+    padding: 0;
+  }
+  .btn-add:hover { background: rgba(74,158,221,0.28); }
+  .chip.custom {
+    background: rgba(76,175,120,0.12);
+    border-color: rgba(76,175,120,0.35);
+    color: #7de0a8;
+  }
+  .chip.custom .chip-x { color: var(--green); }
+
   .selected-strip {
     padding: 0.75rem 1.25rem;
     border-bottom: 1px solid var(--border);
@@ -115,7 +158,7 @@
   .chips { display: flex; flex-wrap: wrap; gap: 4px; }
   .chip {
     background: var(--gold-dim);
-    border: 1px solid rgba(201,168,76,0.35);
+    border: 1px solid rgba(74,158,221,0.35);
     color: var(--gold-light);
     border-radius: 20px;
     font-size: 12px;
@@ -160,7 +203,7 @@
   .ing-btn:hover { border-color: var(--gold); color: var(--text); }
   .ing-btn.selected {
     background: var(--gold-dim);
-    border-color: rgba(201,168,76,0.5);
+    border-color: rgba(74,158,221,0.5);
     color: var(--gold-light);
   }
 
@@ -175,7 +218,7 @@
   }
   .count-badge {
     background: var(--gold-dim);
-    border: 1px solid rgba(201,168,76,0.3);
+    border: 1px solid rgba(74,158,221,0.3);
     color: var(--gold);
     border-radius: 20px;
     font-size: 12px;
@@ -186,7 +229,7 @@
   .btn-primary {
     flex: 1;
     background: var(--gold);
-    color: #1a1400;
+    color: #fff;
     font-weight: 600;
     font-size: 14px;
     border: none;
@@ -232,18 +275,105 @@
     align-items: center;
     justify-content: center;
     min-height: 400px;
-    gap: 16px;
+    gap: 20px;
     color: var(--text-muted);
   }
-  .spinner {
-    width: 32px;
-    height: 32px;
-    border: 2px solid var(--border);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+  .cup-wrap { position: relative; width: 80px; height: 100px; }
+  .cup-body {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 64px;
+    height: 72px;
+    border: 3px solid var(--gold);
+    border-top: none;
+    border-radius: 0 0 18px 18px;
+    overflow: hidden;
+    background: var(--surface);
   }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  .cup-liquid {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--gold);
+    animation: fill-up 2.4s cubic-bezier(0.4,0,0.2,1) infinite;
+    opacity: 0.85;
+  }
+  @keyframes fill-up {
+    0%   { height: 0%; }
+    70%  { height: 92%; }
+    85%  { height: 92%; }
+    100% { height: 0%; }
+  }
+  .cup-wave {
+    position: absolute;
+    top: -6px;
+    left: -20px;
+    width: 140%;
+    height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: wave 1s ease-in-out infinite alternate;
+    opacity: 0.6;
+  }
+  @keyframes wave { from { transform: translateX(0); } to { transform: translateX(12px); } }
+  .cup-steam {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+  .steam-line {
+    width: 3px;
+    height: 18px;
+    border-radius: 3px;
+    background: var(--gold);
+    opacity: 0;
+    animation: steam 2.4s ease-in-out infinite;
+  }
+  .steam-line:nth-child(1) { animation-delay: 1.6s; }
+  .steam-line:nth-child(2) { animation-delay: 1.9s; height: 24px; }
+  .steam-line:nth-child(3) { animation-delay: 1.7s; }
+  @keyframes steam {
+    0%,100% { opacity: 0; transform: translateY(0) scaleX(1); }
+    20%      { opacity: 0.7; }
+    80%      { opacity: 0; transform: translateY(-16px) scaleX(1.5); }
+  }
+  .cup-handle {
+    position: absolute;
+    right: -1px;
+    bottom: 18px;
+    width: 18px;
+    height: 26px;
+    border: 3px solid var(--gold);
+    border-left: none;
+    border-radius: 0 10px 10px 0;
+  }
+  .cup-rim {
+    position: absolute;
+    bottom: 72px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 6px;
+    border: 3px solid var(--gold);
+    border-radius: 3px 3px 0 0;
+    background: var(--surface);
+  }
+  .loading-dots { display: flex; gap: 5px; }
+  .loading-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--gold);
+    animation: ldot 1.2s ease-in-out infinite;
+    opacity: 0.3;
+  }
+  .loading-dot:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes ldot { 0%,80%,100% { opacity: 0.2; transform: scale(0.8); } 40% { opacity: 1; transform: scale(1); } }
 
   /* ── Results ── */
   .results-header {
@@ -347,7 +477,7 @@
   .step-list li::before {
     content: counter(steps);
     background: var(--gold-dim);
-    border: 1px solid rgba(201,168,76,0.3);
+    border: 1px solid rgba(74,158,221,0.3);
     color: var(--gold);
     border-radius: 50%;
     width: 20px;
@@ -396,7 +526,7 @@
     cursor: pointer;
     transition: background 0.1s;
   }
-  .shop-item:hover { background: rgba(201,168,76,0.08); }
+  .shop-item:hover { background: rgba(74,158,221,0.08); }
   .shop-item.checked { opacity: 0.45; text-decoration: line-through; }
   .check-box {
     width: 14px;
@@ -462,6 +592,93 @@
     .left-panel { max-height: none; position: relative; top: 0; }
     .api-row input { width: 160px; }
   }
+
+  /* ── Chat box ── */
+  .chat-box {
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .chat-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+  }
+  .chat-input-row { display: flex; gap: 6px; align-items: flex-end; }
+  .chat-textarea {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    padding: 7px 10px;
+    resize: none;
+    outline: none;
+    line-height: 1.5;
+    min-height: 60px;
+    max-height: 120px;
+  }
+  .chat-textarea:focus { border-color: var(--gold); }
+  .chat-textarea::placeholder { color: var(--text-dim); }
+  .chat-send {
+    background: var(--gold-dim);
+    border: 1px solid rgba(74,158,221,0.4);
+    border-radius: var(--radius-sm);
+    color: var(--gold);
+    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    padding: 0;
+  }
+  .chat-send:hover { background: rgba(74,158,221,0.25); }
+  .chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+  .chat-feedback {
+    margin-top: 7px;
+    font-size: 12px;
+    border-radius: var(--radius-sm);
+    padding: 5px 9px;
+    display: none;
+  }
+  .chat-feedback.success {
+    display: block;
+    background: rgba(76,175,120,0.1);
+    border: 1px solid rgba(76,175,120,0.25);
+    color: var(--green);
+  }
+  .chat-feedback.error {
+    display: block;
+    background: rgba(207,102,121,0.1);
+    border: 1px solid rgba(207,102,121,0.25);
+    color: var(--red);
+  }
+  .chat-thinking {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    margin-top: 7px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .chat-thinking.visible { display: flex; }
+  .think-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  .think-dot:nth-child(2) { animation-delay: 0.2s; }
+  .think-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pulse { 0%,80%,100% { opacity: 0.2; } 40% { opacity: 1; } }
 </style>
 </head>
 <body>
@@ -478,9 +695,25 @@
 <div class="app">
   <!-- LEFT -->
   <aside class="left-panel">
+    <div class="chat-box">
+      <div class="chat-label">&#128172; Tell us what you have</div>
+      <div class="chat-input-row">
+        <textarea class="chat-textarea" id="chatInput" placeholder="e.g. &quot;I have leftover chicken, garlic, some heavy cream and a bag of spinach&quot;" rows="3"></textarea>
+        <button class="chat-send" id="chatSendBtn" onclick="parseIngredients()" title="Detect ingredients">&#10148;</button>
+      </div>
+      <div class="chat-thinking" id="chatThinking">
+        <div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div>
+        <span>Detecting ingredients...</span>
+      </div>
+      <div class="chat-feedback" id="chatFeedback"></div>
+    </div>
     <div class="panel-header">
       <div class="panel-title">Ingredients on hand</div>
       <input class="search-box" id="searchBox" placeholder="Filter ingredients..." />
+      <div class="custom-row">
+        <input class="custom-input" id="customInput" placeholder="Add your own ingredient..." maxlength="60" />
+        <button class="btn-add" onclick="addCustomIngredient()" title="Add ingredient">+</button>
+      </div>
     </div>
     <div class="selected-strip" id="selectedStrip">
       <div class="selected-strip-label">Selected (<span id="selCount">0</span>)</div>
@@ -515,6 +748,7 @@ const CATEGORIES = {
 };
 
 let selected = new Set();
+let customIngredients = new Set();
 let recipes = [];
 let activeRecipeIdx = null;
 let checkedItems = new Set();
@@ -545,24 +779,135 @@ function updateStrip() {
   const count = selected.size;
   document.getElementById("selCount").textContent = count;
   document.getElementById("findBtn").disabled = count === 0;
-  const chips = [...selected].map(i => `<span class="chip" onclick="removeChip('${i.replace(/'/g,"\\'")}')"><span>${i}</span><span class="chip-x">&#215;</span></span>`).join("");
+  const chips = [...selected].map(i => {
+    const isCustom = customIngredients.has(i);
+    return `<span class="chip${isCustom ? " custom" : ""}" onclick="removeChip('${i.replace(/'/g,"\\'")}')"><span>${i}</span><span class="chip-x">&#215;</span></span>`;
+  }).join("");
   document.getElementById("chipsRow").innerHTML = chips;
+}
+
+function addCustomIngredient() {
+  const input = document.getElementById("customInput");
+  const val = input.value.trim();
+  if (!val) return;
+  const capitalized = val.charAt(0).toUpperCase() + val.slice(1);
+  if (!selected.has(capitalized)) {
+    selected.add(capitalized);
+    customIngredients.add(capitalized);
+    updateStrip();
+  }
+  input.value = "";
+  input.focus();
 }
 
 function removeChip(item) {
   selected.delete(item);
+  customIngredients.delete(item);
   document.querySelectorAll(".ing-btn").forEach(b => { if (b.textContent === item) b.classList.remove("selected"); });
   updateStrip();
 }
 
 function clearAll() {
   selected.clear();
+  customIngredients.clear();
   document.querySelectorAll(".ing-btn").forEach(b => b.classList.remove("selected"));
   updateStrip();
   showEmpty();
 }
 
 document.getElementById("searchBox").addEventListener("input", e => buildList(e.target.value));
+document.getElementById("customInput").addEventListener("keydown", e => { if (e.key === "Enter") addCustomIngredient(); });
+document.getElementById("chatInput").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); parseIngredients(); } });
+
+async function parseIngredients() {
+  const key = apiKeyEl.value.trim();
+  if (!key) { alert("Please enter your Anthropic API key in the top-right corner."); return; }
+  const text = document.getElementById("chatInput").value.trim();
+  if (!text) return;
+
+  const sendBtn = document.getElementById("chatSendBtn");
+  const thinking = document.getElementById("chatThinking");
+  const feedback = document.getElementById("chatFeedback");
+
+  sendBtn.disabled = true;
+  thinking.classList.add("visible");
+  feedback.className = "chat-feedback";
+  feedback.textContent = "";
+
+  const allKnown = Object.values(CATEGORIES).flat();
+
+  const prompt = `You are a kitchen assistant. Extract all food ingredients mentioned in this text: "${text}"
+
+Known ingredient list (prefer matching to these exact names when close):
+${allKnown.join(", ")}
+
+Return ONLY a JSON array of ingredient names. For each ingredient:
+- If it closely matches a known ingredient, use the exact known name
+- If it doesn't match any known ingredient, use a clean capitalised name (e.g. "Tahini", "Fish sauce")
+- Do not include quantities, just the ingredient name
+- No markdown, no explanation, just the JSON array
+
+Example output: ["Chicken breast", "Garlic", "Spinach", "Fish sauce"]`;
+
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": key,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 300,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.error?.message || `API error ${resp.status}`);
+    }
+
+    const data = await resp.json();
+    const raw = data.content?.[0]?.text || "";
+    const match = raw.match(/\[[\s\S]*?\]/);
+    if (!match) throw new Error("Could not parse ingredients.");
+
+    const extracted = JSON.parse(match[0]);
+    if (!extracted.length) throw new Error("No ingredients found in that message.");
+
+    let added = 0, existing = 0;
+    const newlyAdded = [];
+
+    extracted.forEach(ing => {
+      const knownMatch = allKnown.find(k => k.toLowerCase() === ing.toLowerCase());
+      const name = knownMatch || ing;
+      if (selected.has(name)) { existing++; return; }
+      selected.add(name);
+      if (!knownMatch) customIngredients.add(name);
+      newlyAdded.push(name);
+      added++;
+    });
+
+    buildList();
+    updateStrip();
+
+    let msg = "";
+    if (added > 0) msg += `Added ${added} ingredient${added !== 1 ? "s" : ""}: ${newlyAdded.join(", ")}.`;
+    if (existing > 0) msg += `${added > 0 ? " " : ""}${existing} already selected.`;
+    feedback.textContent = msg;
+    feedback.className = "chat-feedback success";
+    document.getElementById("chatInput").value = "";
+  } catch (err) {
+    feedback.textContent = "&#9888; " + err.message;
+    feedback.className = "chat-feedback error";
+  } finally {
+    sendBtn.disabled = false;
+    thinking.classList.remove("visible");
+  }
+}
 
 const apiKeyEl = document.getElementById("apiKey");
 const apiStatusEl = document.getElementById("apiStatus");
@@ -590,8 +935,26 @@ function showEmpty() {
 
 function showLoading() {
   document.getElementById("rightPanel").innerHTML = `<div class="loading">
-    <div class="spinner"></div>
-    <div style="font-size:13px;">Finding the best recipes for you...</div>
+    <div class="cup-wrap">
+      <div class="cup-steam">
+        <div class="steam-line"></div>
+        <div class="steam-line"></div>
+        <div class="steam-line"></div>
+      </div>
+      <div class="cup-rim"></div>
+      <div class="cup-body">
+        <div class="cup-liquid">
+          <div class="cup-wave"></div>
+        </div>
+      </div>
+      <div class="cup-handle"></div>
+    </div>
+    <div style="font-size:13px;color:var(--text-muted);">Finding the best recipes for you...</div>
+    <div class="loading-dots">
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+      <div class="loading-dot"></div>
+    </div>
   </div>`;
 }
 
