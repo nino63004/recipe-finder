@@ -211,15 +211,7 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 .recipe-card{background:#fff;border:1px solid var(–cream-border);border-radius:var(–radius);cursor:pointer;transition:border-color 0.2s,transform 0.15s,box-shadow 0.2s;overflow:hidden;display:flex;flex-direction:column;}
 .recipe-card:hover{border-color:var(–terra);transform:translateY(-2px);box-shadow:0 8px 24px rgba(44,26,14,0.08);}
 .recipe-card.active{border-color:var(–terra);border-width:2px;box-shadow:0 8px 24px rgba(184,92,58,0.12);}
-.card-img-wrap{position:relative;width:100%;height:160px;background:var(–cream-dark);overflow:hidden;flex-shrink:0;}
-.card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s ease,opacity 0.3s;}
-.recipe-card:hover .card-img{transform:scale(1.04);}
-.card-img.loading{opacity:0;}
-.card-img.loaded{opacity:1;}
-.card-img-overlay{position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(to top,rgba(44,26,14,0.55),transparent);pointer-events:none;}
-.card-img-badges{position:absolute;top:8px;right:8px;display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-.card-img-emoji{position:absolute;bottom:8px;left:10px;font-size:22px;line-height:1;filter:drop-shadow(0 1px 3px rgba(0,0,0,0.4));}
-.card-icon-bar{background:var(–cream-dark);padding:0.75rem 1.25rem 0.6rem;border-bottom:1px solid var(–cream-mid);display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.card-icon-bar{background:var(–cream-dark);padding:1.1rem 1.25rem 0.75rem;border-bottom:1px solid var(–cream-mid);display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
 .card-emoji{font-size:28px;line-height:1;}
 .card-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
 .card-difficulty{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;padding:2px 8px;border-radius:20px;}
@@ -241,15 +233,7 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 /* Detail Panel */
 .detail-panel{background:#fff;border:1px solid var(–cream-border);border-radius:var(–radius);margin-top:1.5rem;overflow:hidden;animation:fadeUp 0.25s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.detail-hero{position:relative;width:100%;height:240px;background:var(–cream-dark);overflow:hidden;flex-shrink:0;}
-.detail-hero-img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity 0.4s;}
-.detail-hero-img.loading{opacity:0;}
-.detail-hero-img.loaded{opacity:1;}
-.detail-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(44,26,14,0.7) 0%,rgba(44,26,14,0.1) 55%,transparent 100%);pointer-events:none;}
-.detail-hero-text{position:absolute;bottom:0;left:0;right:0;padding:1.25rem 2rem 1rem;}
-.detail-hero-title{font-family:var(–serif);font-size:1.75rem;font-weight:400;color:#fff;line-height:1.2;text-shadow:0 1px 4px rgba(0,0,0,0.4);}
-.detail-hero-desc{font-size:12px;color:rgba(255,255,255,0.8);margin-top:4px;font-style:italic;}
-.detail-header{padding:0.85rem 2rem 1rem;border-bottom:1px solid var(–cream-border);display:flex;justify-content:space-between;align-items:center;gap:1rem;background:var(–cream-dark);}
+.detail-header{padding:1.75rem 2rem 1.5rem;border-bottom:1px solid var(–cream-border);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;background:var(–cream-dark);}
 .detail-header-left{display:flex;gap:1rem;align-items:flex-start;}
 .detail-emoji{font-size:36px;line-height:1;margin-top:4px;}
 .detail-title{font-family:var(–serif);font-size:1.75rem;font-weight:400;color:var(–brown);line-height:1.2;}
@@ -706,10 +690,9 @@ async function findRecipes(){
 
 Suggest exactly 4 recipes that use some or all of these ingredients. Return ONLY a valid JSON array — no markdown, no explanation. Use this exact structure:
 
-[{"name":"Recipe Name","description":"One sentence, max 20 words","prepTime":"10 mins","cookTime":"20 mins","servings":4,"difficulty":"Easy","kidFriendly":false,"imageQuery":"pasta tomato basil","ingredients":[{"name":"ingredient","quantity":"1 cup","have":true}],"steps":["Step one.","Step two."],"matchPercent":85}]
+[{"name":"Recipe Name","description":"One sentence, max 20 words","prepTime":"10 mins","cookTime":"20 mins","servings":4,"difficulty":"Easy","kidFriendly":false,"ingredients":[{"name":"ingredient","quantity":"1 cup","have":true}],"steps":["Step one.","Step two."],"matchPercent":85}]
 
 Rules:
-- imageQuery: 2-4 word Unsplash search phrase for a beautiful photo of the finished dish (e.g. "creamy pasta garlic", "grilled salmon lemon")
 - "have": true if the ingredient is in the user's list
 - matchPercent: % of recipe ingredients the user has (0-100), sort descending
 - kidFriendly: true if the recipe is appropriate and enjoyable for children
@@ -736,16 +719,12 @@ function renderResults(){
     const missing=r.ingredients.filter(x=>!x.have).length;
     const emoji=recipeEmoji(r.name,r.description);
     const diffClass=r.difficulty==='Easy'?'diff-easy':r.difficulty==='Hard'?'diff-hard':'diff-medium';
-    const imgQuery=encodeURIComponent((r.imageQuery||r.name)+',food,dish');
-    const imgUrl=`https://source.unsplash.com/featured/600x320/?${imgQuery}`;
     html+=`<div class="recipe-card" id="card-${i}" onclick="selectRecipe(${i})">
-      <div class="card-img-wrap">
-        <img class="card-img loading" src="${imgUrl}" alt="${r.name}" onload="this.classList.remove('loading');this.classList.add('loaded')" onerror="this.parentElement.style.display='none'"/>
-        <div class="card-img-overlay"></div>
-        <span class="card-img-emoji">${emoji}</span>
-        <div class="card-img-badges">
+      <div class="card-icon-bar">
+        <span class="card-emoji">${emoji}</span>
+        <div class="card-badges">
           <span class="card-difficulty ${diffClass}">${r.difficulty}</span>
-          ${r.kidFriendly?'<span class="card-kid-badge">&#128118; Kids</span>':''}
+          ${r.kidFriendly?'<span class="card-kid-badge">&#128118; Kid friendly</span>':''}
         </div>
       </div>
       <div class="card-body">
@@ -822,25 +801,21 @@ function renderDetail(r){
     shopSection=`<div class="shop-section"><div class="shop-header"><div class="section-title">Shopping list &mdash; ${needItems.length} item${needItems.length!==1?'s':''}</div><button class="print-btn" onclick="window.print()">&#128438; Print list</button></div><div class="shop-items">${shopItems}</div></div>`;
   }
 
-  const detailImgQuery=encodeURIComponent((r.imageQuery||r.name)+',food,dish');
-  const detailImgUrl=`https://source.unsplash.com/featured/1200x480/?${detailImgQuery}`;
-
   document.getElementById('detailArea').innerHTML=`<div class="detail-panel">
-    <div class="detail-hero">
-      <img class="detail-hero-img loading" src="${detailImgUrl}" alt="${r.name}" onload="this.classList.remove('loading');this.classList.add('loaded')" onerror="this.style.display='none'"/>
-      <div class="detail-hero-overlay"></div>
-      <div class="detail-hero-text">
-        <div class="detail-hero-title">${r.name}</div>
-        <div class="detail-hero-desc">${r.description}</div>
-      </div>
-    </div>
     <div class="detail-header">
-      <div class="detail-pills" style="margin:0;">
-        <span class="detail-pill">&#9197; Prep: ${r.prepTime||'—'}</span>
-        <span class="detail-pill">&#8987; Cook: ${r.cookTime||r.time||'—'}</span>
-        <span class="detail-pill">&#128101; ${r.servings} servings</span>
-        <span class="card-difficulty ${diffClass}" style="font-size:10px;padding:3px 9px;">${r.difficulty}</span>
-        ${r.kidFriendly?'<span class="card-kid-badge" style="font-size:10px;padding:3px 9px;">&#128118; Kid friendly</span>':''}
+      <div class="detail-header-left">
+        <div class="detail-emoji">${emoji}</div>
+        <div>
+          <div class="detail-title">${r.name}</div>
+          <div class="detail-desc">${r.description}</div>
+          <div class="detail-pills">
+            <span class="detail-pill">&#9197; Prep: ${r.prepTime||'—'}</span>
+            <span class="detail-pill">&#8987; Cook: ${r.cookTime||r.time||'—'}</span>
+            <span class="detail-pill">&#128101; ${r.servings} servings</span>
+            <span class="card-difficulty ${diffClass}" style="font-size:10px;padding:3px 9px;">${r.difficulty}</span>
+            ${r.kidFriendly?'<span class="card-kid-badge" style="font-size:10px;padding:3px 9px;">&#128118; Kid friendly</span>':''}
+          </div>
+        </div>
       </div>
       <button class="close-btn" onclick="closeDetail()">&#215;</button>
     </div>
