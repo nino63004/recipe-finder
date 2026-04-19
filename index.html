@@ -230,6 +230,53 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 .match-track{background:var(–cream-mid);border-radius:4px;height:3px;overflow:hidden;}
 .match-fill{height:100%;background:var(–terra);border-radius:4px;transition:width 0.4s ease;}
 
+/* Nutrition mini bar on card */
+.card-nutrition{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(–cream-mid);background:var(–cream);}
+.card-nutr-item{display:flex;flex-direction:column;align-items:center;padding:7px 4px;border-right:1px solid var(–cream-mid);}
+.card-nutr-item:last-child{border-right:none;}
+.card-nutr-val{font-size:13px;font-weight:600;color:var(–brown);line-height:1;}
+.card-nutr-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.07em;color:var(–brown-light);margin-top:2px;}
+
+/* Serving adjuster */
+.servings-adjuster{display:flex;align-items:center;gap:0;border:1px solid var(–cream-border);border-radius:var(–radius-sm);overflow:hidden;background:var(–cream);}
+.serv-btn{background:transparent;border:none;color:var(–terra);font-size:16px;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;padding:0;line-height:1;flex-shrink:0;}
+.serv-btn:hover{background:var(–terra-dim);}
+.serv-count{font-size:13px;font-weight:600;color:var(–brown);min-width:28px;text-align:center;border-left:1px solid var(–cream-border);border-right:1px solid var(–cream-border);height:30px;line-height:30px;}
+.servings-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:12px;color:var(–brown-light);padding-bottom:10px;border-bottom:1px solid var(–cream-mid);}
+.servings-note{font-size:10px;color:var(–brown-dim);font-style:italic;}
+
+/* Full nutrition facts */
+.nutr-section{border-top:1px solid var(–cream-border);background:var(–cream-dark);}
+.nutr-toggle{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 2rem;cursor:pointer;user-select:none;transition:background 0.15s;}
+.nutr-toggle:hover{background:var(–cream-mid);}
+.nutr-toggle-label{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(–brown-light);display:flex;align-items:center;gap:8px;}
+.nutr-toggle-label::after{content:’’;width:40px;height:1px;background:var(–cream-border);}
+.nutr-toggle-arrow{font-size:12px;color:var(–brown-light);transition:transform 0.2s;}
+.nutr-toggle-arrow.open{transform:rotate(180deg);}
+.nutr-facts{display:none;padding:0 2rem 1.5rem;}
+.nutr-facts.open{display:block;}
+.nutr-facts-inner{background:#fff;border:1px solid var(–cream-border);border-radius:var(–radius-sm);overflow:hidden;}
+.nutr-header{background:var(–brown);padding:0.75rem 1rem;}
+.nutr-header-title{font-family:var(–serif);font-size:1.1rem;color:var(–cream);}
+.nutr-header-sub{font-size:11px;color:var(–brown-dim);margin-top:2px;}
+.nutr-calories-row{display:flex;align-items:baseline;justify-content:space-between;padding:0.6rem 1rem;border-bottom:3px solid var(–brown);}
+.nutr-cal-label{font-size:12px;font-weight:600;color:var(–brown);}
+.nutr-cal-val{font-size:2rem;font-weight:700;color:var(–brown);line-height:1;font-family:var(–serif);}
+.nutr-dv-note{font-size:9px;color:var(–brown-light);text-align:right;padding:4px 1rem;border-bottom:1px solid var(–cream-border);}
+.nutr-row{display:flex;align-items:center;justify-content:space-between;padding:5px 1rem;border-bottom:1px solid var(–cream-mid);font-size:12px;}
+.nutr-row:last-child{border-bottom:none;}
+.nutr-row.sub{padding-left:1.75rem;}
+.nutr-row.thick{border-bottom:4px solid var(–brown-mid);}
+.nutr-row-name{color:var(–brown-mid);}
+.nutr-row-name b{color:var(–brown);font-weight:600;}
+.nutr-row-val{color:var(–brown);font-weight:500;white-space:nowrap;}
+.nutr-macros-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:1rem;}
+.nutr-macro{text-align:center;padding:8px 4px;background:var(–cream-dark);border-radius:var(–radius-sm);}
+.nutr-macro-val{font-size:1.1rem;font-weight:600;color:var(–brown);font-family:var(–serif);}
+.nutr-macro-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(–brown-light);margin-top:2px;}
+.nutr-macro-bar{height:3px;border-radius:2px;margin-top:5px;background:var(–cream-border);}
+.nutr-macro-bar-fill{height:100%;border-radius:2px;}
+
 /* Detail Panel */
 .detail-panel{background:#fff;border:1px solid var(–cream-border);border-radius:var(–radius);margin-top:1.5rem;overflow:hidden;animation:fadeUp 0.25s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
@@ -468,9 +515,10 @@ function recipeEmoji(name,desc){const t=(name+' '+(desc||'')).toLowerCase();for(
 
 // State
 let selected=new Set(),customIngredients=new Set(),recipes=[],activeRecipeIdx=null,checkedItems=new Set();
-let activeSubItem=null; // chip being substituted
-let detailSwaps={}; // {recipeIdx: {ingName: substituteName}}
-let activeDetailSwap=null; // "recipeIdx::ingName" currently open
+let activeSubItem=null;
+let detailSwaps={};
+let activeDetailSwap=null;
+let currentServings={}; // {recipeIdx: count}
 
 const prefs={prepTime:'any',cookTime:'any',kidFriendly:false,dietary:new Set()};
 
@@ -684,18 +732,19 @@ function showLoading(){document.getElementById('rightPanel').innerHTML=`<div cla
 async function findRecipes(){
   if(!apiKeyEl.value.trim()){alert('Please enter your Anthropic API key at the top of the page.');return;}
   if(selected.size===0)return;
-  showLoading();checkedItems.clear();activeRecipeIdx=null;detailSwaps={};activeDetailSwap=null;
+  showLoading();checkedItems.clear();activeRecipeIdx=null;detailSwaps={};activeDetailSwap=null;currentServings={};
   const ingList=[...selected].join(', ');
   const prompt=`You are a helpful home cooking assistant. The user has these ingredients on hand: ${ingList}.${prefsText()}
 
 Suggest exactly 4 recipes that use some or all of these ingredients. Return ONLY a valid JSON array — no markdown, no explanation. Use this exact structure:
 
-[{"name":"Recipe Name","description":"One sentence, max 20 words","prepTime":"10 mins","cookTime":"20 mins","servings":4,"difficulty":"Easy","kidFriendly":false,"ingredients":[{"name":"ingredient","quantity":"1 cup","have":true}],"steps":["Step one.","Step two."],"matchPercent":85}]
+[{"name":"Recipe Name","description":"One sentence, max 20 words","prepTime":"10 mins","cookTime":"20 mins","servings":4,"difficulty":"Easy","kidFriendly":false,"nutrition":{"calories":450,"protein":32,"fat":18,"carbs":42,"fiber":5,"sugar":8,"sodium":680,"saturatedFat":6},"ingredients":[{"name":"ingredient","quantity":"1 cup","have":true}],"steps":["Step one.","Step two."],"matchPercent":85}]
 
 Rules:
 - "have": true if the ingredient is in the user's list
 - matchPercent: % of recipe ingredients the user has (0-100), sort descending
 - kidFriendly: true if the recipe is appropriate and enjoyable for children
+- nutrition: estimated values PER SERVING — calories (kcal), protein/fat/carbs/fiber/sugar/saturatedFat (grams), sodium (mg)
 - Strictly honour all dietary restrictions and time preferences if given
 - Vary cuisine types, mix difficulties
 - JSON array only`;
@@ -719,6 +768,7 @@ function renderResults(){
     const missing=r.ingredients.filter(x=>!x.have).length;
     const emoji=recipeEmoji(r.name,r.description);
     const diffClass=r.difficulty==='Easy'?'diff-easy':r.difficulty==='Hard'?'diff-hard':'diff-medium';
+    const n=r.nutrition||{};
     html+=`<div class="recipe-card" id="card-${i}" onclick="selectRecipe(${i})">
       <div class="card-icon-bar">
         <span class="card-emoji">${emoji}</span>
@@ -736,6 +786,12 @@ function renderResults(){
           <span class="meta-pill"><span class="meta-icon">&#128101;</span>${r.servings} servings</span>
         </div>
       </div>
+      ${n.calories?`<div class="card-nutrition">
+        <div class="card-nutr-item"><span class="card-nutr-val">${Math.round(n.calories)}</span><span class="card-nutr-lbl">kcal</span></div>
+        <div class="card-nutr-item"><span class="card-nutr-val">${Math.round(n.protein)}g</span><span class="card-nutr-lbl">Protein</span></div>
+        <div class="card-nutr-item"><span class="card-nutr-val">${Math.round(n.fat)}g</span><span class="card-nutr-lbl">Fat</span></div>
+        <div class="card-nutr-item"><span class="card-nutr-val">${Math.round(n.carbs)}g</span><span class="card-nutr-lbl">Carbs</span></div>
+      </div>`:''}
       <div class="match-bar">
         <div class="match-label"><span>${pct}% match</span><span style="color:${missing>0?'var(--rose)':'var(--sage)'}">${missing>0?missing+' to buy':'all on hand ✓'}</span></div>
         <div class="match-track"><div class="match-fill" style="width:${pct}%"></div></div>
@@ -801,6 +857,53 @@ function renderDetail(r){
     shopSection=`<div class="shop-section"><div class="shop-header"><div class="section-title">Shopping list &mdash; ${needItems.length} item${needItems.length!==1?'s':''}</div><button class="print-btn" onclick="window.print()">&#128438; Print list</button></div><div class="shop-items">${shopItems}</div></div>`;
   }
 
+  const baseServings=r.servings||4;
+  if(currentServings[activeRecipeIdx]==null) currentServings[activeRecipeIdx]=baseServings;
+  const sv=currentServings[activeRecipeIdx];
+  const scale=sv/baseServings;
+  const n=r.nutrition||{};
+  const ns=(val)=>val?Math.round(val*scale):null;
+
+  // Macro bar widths (out of total cals)
+  const totalMacroCal=(ns(n.protein)||0)*4+(ns(n.fat)||0)*9+(ns(n.carbs)||0)*4;
+  const pctP=totalMacroCal?Math.round(((ns(n.protein)||0)*4/totalMacroCal)*100):0;
+  const pctF=totalMacroCal?Math.round(((ns(n.fat)||0)*9/totalMacroCal)*100):0;
+  const pctC=totalMacroCal?Math.round(((ns(n.carbs)||0)*4/totalMacroCal)*100):0;
+
+  const nutrSection=n.calories?`
+  <div class="nutr-section">
+    <div class="nutr-toggle" onclick="toggleNutrFacts()">
+      <div class="nutr-toggle-label">Full nutrition facts</div>
+      <span class="nutr-toggle-arrow" id="nutrArrow">&#8964;</span>
+    </div>
+    <div class="nutr-facts" id="nutrFacts">
+      <div class="nutr-facts-inner">
+        <div class="nutr-header">
+          <div class="nutr-header-title">Nutrition Facts</div>
+          <div class="nutr-header-sub">${sv} serving${sv!==1?'s':''} &mdash; values scaled to your portion</div>
+        </div>
+        <div class="nutr-calories-row">
+          <span class="nutr-cal-label">Calories</span>
+          <span class="nutr-cal-val">${ns(n.calories)||'—'}</span>
+        </div>
+        <div class="nutr-dv-note">* % Daily Value based on 2,000 calorie diet</div>
+        <div class="nutr-macros-grid">
+          <div class="nutr-macro"><div class="nutr-macro-val">${ns(n.carbs)||0}g</div><div class="nutr-macro-lbl">Carbs</div><div class="nutr-macro-bar"><div class="nutr-macro-bar-fill" style="width:${pctC}%;background:#b85c3a;"></div></div></div>
+          <div class="nutr-macro"><div class="nutr-macro-val">${ns(n.protein)||0}g</div><div class="nutr-macro-lbl">Protein</div><div class="nutr-macro-bar"><div class="nutr-macro-bar-fill" style="width:${pctP}%;background:#4a7c59;"></div></div></div>
+          <div class="nutr-macro"><div class="nutr-macro-val">${ns(n.fat)||0}g</div><div class="nutr-macro-lbl">Fat</div><div class="nutr-macro-bar"><div class="nutr-macro-bar-fill" style="width:${pctF}%;background:#8a6a1a;"></div></div></div>
+          <div class="nutr-macro"><div class="nutr-macro-val">${ns(n.fiber)||0}g</div><div class="nutr-macro-lbl">Fiber</div><div class="nutr-macro-bar"><div class="nutr-macro-bar-fill" style="width:${Math.min(100,Math.round(((ns(n.fiber)||0)/28)*100))}%;background:#9a7d68;"></div></div></div>
+        </div>
+        ${n.saturatedFat!=null?`<div class="nutr-row"><span class="nutr-row-name"><b>Total Fat</b> ${ns(n.fat)||0}g</span><span class="nutr-row-val">${Math.round(((ns(n.fat)||0)/78)*100)}%</span></div>`:''}
+        ${n.saturatedFat!=null?`<div class="nutr-row sub"><span class="nutr-row-name">Saturated Fat ${ns(n.saturatedFat)||0}g</span><span class="nutr-row-val">${Math.round(((ns(n.saturatedFat)||0)/20)*100)}%</span></div>`:''}
+        ${n.carbs!=null?`<div class="nutr-row thick"><span class="nutr-row-name"><b>Total Carbs</b> ${ns(n.carbs)||0}g</span><span class="nutr-row-val">${Math.round(((ns(n.carbs)||0)/275)*100)}%</span></div>`:''}
+        ${n.fiber!=null?`<div class="nutr-row sub"><span class="nutr-row-name">Dietary Fiber ${ns(n.fiber)||0}g</span><span class="nutr-row-val">${Math.round(((ns(n.fiber)||0)/28)*100)}%</span></div>`:''}
+        ${n.sugar!=null?`<div class="nutr-row sub"><span class="nutr-row-name">Total Sugars ${ns(n.sugar)||0}g</span><span class="nutr-row-val">—</span></div>`:''}
+        ${n.protein!=null?`<div class="nutr-row thick"><span class="nutr-row-name"><b>Protein</b> ${ns(n.protein)||0}g</span><span class="nutr-row-val">${Math.round(((ns(n.protein)||0)/50)*100)}%</span></div>`:''}
+        ${n.sodium!=null?`<div class="nutr-row"><span class="nutr-row-name"><b>Sodium</b> ${ns(n.sodium)||0}mg</span><span class="nutr-row-val">${Math.round(((ns(n.sodium)||0)/2300)*100)}%</span></div>`:''}
+      </div>
+    </div>
+  </div>`:'';
+
   document.getElementById('detailArea').innerHTML=`<div class="detail-panel">
     <div class="detail-header">
       <div class="detail-header-left">
@@ -811,7 +914,6 @@ function renderDetail(r){
           <div class="detail-pills">
             <span class="detail-pill">&#9197; Prep: ${r.prepTime||'—'}</span>
             <span class="detail-pill">&#8987; Cook: ${r.cookTime||r.time||'—'}</span>
-            <span class="detail-pill">&#128101; ${r.servings} servings</span>
             <span class="card-difficulty ${diffClass}" style="font-size:10px;padding:3px 9px;">${r.difficulty}</span>
             ${r.kidFriendly?'<span class="card-kid-badge" style="font-size:10px;padding:3px 9px;">&#128118; Kid friendly</span>':''}
           </div>
@@ -822,7 +924,15 @@ function renderDetail(r){
     <div class="detail-body">
       <div class="detail-section">
         <div class="section-title">Ingredients</div>
-        <div class="servings-row">Servings&ensp;<input type="number" min="1" max="20" value="${r.servings}" readonly/></div>
+        <div class="servings-row">
+          <span>Servings</span>
+          <div class="servings-adjuster">
+            <button class="serv-btn" onclick="changeServings(-1)">&#8722;</button>
+            <span class="serv-count" id="servCount">${sv}</span>
+            <button class="serv-btn" onclick="changeServings(1)">+</button>
+          </div>
+          ${sv!==baseServings?`<span class="servings-note">Base: ${baseServings}</span>`:''}
+        </div>
         ${ingRows}
       </div>
       <div class="detail-section">
@@ -831,6 +941,7 @@ function renderDetail(r){
       </div>
     </div>
     ${shopSection}
+    ${nutrSection}
   </div>`;
 
   // Fetch substitutes for any open swap panel
@@ -869,6 +980,28 @@ function applyDetailSwapManual(ingName){
 function clearDetailSwap(ingName){
   if(detailSwaps[activeRecipeIdx])delete detailSwaps[activeRecipeIdx][ingName];
   activeDetailSwap=null;renderDetail(recipes[activeRecipeIdx]);
+}
+
+function changeServings(delta){
+  const r=recipes[activeRecipeIdx];
+  const base=r.servings||4;
+  const cur=currentServings[activeRecipeIdx]??base;
+  const next=Math.max(1,Math.min(20,cur+delta));
+  currentServings[activeRecipeIdx]=next;
+  renderDetail(r);
+  // Re-open nutrition facts if it was open
+  if(document.getElementById('nutrFacts')?.classList.contains('open')){
+    document.getElementById('nutrFacts').classList.add('open');
+    document.getElementById('nutrArrow')?.classList.add('open');
+  }
+}
+
+function toggleNutrFacts(){
+  const panel=document.getElementById('nutrFacts');
+  const arrow=document.getElementById('nutrArrow');
+  if(!panel)return;
+  panel.classList.toggle('open');
+  arrow?.classList.toggle('open');
 }
 
 function toggleShop(key){
