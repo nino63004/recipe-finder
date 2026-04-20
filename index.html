@@ -198,18 +198,6 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 .empty-divider-line{height:1px;width:40px;background:var(–brown-light);}
 .empty-divider-dot{width:4px;height:4px;border-radius:50%;background:var(–brown-light);}
 
-/* Seasonal occasions */
-.occasions-wrap{width:100%;max-width:480px;margin:0 auto;}
-.occasions-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(–brown-light);margin-bottom:10px;}
-.occasions-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;}
-.occasion-btn{background:#fff;border:1.5px solid var(–cream-border);border-radius:50px;color:var(–brown-mid);font-size:12.5px;font-family:var(–sans);padding:7px 14px;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;gap:6px;box-shadow:0 1px 4px rgba(44,26,14,0.06);}
-.occasion-btn:hover{border-color:var(–terra);color:var(–terra);background:var(–terra-dim);}
-.occasion-btn.active{background:#b85c3a;border-color:#b85c3a;color:#fff;box-shadow:0 2px 10px rgba(184,92,58,0.3);}
-.occasion-btn .occ-icon{font-size:15px;line-height:1;}
-.occasion-strip{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem;}
-.occasion-active-tag{background:#b85c3a;color:#fff;border-radius:20px;font-size:11px;padding:3px 10px;display:flex;align-items:center;gap:5px;cursor:pointer;font-family:var(–sans);}
-.occasion-active-tag:hover{background:#9a4d30;}
-
 /* Loading */
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;gap:28px;}
 .loading-label{font-family:var(–serif);font-size:1.1rem;font-style:italic;color:var(–brown-mid);}
@@ -538,22 +526,6 @@ const CATEGORIES={
   "Nuts & Seeds":["Almonds","Walnuts","Cashews","Pine nuts","Sesame seeds","Chia seeds","Peanuts"],
 };
 
-const SEASONAL_OCCASIONS={
-  0:[{icon:'🥂',label:'New Year\'s'},{icon:'🏈',label:'Super Bowl'},{icon:'❄️',label:'Winter Comfort'}],
-  1:[{icon:'❤️',label:'Valentine\'s Day'},{icon:'🏈',label:'Super Bowl'},{icon:'🥘',label:'Winter Warmers'}],
-  2:[{icon:'☘️',label:'St. Patrick\'s Day'},{icon:'🌷',label:'Spring Recipes'},{icon:'🎉',label:'Mardi Gras'}],
-  3:[{icon:'🐣',label:'Easter'},{icon:'🌸',label:'Spring Brunch'},{icon:'🌿',label:'Light & Fresh'}],
-  4:[{icon:'🌮',label:'Cinco de Mayo'},{icon:'👩',label:'Mother\'s Day'},{icon:'🔥',label:'Spring BBQ'}],
-  5:[{icon:'👨',label:'Father\'s Day'},{icon:'☀️',label:'Summer Kickoff'},{icon:'🎓',label:'Graduation Party'}],
-  6:[{icon:'🇺🇸',label:'4th of July'},{icon:'🔥',label:'Summer BBQ'},{icon:'🧺',label:'Picnic Food'}],
-  7:[{icon:'🌽',label:'Late Summer'},{icon:'📚',label:'Back to School'},{icon:'🍉',label:'Summer Cookout'}],
-  8:[{icon:'🏈',label:'Tailgate Food'},{icon:'🍂',label:'Fall Harvest'},{icon:'🔥',label:'Labor Day BBQ'}],
-  9:[{icon:'🎃',label:'Halloween'},{icon:'🍺',label:'Oktoberfest'},{icon:'🍁',label:'Fall Comfort'}],
-  10:[{icon:'🦃',label:'Thanksgiving'},{icon:'🥧',label:'Friendsgiving'},{icon:'🍂',label:'Fall Baking'}],
-  11:[{icon:'🎄',label:'Christmas'},{icon:'🍪',label:'Holiday Cookies'},{icon:'🥂',label:'New Year\'s Eve'}],
-};
-
-let activeOccasion=null;
 let activeSubItem=null;
 let detailSwaps={};
 let activeDetailSwap=null;
@@ -595,7 +567,6 @@ function updatePrefsIndicator(){
 }
 function prefsText(){
   const parts=[];
-  if(activeOccasion)parts.push(`Occasion/theme: ${activeOccasion} — tailor recipes to suit this occasion`);
   if(prefs.prepTime!=='any') parts.push(`Prep time: ${prefs.prepTime} minutes`);
   if(prefs.cookTime!=='any') parts.push(`Cook time: ${prefs.cookTime} minutes`);
   if(prefs.kidFriendly) parts.push('Kid friendly: yes (mild flavors, simple ingredients, nothing too spicy or exotic)');
@@ -604,7 +575,6 @@ function prefsText(){
 }
 function activePrefTags(){
   const tags=[];
-  if(activeOccasion)tags.push(`${getSeasonalOccasions().find(o=>o.label===activeOccasion)?.icon||'🍽️'} ${activeOccasion}`);
   if(prefs.prepTime!=='any')tags.push('Prep: '+prefs.prepTime+' min');
   if(prefs.cookTime!=='any')tags.push('Cook: '+prefs.cookTime+' min');
   if(prefs.kidFriendly)tags.push('👶 Kid friendly');
@@ -774,45 +744,12 @@ async function callClaude(prompt,maxTokens=2500){
   return (await resp.json()).content?.[0]?.text||'';
 }
 
-function getSeasonalOccasions(){
-  const month=new Date().getMonth();
-  return SEASONAL_OCCASIONS[month]||[];
-}
-
-function toggleOccasion(label){
-  activeOccasion=activeOccasion===label?null:label;
-  // Re-render whichever panel is showing
-  const rp=document.getElementById('rightPanel');
-  if(rp.querySelector('.empty-state')) showEmpty();
-  else if(rp.querySelector('.recipe-grid')) renderResults();
-  updateFab();
-}
-
-function updateFab(){
-  const fab=document.getElementById('fabBtn');
-  const fabLabel=document.getElementById('fabLabel');
-  if(!fab)return;
-  const label=webSearchMode?'Search Recipes':'Find Recipes';
-  fabLabel.textContent=activeOccasion?`${label}: ${activeOccasion}`:label;
-}
-
 function showEmpty(){
-  const occasions=getSeasonalOccasions();
-  const occasionHTML=occasions.length?`
-    <div class="occasions-wrap">
-      <div class="occasions-label">Seasonal inspiration</div>
-      <div class="occasions-grid">
-        ${occasions.map(o=>`<button class="occasion-btn${activeOccasion===o.label?' active':''}" onclick="toggleOccasion('${o.label.replace(/'/g,"\\'")}')">
-          <span class="occ-icon">${o.icon}</span>${o.label}
-        </button>`).join('')}
-      </div>
-    </div>`:'';
   document.getElementById('rightPanel').innerHTML=`<div class="empty-state">
     <div class="empty-icon">&#127859;</div>
     <div class="empty-divider"><div class="empty-divider-line"></div><div class="empty-divider-dot"></div><div class="empty-divider-line"></div></div>
     <h2>Select your ingredients</h2>
     <p>Pick what you have on hand and we'll suggest recipes &mdash; plus a shopping list for anything missing.</p>
-    ${occasionHTML}
   </div>`;
 }
 function showLoading(){
@@ -879,7 +816,6 @@ function toggleWebSearch(){
     :'Search the web for <b>real recipes</b>';
   document.getElementById('findBtn').textContent=webSearchMode?'Search Recipes →':'Find Recipes →';
   document.getElementById('fabLabel').textContent=webSearchMode?'Search Recipes':'Find Recipes';
-  updateFab();
 }
 
 async function findRecipes(){
@@ -954,20 +890,8 @@ Rules:
 function renderResults(){
   const ingCount=selected.size;
   const tags=activePrefTags();
-  const occasions=getSeasonalOccasions();
   let html=`<div class="results-header"><h2>Recipes for you</h2><div class="results-meta">Based on ${ingCount} ingredient${ingCount!==1?'s':''}</div></div>`;
-  // Active occasion + pref tags row
-  let tagHtml='';
-  if(activeOccasion){
-    const occ=occasions.find(o=>o.label===activeOccasion);
-    tagHtml+=`<span class="occasion-active-tag" onclick="toggleOccasion('${activeOccasion.replace(/'/g,"\\'")}');findRecipes()" title="Click to remove">${occ?.icon||'🍽️'} ${activeOccasion} &#215;</span>`;
-  }
-  tags.filter(t=>!t.includes(activeOccasion||'__none__')).forEach(t=>{tagHtml+=`<span class="active-pref-tag">${t}</span>`;});
-  if(tagHtml)html+=`<div class="active-prefs-bar occasion-strip">${tagHtml}</div>`;
-  // Occasion quick buttons in results (so you can switch without going back)
-  html+=`<div class="occasions-grid" style="margin-bottom:1.5rem;">${occasions.map(o=>`<button class="occasion-btn${activeOccasion===o.label?' active':''}" onclick="toggleOccasion('${o.label.replace(/'/g,"\\'")}');if(activeOccasion)findRecipes()">
-    <span class="occ-icon">${o.icon}</span>${o.label}
-  </button>`).join('')}</div>`;
+  if(tags.length)html+=`<div class="active-prefs-bar">${tags.map(t=>`<span class="active-pref-tag">${t}</span>`).join('')}</div>`;
   html+=`<div class="recipe-grid">`;
   recipes.forEach((r,i)=>{
     const pct=Math.min(100,Math.max(0,r.matchPercent||0));
