@@ -1065,6 +1065,42 @@ function selectRecipe(i){
   document.getElementById('detailArea').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+// ── Quantity scaling ─────────────────────────────
+function parseQtyNum(str){
+  str=str.trim();
+  // Mixed number: "1 1/2"
+  const mixed=str.match(/^(\d+)\s+(\d+)\/(\d+)/);
+  if(mixed)return parseInt(mixed[1])+parseInt(mixed[2])/parseInt(mixed[3]);
+  // Fraction: "1/2"
+  const frac=str.match(/^(\d+)\/(\d+)/);
+  if(frac)return parseInt(frac[1])/parseInt(frac[2]);
+  // Decimal or integer
+  const num=parseFloat(str);
+  return isNaN(num)?null:num;
+}
+function formatQtyNum(n){
+  if(n<=0)return '0';
+  const whole=Math.floor(n);
+  const frac=n-whole;
+  const fracs=[[0.125,'1/8'],[0.25,'1/4'],[0.333,'1/3'],[0.5,'1/2'],[0.667,'2/3'],[0.75,'3/4']];
+  if(frac<0.06)return String(whole||'');
+  if(frac>0.94)return String(whole+1);
+  let best=null,bestDiff=Infinity;
+  for(const[v,s]of fracs){const d=Math.abs(frac-v);if(d<bestDiff){bestDiff=d;best=s;}}
+  if(bestDiff<0.09)return whole>0?`${whole} ${best}`:best;
+  return n%1===0?String(n):n.toFixed(1).replace(/\.0$/,'');
+}
+function scaleQty(qty,scale){
+  if(!qty||scale===1)return qty;
+  // Match leading number/fraction part then the rest (unit + ingredient name)
+  const m=qty.match(/^(\d+\s+\d+\/\d+|\d+\/\d+|\d+\.?\d*)(.*)/);
+  if(!m)return qty;
+  const num=parseQtyNum(m[1]);
+  if(num===null)return qty;
+  const scaled=num*scale;
+  return formatQtyNum(scaled)+m[2];
+}
+
 // ── Render detail ────────────────────────────────
 function renderDetail(r){
   const i=activeRecipeIdx;
@@ -1101,7 +1137,7 @@ function renderDetail(r){
     return `<div class="ing-row">
       <span class="ing-status-dot ${ing.have?'have':'need'}"></span>
       <span class="ing-name">${nameHtml}</span>
-      <span class="ing-qty">${ing.quantity}</span>
+      <span class="ing-qty">${scaleQty(ing.quantity,scale)}</span>
       <button class="ing-swap-btn${isOpen?' active':''}" onclick="toggleDetailSwap('${ing.name.replace(/'/g,"\\'")}')">&#8644; Swap</button>
     </div>${swapPanel}`;
   }).join('');
@@ -1116,7 +1152,7 @@ function renderDetail(r){
       const key=`${r.name}::${ing.name}`;const chk=checkedItems.has(key);
       return `<div class="shop-item${chk?' checked':''}" onclick="toggleShop('${key.replace(/'/g,"\\'")}')">
         <div class="check-box">${chk?'&#10003;':''}</div>
-        <span>${ing.name}&ensp;<span style="color:var(--brown-light);font-size:11px;">${ing.quantity}</span></span>
+        <span>${ing.name}&ensp;<span style="color:var(--brown-light);font-size:11px;">${scaleQty(ing.quantity,scale)}</span></span>
       </div>`;
     }).join('');
     shopSection=`<div class="shop-section">
