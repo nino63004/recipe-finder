@@ -54,8 +54,8 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 .chat-textarea{flex:1;background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown);font-size:13px;font-family:var(–sans);padding:8px 11px;resize:none;outline:none;line-height:1.5;min-height:58px;max-height:110px;transition:border-color 0.2s;}
 .chat-textarea:focus{border-color:var(–terra);}
 .chat-textarea::placeholder{color:var(–brown-dim);}
-.chat-send{background:var(–terra);border:none;border-radius:var(–radius-sm);color:#fff;font-size:15px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s;padding:0;}
-.chat-send:hover{background:var(–terra-light);}
+.chat-send{background:#b85c3a;border:none;border-radius:var(–radius-sm);color:#fff;font-size:15px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s;padding:0;}
+.chat-send:hover{background:#cd7a5a;}
 .chat-send:disabled{opacity:0.45;cursor:not-allowed;}
 .chat-thinking{display:none;align-items:center;gap:5px;margin-top:7px;font-size:11px;color:var(–brown-light);font-style:italic;}
 .chat-thinking.visible{display:flex;}
@@ -138,8 +138,8 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 .sub-manual-input{flex:1;background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown);font-size:12px;font-family:var(–sans);padding:5px 9px;outline:none;transition:border-color 0.2s;}
 .sub-manual-input:focus{border-color:var(–terra);}
 .sub-manual-input::placeholder{color:var(–brown-dim);}
-.sub-use-btn{background:var(–terra);border:none;border-radius:var(–radius-sm);color:#fff;font-size:11px;font-family:var(–sans);padding:5px 10px;cursor:pointer;white-space:nowrap;transition:background 0.15s;}
-.sub-use-btn:hover{background:var(–terra-light);}
+.sub-use-btn{background:#b85c3a;border:none;border-radius:var(–radius-sm);color:#fff;font-size:11px;font-family:var(–sans);padding:5px 10px;cursor:pointer;white-space:nowrap;transition:background 0.15s;}
+.sub-use-btn:hover{background:#cd7a5a;}
 
 /* Ingredients List */
 .ingredients-list{flex:1;overflow-y:auto;padding-bottom:1rem;}
@@ -169,9 +169,9 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 .mode-toggle-label b{color:var(–sage);}
 .mode-toggle-badge{font-size:9px;background:var(–sage-dim);color:var(–sage);border:1px solid rgba(74,124,89,0.2);border-radius:20px;padding:1px 7px;font-weight:600;white-space:nowrap;}
 .action-row{display:flex;gap:8px;}
-.btn-primary{flex:1;background:var(–terra);color:#fff;font-weight:500;font-size:13.5px;font-family:var(–sans);letter-spacing:0.02em;border:none;border-radius:var(–radius-sm);padding:10px 18px;cursor:pointer;transition:background 0.15s,transform 0.1s;}
-.btn-primary:hover{background:var(–terra-light);}
-.btn-primary:active{transform:scale(0.98);}
+.btn-primary{flex:1;background:#b85c3a;color:#fff;font-weight:500;font-size:13.5px;font-family:-apple-system,BlinkMacSystemFont,‘Inter’,sans-serif;letter-spacing:0.02em;border:none;border-radius:var(–radius-sm);padding:10px 18px;cursor:pointer;transition:background 0.15s,transform 0.1s;}
+.btn-primary:hover{background:#cd7a5a;}
+.btn-primary:active{transform:scale(0.98);background:#9a4d30;}
 .btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
 
 /* Floating Find Button */
@@ -187,7 +187,7 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 .btn-clear:hover{border-color:var(–rose);color:var(–rose);}
 
 /* Right Panel */
-.right-panel{padding:2rem 2.5rem;overflow-y:auto;background:var(–cream);}
+.right-panel{padding:2rem 2.5rem 6rem;overflow-y:auto;background:var(–cream);}
 
 /* Empty State */
 .empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;text-align:center;gap:14px;}
@@ -201,15 +201,8 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 /* Loading */
 .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;gap:28px;}
 .loading-label{font-family:var(–serif);font-size:1.1rem;font-style:italic;color:var(–brown-mid);}
-.cup-svg{display:block;overflow:visible;}
-.cup-liquid-rect{animation:svg-fill 2.6s cubic-bezier(0.4,0,0.2,1) infinite;}
-@keyframes svg-fill{0%{transform:translateY(76px);}72%{transform:translateY(3px);}88%{transform:translateY(3px);}100%{transform:translateY(76px);}}
-.cup-steam-a{opacity:0;animation:svg-steam 2.6s ease-in-out 1.7s infinite;}
-.cup-steam-b{opacity:0;animation:svg-steam 2.6s ease-in-out 2.0s infinite;}
-.cup-steam-c{opacity:0;animation:svg-steam 2.6s ease-in-out 1.85s infinite;}
-@keyframes svg-steam{0%,100%{opacity:0;transform:translateY(0);}25%{opacity:0.65;}80%{opacity:0;transform:translateY(-14px);}}
 .loading-dots{display:flex;gap:6px;}
-.loading-dot{width:5px;height:5px;border-radius:50%;background:var(–terra);animation:ldot 1.2s ease-in-out infinite;opacity:0.3;}
+.loading-dot{width:5px;height:5px;border-radius:50%;background:#b85c3a;animation:ldot 1.2s ease-in-out infinite;opacity:0.3;}
 .loading-dot:nth-child(2){animation-delay:0.2s;}.loading-dot:nth-child(3){animation-delay:0.4s;}
 @keyframes ldot{0%,80%,100%{opacity:0.2;transform:scale(0.8);}40%{opacity:1;transform:scale(1);}}
 
@@ -339,8 +332,8 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 .ing-swap-manual-input{flex:1;background:var(–cream);border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown);font-size:11px;font-family:var(–sans);padding:4px 8px;outline:none;transition:border-color 0.2s;}
 .ing-swap-manual-input:focus{border-color:var(–terra);}
 .ing-swap-manual-input::placeholder{color:var(–brown-dim);}
-.ing-swap-use{background:var(–terra);border:none;border-radius:var(–radius-sm);color:#fff;font-size:11px;font-family:var(–sans);padding:4px 9px;cursor:pointer;white-space:nowrap;transition:background 0.15s;}
-.ing-swap-use:hover{background:var(–terra-light);}
+.ing-swap-use{background:#b85c3a;border:none;border-radius:var(–radius-sm);color:#fff;font-size:11px;font-family:var(–sans);padding:4px 9px;cursor:pointer;white-space:nowrap;transition:background 0.15s;}
+.ing-swap-use:hover{background:#cd7a5a;}
 .ing-swap-clear{background:transparent;border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown-light);font-size:11px;font-family:var(–sans);padding:4px 8px;cursor:pointer;transition:all 0.15s;}
 .ing-swap-clear:hover{border-color:var(–rose);color:var(–rose);}
 
@@ -756,20 +749,50 @@ async function callClaude(prompt,maxTokens=2500){
 function showEmpty(){document.getElementById('rightPanel').innerHTML=`<div class="empty-state"><div class="empty-icon">&#127859;</div><div class="empty-divider"><div class="empty-divider-line"></div><div class="empty-divider-dot"></div><div class="empty-divider-line"></div></div><h2>Select your ingredients</h2><p>Pick what you have on hand and we'll suggest recipes &mdash; plus a shopping list for anything missing.</p></div>`;}
 function showLoading(){
   document.getElementById('rightPanel').innerHTML=`<div class="loading">
-    <svg class="cup-svg" width="90" height="110" viewBox="0 0 90 110" xmlns="http://www.w3.org/2000/svg">
+    <svg width="100" height="125" viewBox="0 0 100 125" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
       <defs>
         <clipPath id="cup-clip">
-          <path d="M10,24 L14,88 Q14,96 22,96 L68,96 Q76,96 76,88 L80,24 Z"/>
+          <rect x="16" y="27" width="60" height="72"/>
         </clipPath>
       </defs>
-      <line class="cup-steam-a" x1="28" y1="24" x2="26" y2="8"  stroke="#b85c3a" stroke-width="2.5" stroke-linecap="round"/>
-      <line class="cup-steam-b" x1="45" y1="24" x2="45" y2="6"  stroke="#b85c3a" stroke-width="2.5" stroke-linecap="round"/>
-      <line class="cup-steam-c" x1="62" y1="24" x2="64" y2="8"  stroke="#b85c3a" stroke-width="2.5" stroke-linecap="round"/>
-      <rect class="cup-liquid-rect" x="8" y="24" width="74" height="76" fill="#b85c3a" opacity="0.78" clip-path="url(#cup-clip)"/>
-      <ellipse cx="45" cy="27" rx="28" ry="5" fill="#cd7a5a" opacity="0" clip-path="url(#cup-clip)"/>
-      <path d="M10,24 L14,88 Q14,96 22,96 L68,96 Q76,96 76,88 L80,24 Z" fill="none" stroke="#b85c3a" stroke-width="2.5" stroke-linejoin="round"/>
-      <rect x="7" y="16" width="76" height="10" rx="4" fill="#f2ede4" stroke="#b85c3a" stroke-width="2.5"/>
-      <path d="M76,38 C92,38 92,76 76,76" fill="none" stroke="#b85c3a" stroke-width="2.5"/>
+
+      <!-- Steam (SMIL animate opacity + y) -->
+      <line x1="33" y1="18" x2="31" y2="5" stroke="#b85c3a" stroke-width="2" stroke-linecap="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;0.6;0;0" dur="2.6s" repeatCount="indefinite" keyTimes="0;0.6;0.75;0.9;1"/>
+        <animate attributeName="y2" values="5;5;-4;-4;5" dur="2.6s" repeatCount="indefinite" keyTimes="0;0.6;0.75;0.9;1"/>
+      </line>
+      <line x1="46" y1="18" x2="46" y2="3" stroke="#b85c3a" stroke-width="2" stroke-linecap="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;0.6;0;0" dur="2.6s" begin="0.2s" repeatCount="indefinite" keyTimes="0;0.6;0.75;0.9;1"/>
+        <animate attributeName="y2" values="3;3;-6;-6;3" dur="2.6s" begin="0.2s" repeatCount="indefinite" keyTimes="0;0.6;0.75;0.9;1"/>
+      </line>
+      <line x1="59" y1="18" x2="61" y2="5" stroke="#b85c3a" stroke-width="2" stroke-linecap="round" opacity="0">
+        <animate attributeName="opacity" values="0;0;0.6;0;0" dur="2.6s" begin="0.1s" repeatCount="indefinite" keyTimes="0;0.6;0.75;0.9;1"/>
+        <animate attributeName="y2" values="5;5;-4;-4;5" dur="2.6s" begin="0.1s" repeatCount="indefinite" keyTimes="0;0.6;0.75;0.9;1"/>
+      </line>
+
+      <!-- Cup rim -->
+      <rect x="13" y="17" width="66" height="10" rx="4" fill="#f2ede4" stroke="#b85c3a" stroke-width="2.5"/>
+
+      <!-- Cup body background -->
+      <rect x="16" y="26" width="60" height="73" rx="0" fill="#f2ede4"/>
+      <path d="M16,26 L16,94 Q16,99 21,99 L71,99 Q76,99 76,94 L76,26 Z" fill="#f2ede4"/>
+
+      <!-- Liquid — SMIL animates y and height so fill rises from bottom -->
+      <rect x="16" fill="#b85c3a" opacity="0.82" clip-path="url(#cup-clip)">
+        <animate attributeName="y"      values="99;27;27;99" dur="2.6s" repeatCount="indefinite"
+          calcMode="spline" keyTimes="0;0.7;0.87;1"
+          keySplines="0.42 0 0.58 1; 0 0 1 1; 0.42 0 0.58 1"/>
+        <animate attributeName="height" values="0;72;72;0"   dur="2.6s" repeatCount="indefinite"
+          calcMode="spline" keyTimes="0;0.7;0.87;1"
+          keySplines="0.42 0 0.58 1; 0 0 1 1; 0.42 0 0.58 1"/>
+        <animate attributeName="width"  values="60;60;60;60" dur="2.6s" repeatCount="indefinite"/>
+      </rect>
+
+      <!-- Cup body outline (drawn on top so it covers liquid edges) -->
+      <path d="M16,26 L16,94 Q16,99 21,99 L71,99 Q76,99 76,94 L76,26" fill="none" stroke="#b85c3a" stroke-width="2.5"/>
+
+      <!-- Handle -->
+      <path d="M76,44 C94,44 94,80 76,80" fill="none" stroke="#b85c3a" stroke-width="2.5"/>
     </svg>
     <div class="loading-label">${webSearchMode?'Searching the web for recipes&hellip;':'Finding recipes for you&hellip;'}</div>
     <div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
