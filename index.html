@@ -1064,12 +1064,13 @@ function toggleWebSearch(){
 async function callClaude(prompt,maxTokens=3000){
   const keyErr=validateKey();
   if(keyErr)throw new Error(keyErr);
+  const keyPreview=ANTHROPIC_KEY.slice(0,12)+'...'+ANTHROPIC_KEY.slice(-4);
   const resp=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
     body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})
   });
-  if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`API error ${resp.status}`);}
+  if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error((e.error?.message||`API error ${resp.status}`)+` [key used: ${keyPreview}]`);}
   return (await resp.json()).content?.[0]?.text||'';
 }
 
