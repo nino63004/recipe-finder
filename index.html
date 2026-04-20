@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,511 +7,672 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ── Tokens ─────────────────────────────────────── */
 :root {
-  --cream:#faf7f2; --cream-dark:#f2ede4; --cream-mid:#e8e0d0; --cream-border:#ddd4c0;
-  --terra:#b85c3a; --terra-light:#cd7a5a; --terra-dim:rgba(184,92,58,0.09); --terra-dim2:rgba(184,92,58,0.18);
-  --brown:#2c1a0e; --brown-mid:#5a3e2b; --brown-light:#9a7d68; --brown-dim:#c4aa94;
-  --sage:#4a7c59; --sage-dim:rgba(74,124,89,0.12);
-  --rose:#b84a4a; --rose-dim:rgba(184,74,74,0.1);
-  --amber:#8a6a1a; --amber-dim:rgba(138,106,26,0.1);
-  --radius:12px; --radius-sm:8px;
-  --serif:'Playfair Display',Georgia,serif; --sans:'Inter',-apple-system,sans-serif;
+  --cream:        #faf7f2;
+  --cream-dark:   #f2ede4;
+  --cream-mid:    #e8e0d0;
+  --cream-border: #ddd4c0;
+  --terra:        #b85c3a;
+  --terra-hover:  #9a4d30;
+  --terra-light:  #cd7a5a;
+  --terra-dim:    rgba(184,92,58,0.09);
+  --terra-dim2:   rgba(184,92,58,0.18);
+  --brown:        #2c1a0e;
+  --brown-mid:    #5a3e2b;
+  --brown-light:  #9a7d68;
+  --brown-dim:    #c4aa94;
+  --sage:         #4a7c59;
+  --sage-dim:     rgba(74,124,89,0.12);
+  --rose:         #b84a4a;
+  --rose-dim:     rgba(184,74,74,0.1);
+  --amber:        #8a6a1a;
+  --amber-dim:    rgba(138,106,26,0.1);
+  --radius:       14px;
+  --radius-sm:    9px;
+  --serif:        'Playfair Display', Georgia, serif;
+  --sans:         'Inter', -apple-system, sans-serif;
+  --max-w:        960px;
 }
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-size:14px;line-height:1.65;min-height:100vh;}
 
-/* API Bar */
-.api-bar{background:var(–brown);padding:6px 2rem;display:flex;align-items:center;justify-content:flex-end;gap:10px;}
-.api-bar label{font-size:11px;color:var(–brown-dim);letter-spacing:0.04em;}
-.api-bar input{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:4px;color:#e8e0d0;font-size:11px;padding:4px 10px;width:220px;outline:none;font-family:monospace;}
-.api-bar input:focus{border-color:var(–terra-light);}
-.api-status{font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,0.08);color:var(–brown-dim);}
-.api-status.ok{background:rgba(74,124,89,0.3);color:#8ec9a0;}
+/* ── Reset ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--cream-dark);
+  color: var(--brown);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
 
-/* Hero */
-.hero{background:var(–brown);padding:2.5rem 2rem 2rem;position:relative;overflow:hidden;text-align:center;}
-.hero-botanical{position:absolute;top:0;left:0;right:0;bottom:0;opacity:0.13;pointer-events:none;}
-.hero-eyebrow{font-family:var(–sans);font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(–terra-light);margin-bottom:10px;position:relative;display:flex;align-items:center;justify-content:center;gap:12px;}
-.hero-eyebrow::before,.hero-eyebrow::after{content:’’;height:1px;width:40px;background:var(–terra-light);opacity:0.5;}
-.hero-title{font-family:var(–serif);font-size:2.8rem;font-weight:400;color:var(–cream);line-height:1.15;position:relative;letter-spacing:-0.01em;}
-.hero-title em{font-style:italic;color:var(–terra-light);}
-.hero-sub{font-size:13px;color:var(–brown-dim);margin-top:10px;position:relative;font-weight:300;}
-.hero-divider{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:1.5rem;position:relative;}
-.hero-divider-line{height:1px;width:80px;background:rgba(255,255,255,0.15);}
-.hero-divider-icon{color:var(–terra-light);font-size:14px;opacity:0.7;}
+/* ── Page shell ─────────────────────────────────── */
+.page {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  background: var(--cream);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-/* Layout */
-.app{display:grid;grid-template-columns:340px 1fr;min-height:calc(100vh - 120px);}
+/* ── API bar ─────────────────────────────────────── */
+.api-bar {
+  background: var(--brown);
+  padding: 6px 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.api-bar label { font-size: 11px; color: var(--brown-dim); }
+.api-bar input {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  color: #e8e0d0;
+  font-size: 11px;
+  padding: 4px 10px;
+  width: 200px;
+  outline: none;
+  font-family: monospace;
+}
+.api-bar input:focus { border-color: var(--terra-light); }
+.api-status { font-size: 10px; padding: 2px 8px; border-radius: 20px; background: rgba(255,255,255,0.08); color: var(--brown-dim); white-space: nowrap; }
+.api-status.ok { background: rgba(74,124,89,0.3); color: #8ec9a0; }
 
-/* Left Panel */
-.left-panel{background:var(–cream-dark);border-right:1px solid var(–cream-border);display:flex;flex-direction:column;max-height:calc(100vh - 120px);position:sticky;top:0;overflow:hidden;}
+/* ── Hero ────────────────────────────────────────── */
+.hero {
+  background: var(--brown);
+  padding: 1.5rem 1.25rem 1.25rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hero-botanical { position: absolute; inset: 0; opacity: 0.12; pointer-events: none; }
+.hero-eyebrow {
+  font-size: 9px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--terra-light); margin-bottom: 6px; position: relative;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+.hero-eyebrow::before, .hero-eyebrow::after { content:''; height:1px; width:30px; background:var(--terra-light); opacity:0.5; }
+.hero-title { font-family: var(--serif); font-size: 1.75rem; font-weight: 400; color: var(--cream); line-height: 1.2; position: relative; }
+.hero-title em { font-style: italic; color: var(--terra-light); }
+.hero-sub { font-size: 12px; color: var(--brown-dim); margin-top: 6px; position: relative; }
 
-/* Chat Box */
-.chat-box{padding:1.1rem 1.25rem 1rem;border-bottom:1px solid var(–cream-border);background:var(–cream);}
-.chat-label{font-family:var(–serif);font-size:13px;font-style:italic;color:var(–brown-mid);margin-bottom:8px;}
-.chat-input-row{display:flex;gap:6px;align-items:flex-end;}
-.chat-textarea{flex:1;background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown);font-size:13px;font-family:var(–sans);padding:8px 11px;resize:none;outline:none;line-height:1.5;min-height:58px;max-height:110px;transition:border-color 0.2s;}
-.chat-textarea:focus{border-color:var(–terra);}
-.chat-textarea::placeholder{color:var(–brown-dim);}
-.chat-send{background:#b85c3a;border:none;border-radius:var(–radius-sm);color:#fff;font-size:15px;width:36px;height:36px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s;padding:0;}
-.chat-send:hover{background:#cd7a5a;}
-.chat-send:disabled{opacity:0.45;cursor:not-allowed;}
-.chat-thinking{display:none;align-items:center;gap:5px;margin-top:7px;font-size:11px;color:var(–brown-light);font-style:italic;}
-.chat-thinking.visible{display:flex;}
-.think-dot{width:4px;height:4px;border-radius:50%;background:var(–terra);animation:pulse 1.2s ease-in-out infinite;opacity:0.4;}
-.think-dot:nth-child(2){animation-delay:0.2s;}.think-dot:nth-child(3){animation-delay:0.4s;}
-@keyframes pulse{0%,80%,100%{opacity:0.2;}40%{opacity:1;}}
-.chat-feedback{margin-top:7px;font-size:12px;border-radius:6px;padding:5px 9px;display:none;}
-.chat-feedback.success{display:block;background:var(–sage-dim);border:1px solid rgba(74,124,89,0.2);color:var(–sage);}
-.chat-feedback.error{display:block;background:var(–rose-dim);border:1px solid rgba(184,74,74,0.2);color:var(–rose);}
+/* ── App layout ─────────────────────────────────── */
+/* Mobile: single column stack */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
 
-/* Preferences Panel */
-.prefs-section{border-bottom:1px solid var(–cream-border);background:var(–cream-dark);}
-.prefs-toggle{display:flex;align-items:center;justify-content:space-between;padding:0.7rem 1.25rem;cursor:pointer;user-select:none;transition:background 0.15s;}
-.prefs-toggle:hover{background:var(–cream-mid);}
-.prefs-toggle-label{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(–brown-light);}
-.prefs-active-dot{width:6px;height:6px;border-radius:50%;background:var(–terra);display:none;}
-.prefs-active-dot.visible{display:block;}
-.prefs-arrow{font-size:12px;color:var(–brown-light);transition:transform 0.2s;}
-.prefs-arrow.open{transform:rotate(180deg);}
-.prefs-body{padding:0.75rem 1.25rem 1rem;display:none;}
-.prefs-body.open{display:block;}
-.prefs-row{margin-bottom:0.85rem;}
-.prefs-row:last-child{margin-bottom:0;}
-.prefs-row-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(–brown-light);margin-bottom:6px;}
-.time-pills{display:flex;flex-wrap:wrap;gap:4px;}
-.time-pill{background:var(–cream);border:1px solid var(–cream-border);border-radius:20px;color:var(–brown-mid);font-size:11px;padding:3px 10px;cursor:pointer;transition:all 0.15s;font-family:var(–sans);}
-.time-pill:hover{border-color:var(–terra);color:var(–terra);}
-.time-pill.active{background:var(–terra-dim2);border-color:rgba(184,92,58,0.45);color:var(–terra);font-weight:500;}
-.diet-pills{display:flex;flex-wrap:wrap;gap:4px;}
-.diet-pill{background:var(–cream);border:1px solid var(–cream-border);border-radius:20px;color:var(–brown-mid);font-size:11px;padding:3px 10px;cursor:pointer;transition:all 0.15s;font-family:var(–sans);}
-.diet-pill:hover{border-color:var(–sage);color:var(–sage);}
-.diet-pill.active{background:var(–sage-dim);border-color:rgba(74,124,89,0.35);color:var(–sage);font-weight:500;}
-.kid-toggle{display:flex;align-items:center;gap:8px;cursor:pointer;}
-.toggle-track{width:34px;height:18px;background:var(–cream-border);border-radius:9px;position:relative;transition:background 0.2s;flex-shrink:0;}
-.toggle-track.on{background:var(–amber);}
-.toggle-thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
-.toggle-track.on .toggle-thumb{transform:translateX(16px);}
-.kid-label{font-size:12px;color:var(–brown-mid);}
-.kid-label.on{color:var(–amber);font-weight:500;}
+/* ── Ingredient panel ───────────────────────────── */
+.ingredient-panel {
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+}
 
-/* Panel Header */
-.panel-header{padding:0.9rem 1.25rem 0.75rem;border-bottom:1px solid var(–cream-border);background:var(–cream-dark);}
-.panel-title{font-size:10px;font-weight:600;color:var(–brown-light);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:8px;}
-.search-box{background:var(–cream);border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown);font-size:13px;font-family:var(–sans);padding:7px 11px;width:100%;outline:none;transition:border-color 0.2s;}
-.search-box:focus{border-color:var(–terra);}
-.search-box::placeholder{color:var(–brown-dim);}
-.custom-row{display:flex;gap:6px;margin-top:7px;}
-.custom-input{flex:1;background:var(–cream);border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown);font-size:13px;font-family:var(–sans);padding:6px 11px;outline:none;transition:border-color 0.2s;}
-.custom-input:focus{border-color:var(–terra);}
-.custom-input::placeholder{color:var(–brown-dim);}
-.btn-add{background:var(–terra-dim);border:1px solid rgba(184,92,58,0.3);border-radius:var(–radius-sm);color:var(–terra);font-size:20px;font-weight:300;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s;line-height:1;padding:0;}
-.btn-add:hover{background:var(–terra-dim2);}
+/* Chat box */
+.chat-box {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--cream-border);
+  background: var(--cream);
+}
+.chat-label { font-family: var(--serif); font-size: 13px; font-style: italic; color: var(--brown-mid); margin-bottom: 8px; }
+.chat-row { display: flex; gap: 8px; align-items: flex-end; }
+.chat-textarea {
+  flex: 1; background: var(--cream-dark); border: 1px solid var(--cream-border);
+  border-radius: var(--radius-sm); color: var(--brown); font-size: 14px;
+  font-family: var(--sans); padding: 10px 12px; resize: none; outline: none;
+  line-height: 1.5; min-height: 56px; max-height: 120px; transition: border-color 0.2s;
+}
+.chat-textarea:focus { border-color: var(--terra); }
+.chat-textarea::placeholder { color: var(--brown-dim); }
+.chat-send {
+  background: #b85c3a; border: none; border-radius: var(--radius-sm);
+  color: #fff; font-size: 16px; width: 44px; height: 44px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: background 0.15s;
+}
+.chat-send:hover { background: #9a4d30; }
+.chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
+.chat-thinking { display: none; align-items: center; gap: 5px; margin-top: 7px; font-size: 11px; color: var(--brown-light); font-style: italic; }
+.chat-thinking.visible { display: flex; }
+.think-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--terra); animation: pulse 1.2s ease-in-out infinite; opacity: 0.4; }
+.think-dot:nth-child(2) { animation-delay: 0.2s; } .think-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulse { 0%,80%,100%{opacity:0.2;} 40%{opacity:1;} }
+.chat-feedback { margin-top: 7px; font-size: 12px; border-radius: 6px; padding: 5px 10px; display: none; }
+.chat-feedback.success { display: block; background: var(--sage-dim); border: 1px solid rgba(74,124,89,0.2); color: var(--sage); }
+.chat-feedback.error { display: block; background: var(--rose-dim); border: 1px solid rgba(184,74,74,0.2); color: var(--rose); }
 
-/* Selected Strip */
-.selected-strip{padding:0.75rem 1.25rem;border-bottom:1px solid var(–cream-border);background:var(–cream-dark);min-height:48px;}
-.selected-strip-label{font-size:10px;color:var(–brown-light);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:7px;}
-.chips{display:flex;flex-wrap:wrap;gap:5px;}
-.chip{background:var(–cream);border:1px solid var(–cream-border);color:var(–brown-mid);border-radius:20px;font-size:11.5px;padding:3px 6px 3px 11px;display:flex;align-items:center;gap:3px;cursor:default;font-family:var(–sans);transition:border-color 0.15s;}
-.chip.selected-chip{background:var(–terra-dim);border-color:rgba(184,92,58,0.3);color:var(–terra);}
-.chip.custom{background:var(–sage-dim);border-color:rgba(74,124,89,0.25);color:var(–sage);}
-.chip-sub{width:20px;height:20px;border-radius:50%;border:1px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:10px;cursor:pointer;opacity:0.6;transition:opacity 0.15s;flex-shrink:0;line-height:1;}
-.chip-sub:hover{opacity:1;background:rgba(255,255,255,0.4);}
-.chip-x{width:18px;height:18px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;opacity:0.5;transition:opacity 0.15s;flex-shrink:0;}
-.chip-x:hover{opacity:1;}
+/* Preferences */
+.prefs-section { border-bottom: 1px solid var(--cream-border); }
+.prefs-toggle { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.25rem; cursor: pointer; user-select: none; }
+.prefs-toggle:active { background: var(--cream-dark); }
+.prefs-toggle-label { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--brown-light); }
+.prefs-active-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--terra); display: none; }
+.prefs-active-dot.visible { display: block; }
+.prefs-arrow { font-size: 12px; color: var(--brown-light); transition: transform 0.2s; }
+.prefs-arrow.open { transform: rotate(180deg); }
+.prefs-body { display: none; padding: 0 1.25rem 1rem; }
+.prefs-body.open { display: block; }
+.prefs-row { margin-bottom: 1rem; }
+.prefs-row:last-child { margin-bottom: 0; }
+.prefs-row-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brown-light); margin-bottom: 7px; }
+.pill-row { display: flex; flex-wrap: wrap; gap: 5px; }
+.time-pill { background: var(--cream); border: 1px solid var(--cream-border); border-radius: 20px; color: var(--brown-mid); font-size: 12px; padding: 5px 12px; cursor: pointer; transition: all 0.15s; font-family: var(--sans); }
+.time-pill.active { background: var(--terra-dim2); border-color: rgba(184,92,58,0.45); color: var(--terra); font-weight: 500; }
+.diet-pill { background: var(--cream); border: 1px solid var(--cream-border); border-radius: 20px; color: var(--brown-mid); font-size: 12px; padding: 5px 12px; cursor: pointer; transition: all 0.15s; font-family: var(--sans); }
+.diet-pill.active { background: var(--sage-dim); border-color: rgba(74,124,89,0.35); color: var(--sage); font-weight: 500; }
+.kid-row { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.toggle-track { width: 36px; height: 20px; background: var(--cream-border); border-radius: 10px; position: relative; transition: background 0.2s; flex-shrink: 0; }
+.toggle-track.on { background: var(--amber); }
+.toggle-thumb { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.toggle-track.on .toggle-thumb { transform: translateX(16px); }
+.kid-label { font-size: 13px; color: var(--brown-mid); }
+.kid-label.on { color: var(--amber); font-weight: 500; }
 
-/* Sub Panel (chip substitution) */
-.sub-panel{background:var(–cream);border-bottom:1px solid var(–cream-border);padding:0.85rem 1.25rem;display:none;}
-.sub-panel.open{display:block;}
-.sub-panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.sub-panel-title{font-size:11px;font-weight:600;color:var(–brown-mid);}
-.sub-panel-title span{color:var(–terra);font-style:italic;}
-.sub-close{background:transparent;border:none;color:var(–brown-light);font-size:16px;cursor:pointer;padding:0;line-height:1;}
-.sub-close:hover{color:var(–rose);}
-.sub-loading{font-size:11px;color:var(–brown-light);font-style:italic;display:none;align-items:center;gap:6px;}
-.sub-loading.visible{display:flex;}
-.sub-options{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px;min-height:0;}
-.sub-option{background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:20px;color:var(–brown-mid);font-size:11px;padding:3px 10px;cursor:pointer;transition:all 0.15s;font-family:var(–sans);}
-.sub-option:hover{background:var(–terra-dim2);border-color:rgba(184,92,58,0.4);color:var(–terra);}
-.sub-manual-row{display:flex;gap:6px;margin-top:4px;}
-.sub-manual-input{flex:1;background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown);font-size:12px;font-family:var(–sans);padding:5px 9px;outline:none;transition:border-color 0.2s;}
-.sub-manual-input:focus{border-color:var(–terra);}
-.sub-manual-input::placeholder{color:var(–brown-dim);}
-.sub-use-btn{background:#b85c3a;border:none;border-radius:var(–radius-sm);color:#fff;font-size:11px;font-family:var(–sans);padding:5px 10px;cursor:pointer;white-space:nowrap;transition:background 0.15s;}
-.sub-use-btn:hover{background:#cd7a5a;}
+/* Browse / filter */
+.browse-section { padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--cream-border); }
+.browse-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--brown-light); margin-bottom: 8px; }
+.search-box { background: var(--cream-dark); border: 1px solid var(--cream-border); border-radius: var(--radius-sm); color: var(--brown); font-size: 14px; font-family: var(--sans); padding: 10px 12px; width: 100%; outline: none; transition: border-color 0.2s; }
+.search-box:focus { border-color: var(--terra); }
+.search-box::placeholder { color: var(--brown-dim); }
+.custom-row { display: flex; gap: 6px; margin-top: 7px; }
+.custom-input { flex: 1; background: var(--cream-dark); border: 1px solid var(--cream-border); border-radius: var(--radius-sm); color: var(--brown); font-size: 14px; font-family: var(--sans); padding: 10px 12px; outline: none; transition: border-color 0.2s; }
+.custom-input:focus { border-color: var(--terra); }
+.custom-input::placeholder { color: var(--brown-dim); }
+.btn-add { background: var(--terra-dim); border: 1px solid rgba(184,92,58,0.3); border-radius: var(--radius-sm); color: var(--terra); font-size: 22px; font-weight: 300; width: 44px; height: 44px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s; line-height: 1; }
+.btn-add:hover { background: var(--terra-dim2); }
 
-/* Ingredients List */
-.ingredients-list{flex:1;overflow-y:auto;padding-bottom:1rem;}
-.ingredients-list::-webkit-scrollbar{width:4px;}
-.ingredients-list::-webkit-scrollbar-thumb{background:var(–cream-border);border-radius:4px;}
-.cat-label{padding:0.6rem 1.25rem 0.5rem;font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(–brown-dim);position:sticky;top:0;background:var(–cream-dark);display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;transition:background 0.15s;}
-.cat-label:hover{background:var(–cream-mid);}
-.cat-label::after{content:’’;flex:1;height:1px;background:var(–cream-mid);}
-.cat-label-arrow{font-size:10px;color:var(–brown-dim);transition:transform 0.2s;margin-left:2px;flex-shrink:0;}
-.cat-label-arrow.collapsed{transform:rotate(-90deg);}
-.cat-sel-count{font-size:9px;background:var(–terra-dim2);color:var(–terra);border-radius:20px;padding:1px 6px;font-weight:600;display:none;}
-.cat-sel-count.visible{display:inline;}
-.ing-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:0 1rem 0.5rem;overflow:hidden;transition:max-height 0.25s ease,padding 0.2s ease;}
-.ing-grid.collapsed{max-height:0!important;padding-top:0;padding-bottom:0;}
-.ing-btn{background:var(–cream);border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown-mid);font-size:12.5px;font-family:var(–sans);padding:6px 10px;cursor:pointer;text-align:left;transition:all 0.15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.ing-btn:hover{border-color:var(–terra);color:var(–brown);background:var(–terra-dim);}
-.ing-btn.selected{background:var(–terra-dim2);border-color:rgba(184,92,58,0.45);color:var(–terra);font-weight:500;}
+/* Selected strip */
+.selected-strip { padding: 0.75rem 1.25rem; border-bottom: 1px solid var(--cream-border); min-height: 52px; }
+.selected-strip-label { font-size: 10px; color: var(--brown-light); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { background: var(--cream-dark); border: 1px solid var(--cream-border); color: var(--brown-mid); border-radius: 20px; font-size: 12px; padding: 4px 8px 4px 12px; display: flex; align-items: center; gap: 4px; font-family: var(--sans); }
+.chip.selected-chip { background: var(--terra-dim); border-color: rgba(184,92,58,0.3); color: var(--terra); }
+.chip.custom { background: var(--sage-dim); border-color: rgba(74,124,89,0.25); color: var(--sage); }
+.chip-sub { width: 22px; height: 22px; border-radius: 50%; border: 1px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; opacity: 0.6; transition: opacity 0.15s; flex-shrink: 0; }
+.chip-sub:hover { opacity: 1; }
+.chip-x { width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 15px; cursor: pointer; opacity: 0.5; transition: opacity 0.15s; flex-shrink: 0; }
+.chip-x:hover { opacity: 1; }
 
-/* Action Bar */
-.action-bar{padding:0.85rem 1.25rem;border-top:1px solid var(–cream-border);background:var(–cream);display:flex;flex-direction:column;gap:8px;}
-.mode-toggle{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:var(–radius-sm);cursor:pointer;}
-.mode-toggle-track{width:34px;height:18px;background:var(–cream-border);border-radius:9px;position:relative;transition:background 0.2s;flex-shrink:0;}
-.mode-toggle-track.on{background:var(–sage);}
-.mode-toggle-thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
-.mode-toggle-track.on .mode-toggle-thumb{transform:translateX(16px);}
-.mode-toggle-label{font-size:11px;color:var(–brown-mid);flex:1;user-select:none;line-height:1.4;}
-.mode-toggle-label b{color:var(–sage);}
-.mode-toggle-badge{font-size:9px;background:var(–sage-dim);color:var(–sage);border:1px solid rgba(74,124,89,0.2);border-radius:20px;padding:1px 7px;font-weight:600;white-space:nowrap;}
-.action-row{display:flex;gap:8px;}
-.btn-primary{flex:1;background:#b85c3a;color:#fff;font-weight:500;font-size:13.5px;font-family:-apple-system,BlinkMacSystemFont,‘Inter’,sans-serif;letter-spacing:0.02em;border:none;border-radius:var(–radius-sm);padding:10px 18px;cursor:pointer;transition:background 0.15s,transform 0.1s;}
-.btn-primary:hover{background:#cd7a5a;}
-.btn-primary:active{transform:scale(0.98);background:#9a4d30;}
-.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+/* Substitution panel */
+.sub-panel { background: var(--cream); border-bottom: 1px solid var(--cream-border); padding: 0.9rem 1.25rem; display: none; }
+.sub-panel.open { display: block; }
+.sub-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.sub-panel-title { font-size: 12px; font-weight: 500; color: var(--brown-mid); }
+.sub-panel-title span { color: var(--terra); font-style: italic; }
+.sub-close { background: transparent; border: none; color: var(--brown-light); font-size: 18px; cursor: pointer; padding: 0; line-height: 1; }
+.sub-loading { display: none; align-items: center; gap: 5px; font-size: 11px; color: var(--brown-light); font-style: italic; }
+.sub-loading.visible { display: flex; }
+.sub-options { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+.sub-option { background: var(--cream-dark); border: 1px solid var(--cream-border); border-radius: 20px; color: var(--brown-mid); font-size: 12px; padding: 4px 11px; cursor: pointer; transition: all 0.15s; font-family: var(--sans); }
+.sub-option:hover { background: var(--terra-dim2); border-color: rgba(184,92,58,0.4); color: var(--terra); }
+.sub-manual-row { display: flex; gap: 6px; }
+.sub-manual-input { flex: 1; background: var(--cream-dark); border: 1px solid var(--cream-border); border-radius: var(--radius-sm); color: var(--brown); font-size: 13px; font-family: var(--sans); padding: 8px 10px; outline: none; transition: border-color 0.2s; }
+.sub-manual-input:focus { border-color: var(--terra); }
+.sub-manual-input::placeholder { color: var(--brown-dim); }
+.sub-use-btn { background: #b85c3a; border: none; border-radius: var(--radius-sm); color: #fff; font-size: 12px; font-family: var(--sans); padding: 8px 12px; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+.sub-use-btn:hover { background: #9a4d30; }
 
-/* Floating Find Button */
-.fab-wrap{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;pointer-events:none;display:flex;justify-content:center;}
-.fab{background:#b85c3a;color:#fff;font-family:-apple-system,BlinkMacSystemFont,‘Inter’,sans-serif;font-size:15px;font-weight:600;border:none;border-radius:50px;padding:15px 30px;cursor:pointer;pointer-events:all;box-shadow:0 4px 24px rgba(184,92,58,0.5);display:flex;align-items:center;gap:10px;white-space:nowrap;opacity:0;transform:translateY(20px);transition:opacity 0.3s ease,transform 0.3s ease;}
-.fab.visible{opacity:1;transform:translateY(0);}
-.fab:active{background:#9a4d30;}
-.fab-count{background:rgba(255,255,255,0.3);border-radius:20px;font-size:12px;font-weight:700;padding:2px 9px;}
-.btn-primary:hover{background:var(–terra-light);}
-.btn-primary:active{transform:scale(0.98);}
-.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
-.btn-clear{background:transparent;border:1px solid var(–cream-border);color:var(–brown-light);font-size:13px;font-family:var(–sans);border-radius:var(–radius-sm);padding:9px 13px;cursor:pointer;transition:all 0.15s;}
-.btn-clear:hover{border-color:var(–rose);color:var(–rose);}
+/* Ingredient categories */
+.ing-list { background: var(--cream-dark); }
+.cat-label {
+  padding: 0.65rem 1.25rem 0.4rem; font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--brown-dim); background: var(--cream-dark);
+  display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;
+  transition: background 0.15s;
+}
+.cat-label:active { background: var(--cream-mid); }
+.cat-label::after { content: ''; flex: 1; height: 1px; background: var(--cream-mid); }
+.cat-label-arrow { font-size: 10px; color: var(--brown-dim); transition: transform 0.2s; margin-left: 2px; flex-shrink: 0; }
+.cat-label-arrow.collapsed { transform: rotate(-90deg); }
+.cat-sel-count { font-size: 9px; background: var(--terra-dim2); color: var(--terra); border-radius: 20px; padding: 1px 6px; font-weight: 600; display: none; }
+.cat-sel-count.visible { display: inline; }
+.ing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 0 1rem 0.75rem; overflow: hidden; transition: max-height 0.25s ease, padding 0.2s ease; }
+.ing-grid.collapsed { max-height: 0 !important; padding-top: 0; padding-bottom: 0; }
+.ing-btn {
+  background: var(--cream); border: 1px solid var(--cream-border); border-radius: var(--radius-sm);
+  color: var(--brown-mid); font-size: 13px; font-family: var(--sans); padding: 10px 12px;
+  cursor: pointer; text-align: left; transition: all 0.15s;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  min-height: 44px; /* touch target */
+}
+.ing-btn:active { background: var(--terra-dim); }
+.ing-btn.selected { background: var(--terra-dim2); border-color: rgba(184,92,58,0.45); color: var(--terra); font-weight: 500; }
 
-/* Right Panel */
-.right-panel{padding:2rem 2.5rem 6rem;overflow-y:auto;background:var(–cream);}
+/* Find bar (inside panel, desktop-visible) */
+.find-bar {
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid var(--cream-border);
+  background: var(--cream);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.web-toggle { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--cream-dark); border: 1px solid var(--cream-border); border-radius: var(--radius-sm); cursor: pointer; }
+.web-toggle-track { width: 34px; height: 18px; background: var(--cream-border); border-radius: 9px; position: relative; transition: background 0.2s; flex-shrink: 0; }
+.web-toggle-track.on { background: var(--sage); }
+.web-toggle-thumb { position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; background: #fff; border-radius: 50%; transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }
+.web-toggle-track.on .web-toggle-thumb { transform: translateX(16px); }
+.web-toggle-label { font-size: 12px; color: var(--brown-mid); flex: 1; }
+.web-toggle-label b { color: var(--sage); }
+.web-badge { font-size: 9px; background: var(--sage-dim); color: var(--sage); border: 1px solid rgba(74,124,89,0.2); border-radius: 20px; padding: 1px 7px; font-weight: 600; display: none; white-space: nowrap; }
+.find-buttons { display: flex; gap: 8px; }
+.btn-clear { background: transparent; border: 1px solid var(--cream-border); color: var(--brown-light); font-size: 13px; font-family: var(--sans); border-radius: var(--radius-sm); padding: 10px 14px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.btn-clear:hover { border-color: var(--rose); color: var(--rose); }
+.btn-find { flex: 1; background: #b85c3a; color: #fff; font-weight: 600; font-size: 14px; font-family: var(--sans); border: none; border-radius: var(--radius-sm); padding: 12px 18px; cursor: pointer; transition: background 0.15s; }
+.btn-find:hover { background: #9a4d30; }
+.btn-find:disabled { opacity: 0.4; cursor: not-allowed; }
 
-/* Empty State */
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;text-align:center;gap:14px;}
-.empty-icon{font-size:44px;opacity:0.35;}
-.empty-state h2{font-family:var(–serif);font-size:1.6rem;font-weight:400;color:var(–brown);font-style:italic;}
-.empty-state p{font-size:13px;color:var(–brown-light);max-width:280px;line-height:1.7;}
-.empty-divider{display:flex;align-items:center;gap:12px;opacity:0.35;}
-.empty-divider-line{height:1px;width:40px;background:var(–brown-light);}
-.empty-divider-dot{width:4px;height:4px;border-radius:50%;background:var(–brown-light);}
+/* ── Results panel ───────────────────────────────── */
+.results-panel {
+  background: var(--cream);
+  border-top: 1px solid var(--cream-border);
+  padding: 1.25rem 1.25rem 6rem;
+}
+
+/* Empty state */
+.empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 1rem; text-align: center; gap: 12px; }
+.empty-icon { font-size: 40px; opacity: 0.35; }
+.empty-state h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 400; color: var(--brown); font-style: italic; }
+.empty-state p { font-size: 13px; color: var(--brown-light); max-width: 260px; line-height: 1.7; }
+.empty-divider { display: flex; align-items: center; gap: 10px; opacity: 0.3; }
+.empty-divider-line { height: 1px; width: 32px; background: var(--brown-light); }
+.empty-divider-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--brown-light); }
 
 /* Loading */
-.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;gap:28px;}
-.loading-label{font-family:var(–serif);font-size:1.1rem;font-style:italic;color:var(–brown-mid);}
-.loading-dots{display:flex;gap:6px;}
-.loading-dot{width:5px;height:5px;border-radius:50%;background:#b85c3a;animation:ldot 1.2s ease-in-out infinite;opacity:0.3;}
-.loading-dot:nth-child(2){animation-delay:0.2s;}.loading-dot:nth-child(3){animation-delay:0.4s;}
-@keyframes ldot{0%,80%,100%{opacity:0.2;transform:scale(0.8);}40%{opacity:1;transform:scale(1);}}
+.loading { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 3rem 1rem; gap: 24px; }
+.loading-label { font-family: var(--serif); font-size: 1rem; font-style: italic; color: var(--brown-mid); }
+.loading-dots { display: flex; gap: 6px; }
+.loading-dot { width: 5px; height: 5px; border-radius: 50%; background: #b85c3a; animation: ldot 1.2s ease-in-out infinite; opacity: 0.3; }
+.loading-dot:nth-child(2) { animation-delay: 0.2s; } .loading-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes ldot { 0%,80%,100%{opacity:0.2;transform:scale(0.8);} 40%{opacity:1;transform:scale(1);} }
 
-/* Results */
-.results-header{margin-bottom:1.75rem;padding-bottom:1rem;border-bottom:1px solid var(–cream-border);display:flex;align-items:baseline;justify-content:space-between;gap:1rem;}
-.results-header h2{font-family:var(–serif);font-size:1.7rem;font-weight:400;color:var(–brown);font-style:italic;}
-.results-meta{font-size:12px;color:var(–brown-light);white-space:nowrap;}
-.active-prefs-bar{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1.25rem;}
-.active-pref-tag{background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:20px;font-size:11px;color:var(–brown-mid);padding:2px 10px;}
-.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.25rem;margin-bottom:2rem;}
+/* Results header */
+.results-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--cream-border); }
+.results-header h2 { font-family: var(--serif); font-size: 1.4rem; font-weight: 400; color: var(--brown); font-style: italic; }
+.results-meta { font-size: 12px; color: var(--brown-light); }
+.pref-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 1rem; }
+.pref-tag { background: var(--cream-dark); border: 1px solid var(--cream-border); border-radius: 20px; font-size: 11px; color: var(--brown-mid); padding: 2px 10px; }
 
-/* Recipe Card */
-.recipe-card{background:#fff;border:1px solid var(–cream-border);border-radius:var(–radius);cursor:pointer;transition:border-color 0.2s,transform 0.15s,box-shadow 0.2s;overflow:hidden;display:flex;flex-direction:column;}
-.recipe-card:hover{border-color:var(–terra);transform:translateY(-2px);box-shadow:0 8px 24px rgba(44,26,14,0.08);}
-.recipe-card.active{border-color:var(–terra);border-width:2px;box-shadow:0 8px 24px rgba(184,92,58,0.12);}
-.card-icon-bar{background:var(–cream-dark);padding:1.1rem 1.25rem 0.75rem;border-bottom:1px solid var(–cream-mid);display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
-.card-emoji{font-size:28px;line-height:1;}
-.card-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
-.card-difficulty{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;padding:2px 8px;border-radius:20px;}
-.diff-easy{background:var(–sage-dim);color:var(–sage);border:1px solid rgba(74,124,89,0.2);}
-.diff-medium{background:var(–terra-dim);color:var(–terra);border:1px solid rgba(184,92,58,0.2);}
-.diff-hard{background:var(–rose-dim);color:var(–rose);border:1px solid rgba(184,74,74,0.2);}
-.card-kid-badge{font-size:10px;padding:2px 8px;border-radius:20px;background:var(–amber-dim);color:var(–amber);border:1px solid rgba(138,106,26,0.2);}
-.card-body{padding:1rem 1.25rem 0.85rem;flex:1;}
-.card-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:5px;}
-.card-title{font-family:var(–serif);font-size:1.05rem;font-weight:600;color:var(–brown);line-height:1.3;flex:1;}
-.card-desc{font-size:12px;color:var(–brown-light);line-height:1.6;margin-bottom:12px;}
-.card-meta{display:flex;gap:10px;flex-wrap:wrap;}
-.meta-pill{display:flex;align-items:center;gap:4px;font-size:11.5px;color:var(–brown-mid);}
-.meta-icon{font-size:11px;}
-.match-bar{padding:0.65rem 1.25rem;background:var(–cream-dark);border-top:1px solid var(–cream-mid);}
-.match-label{font-size:10.5px;color:var(–brown-light);display:flex;justify-content:space-between;margin-bottom:5px;}
-.match-track{background:var(–cream-mid);border-radius:4px;height:3px;overflow:hidden;}
-.match-fill{height:100%;background:var(–terra);border-radius:4px;transition:width 0.4s ease;}
+/* Recipe cards */
+.recipe-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 1.5rem; }
+.recipe-card { background: #fff; border: 1px solid var(--cream-border); border-radius: var(--radius); cursor: pointer; overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
+.recipe-card:active { border-color: var(--terra); }
+.recipe-card.active { border-color: var(--terra); border-width: 2px; box-shadow: 0 4px 16px rgba(184,92,58,0.12); }
+.card-body { padding: 1rem 1.125rem 0.85rem; }
+.card-title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.card-title { font-family: var(--serif); font-size: 1rem; font-weight: 600; color: var(--brown); line-height: 1.3; flex: 1; }
+.card-badges { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; }
+.card-difficulty { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; padding: 2px 8px; border-radius: 20px; }
+.diff-easy { background: var(--sage-dim); color: var(--sage); border: 1px solid rgba(74,124,89,0.2); }
+.diff-medium { background: var(--terra-dim); color: var(--terra); border: 1px solid rgba(184,92,58,0.2); }
+.diff-hard { background: var(--rose-dim); color: var(--rose); border: 1px solid rgba(184,74,74,0.2); }
+.card-kid-badge { font-size: 10px; padding: 2px 8px; border-radius: 20px; background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(138,106,26,0.2); }
+.card-desc { font-size: 12px; color: var(--brown-light); line-height: 1.55; margin-bottom: 10px; }
+.card-source { font-size: 11px; color: var(--sage); margin-bottom: 8px; }
+.card-source a { color: var(--sage); text-decoration: underline; }
+.card-meta { display: flex; gap: 10px; flex-wrap: wrap; }
+.meta-pill { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--brown-mid); }
+.card-nutrition { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid var(--cream-mid); background: var(--cream-dark); }
+.card-nutr-item { display: flex; flex-direction: column; align-items: center; padding: 8px 4px; border-right: 1px solid var(--cream-mid); }
+.card-nutr-item:last-child { border-right: none; }
+.card-nutr-val { font-size: 14px; font-weight: 600; color: var(--brown); }
+.card-nutr-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--brown-light); margin-top: 1px; }
+.match-bar { padding: 0.6rem 1.125rem; background: var(--cream-dark); border-top: 1px solid var(--cream-mid); }
+.match-label { font-size: 11px; color: var(--brown-light); display: flex; justify-content: space-between; margin-bottom: 5px; }
+.match-track { background: var(--cream-mid); border-radius: 4px; height: 3px; overflow: hidden; }
+.match-fill { height: 100%; background: #b85c3a; border-radius: 4px; transition: width 0.4s ease; }
 
-/* Nutrition mini bar on card */
-.card-nutrition{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(–cream-mid);background:var(–cream);}
-.card-nutr-item{display:flex;flex-direction:column;align-items:center;padding:7px 4px;border-right:1px solid var(–cream-mid);}
-.card-nutr-item:last-child{border-right:none;}
-.card-nutr-val{font-size:13px;font-weight:600;color:var(–brown);line-height:1;}
-.card-nutr-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.07em;color:var(–brown-light);margin-top:2px;}
+/* Recipe detail */
+.detail-panel { background: #fff; border: 1px solid var(--cream-border); border-radius: var(--radius); margin-top: 12px; overflow: hidden; animation: fadeUp 0.2s ease; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+.detail-header { padding: 1.25rem 1.25rem 1rem; border-bottom: 1px solid var(--cream-border); background: var(--cream-dark); display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; }
+.detail-title { font-family: var(--serif); font-size: 1.4rem; font-weight: 400; color: var(--brown); line-height: 1.2; }
+.detail-desc { font-size: 12px; color: var(--brown-light); margin-top: 4px; font-style: italic; line-height: 1.55; }
+.detail-source { font-size: 12px; color: var(--sage); margin-top: 5px; }
+.detail-source a { color: var(--sage); font-weight: 500; text-decoration: underline; }
+.detail-pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+.detail-pill { font-size: 11px; color: var(--brown-mid); background: var(--cream); border: 1px solid var(--cream-border); border-radius: 20px; padding: 3px 9px; }
+.close-btn { background: transparent; border: 1px solid var(--cream-border); border-radius: 50%; color: var(--brown-light); font-size: 18px; width: 34px; height: 34px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 0; line-height: 1; transition: all 0.15s; }
+.close-btn:hover { border-color: var(--rose); color: var(--rose); }
 
-/* Serving adjuster */
-.servings-adjuster{display:flex;align-items:center;gap:0;border:1px solid var(–cream-border);border-radius:var(–radius-sm);overflow:hidden;background:var(–cream);}
-.serv-btn{background:transparent;border:none;color:var(–terra);font-size:16px;width:30px;height:30px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.15s;padding:0;line-height:1;flex-shrink:0;}
-.serv-btn:hover{background:var(–terra-dim);}
-.serv-count{font-size:13px;font-weight:600;color:var(–brown);min-width:28px;text-align:center;border-left:1px solid var(–cream-border);border-right:1px solid var(–cream-border);height:30px;line-height:30px;}
-.servings-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;font-size:12px;color:var(–brown-light);padding-bottom:10px;border-bottom:1px solid var(–cream-mid);}
-.servings-note{font-size:10px;color:var(–brown-dim);font-style:italic;}
+/* Detail body - single col on mobile, two col on desktop */
+.detail-body { display: flex; flex-direction: column; }
+.detail-section { padding: 1.125rem 1.25rem; border-bottom: 1px solid var(--cream-border); }
+.detail-section:last-child { border-bottom: none; }
+.section-title { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--brown-light); margin-bottom: 0.85rem; display: flex; align-items: center; gap: 8px; }
+.section-title::after { content: ''; flex: 1; height: 1px; background: var(--cream-border); }
 
-/* Full nutrition facts */
-.nutr-section{border-top:1px solid var(–cream-border);background:var(–cream-dark);}
-.nutr-toggle{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 2rem;cursor:pointer;user-select:none;transition:background 0.15s;}
-.nutr-toggle:hover{background:var(–cream-mid);}
-.nutr-toggle-label{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(–brown-light);display:flex;align-items:center;gap:8px;}
-.nutr-toggle-label::after{content:’’;width:40px;height:1px;background:var(–cream-border);}
-.nutr-toggle-arrow{font-size:12px;color:var(–brown-light);transition:transform 0.2s;}
-.nutr-toggle-arrow.open{transform:rotate(180deg);}
-.nutr-facts{display:none;padding:0 2rem 1.5rem;}
-.nutr-facts.open{display:block;}
-.nutr-facts-inner{background:#fff;border:1px solid var(–cream-border);border-radius:var(–radius-sm);overflow:hidden;}
-.nutr-header{background:var(–brown);padding:0.75rem 1rem;}
-.nutr-header-title{font-family:var(–serif);font-size:1.1rem;color:var(–cream);}
-.nutr-header-sub{font-size:11px;color:var(–brown-dim);margin-top:2px;}
-.nutr-calories-row{display:flex;align-items:baseline;justify-content:space-between;padding:0.6rem 1rem;border-bottom:3px solid var(–brown);}
-.nutr-cal-label{font-size:12px;font-weight:600;color:var(–brown);}
-.nutr-cal-val{font-size:2rem;font-weight:700;color:var(–brown);line-height:1;font-family:var(–serif);}
-.nutr-dv-note{font-size:9px;color:var(–brown-light);text-align:right;padding:4px 1rem;border-bottom:1px solid var(–cream-border);}
-.nutr-row{display:flex;align-items:center;justify-content:space-between;padding:5px 1rem;border-bottom:1px solid var(–cream-mid);font-size:12px;}
-.nutr-row:last-child{border-bottom:none;}
-.nutr-row.sub{padding-left:1.75rem;}
-.nutr-row.thick{border-bottom:4px solid var(–brown-mid);}
-.nutr-row-name{color:var(–brown-mid);}
-.nutr-row-name b{color:var(–brown);font-weight:600;}
-.nutr-row-val{color:var(–brown);font-weight:500;white-space:nowrap;}
-.nutr-macros-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:1rem;}
-.nutr-macro{text-align:center;padding:8px 4px;background:var(–cream-dark);border-radius:var(–radius-sm);}
-.nutr-macro-val{font-size:1.1rem;font-weight:600;color:var(–brown);font-family:var(–serif);}
-.nutr-macro-lbl{font-size:9.5px;text-transform:uppercase;letter-spacing:0.06em;color:var(–brown-light);margin-top:2px;}
-.nutr-macro-bar{height:3px;border-radius:2px;margin-top:5px;background:var(–cream-border);}
-.nutr-macro-bar-fill{height:100%;border-radius:2px;}
+/* Servings adjuster */
+.servings-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 13px; color: var(--brown-light); padding-bottom: 10px; border-bottom: 1px solid var(--cream-mid); }
+.servings-adjuster { display: flex; align-items: center; border: 1px solid var(--cream-border); border-radius: var(--radius-sm); overflow: hidden; }
+.serv-btn { background: transparent; border: none; color: #b85c3a; font-size: 18px; width: 36px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; padding: 0; flex-shrink: 0; }
+.serv-btn:active { background: var(--terra-dim); }
+.serv-count { font-size: 14px; font-weight: 600; color: var(--brown); min-width: 32px; text-align: center; border-left: 1px solid var(--cream-border); border-right: 1px solid var(--cream-border); height: 36px; line-height: 36px; }
+.servings-note { font-size: 10px; color: var(--brown-dim); font-style: italic; }
 
-/* Detail Panel */
-.detail-panel{background:#fff;border:1px solid var(–cream-border);border-radius:var(–radius);margin-top:1.5rem;overflow:hidden;animation:fadeUp 0.25s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.detail-header{padding:1.75rem 2rem 1.5rem;border-bottom:1px solid var(–cream-border);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;background:var(–cream-dark);}
-.detail-header-left{display:flex;gap:1rem;align-items:flex-start;}
-.detail-emoji{font-size:36px;line-height:1;margin-top:4px;}
-.detail-title{font-family:var(–serif);font-size:1.75rem;font-weight:400;color:var(–brown);line-height:1.2;}
-.detail-desc{font-size:13px;color:var(–brown-light);margin-top:5px;font-style:italic;line-height:1.6;}
-.detail-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
-.detail-pill{font-size:11px;color:var(–brown-mid);background:var(–cream);border:1px solid var(–cream-border);border-radius:20px;padding:3px 10px;display:flex;align-items:center;gap:4px;}
-.close-btn{background:transparent;border:1px solid var(–cream-border);border-radius:50%;color:var(–brown-light);font-size:18px;width:32px;height:32px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.15s;padding:0;line-height:1;margin-top:4px;}
-.close-btn:hover{border-color:var(–rose);color:var(–rose);background:var(–rose-dim);}
-.detail-body{display:grid;grid-template-columns:1fr 1fr;}
-.detail-section{padding:1.5rem 2rem;}
-.detail-section+.detail-section{border-left:1px solid var(–cream-border);}
-.section-title{font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:0.12em;color:var(–brown-light);margin-bottom:1rem;display:flex;align-items:center;gap:8px;}
-.section-title::after{content:’’;flex:1;height:1px;background:var(–cream-border);}
-.servings-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:12px;color:var(–brown-light);padding-bottom:10px;border-bottom:1px solid var(–cream-mid);}
-.servings-row input{width:48px;text-align:center;background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:4px;color:var(–brown);padding:3px;font-size:13px;outline:none;font-family:var(–sans);}
-
-/* Ingredient Rows with Swap */
-.ing-row{display:flex;align-items:center;padding:6px 0;font-size:13px;border-bottom:1px solid var(–cream-mid);gap:8px;flex-wrap:wrap;}
-.ing-row:last-child{border-bottom:none;}
-.ing-status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-.have{background:var(–sage);}
-.need{background:var(–rose);}
-.ing-name{color:var(–brown);flex:1;}
-.ing-name .subbed{text-decoration:line-through;color:var(–brown-light);font-size:11px;}
-.ing-name .sub-val{color:var(–terra);font-weight:500;margin-left:4px;}
-.ing-qty{color:var(–brown-light);font-size:12px;white-space:nowrap;}
-.ing-swap-btn{background:transparent;border:1px solid var(–cream-border);border-radius:20px;color:var(–brown-light);font-size:10px;padding:2px 7px;cursor:pointer;transition:all 0.15s;font-family:var(–sans);white-space:nowrap;flex-shrink:0;}
-.ing-swap-btn:hover{border-color:var(–terra);color:var(–terra);background:var(–terra-dim);}
-.ing-swap-btn.active{border-color:var(–terra);color:var(–terra);background:var(–terra-dim);}
-
-/* Inline swap panel inside detail */
-.ing-swap-panel{width:100%;background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:var(–radius-sm);padding:10px 12px;margin:4px 0 8px 14px;display:none;}
-.ing-swap-panel.open{display:block;}
-.ing-swap-panel-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(–brown-light);margin-bottom:7px;}
-.ing-swap-loading{font-size:11px;color:var(–brown-light);font-style:italic;display:none;align-items:center;gap:5px;}
-.ing-swap-loading.visible{display:flex;}
-.ing-swap-options{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:7px;}
-.ing-swap-option{background:var(–cream);border:1px solid var(–cream-border);border-radius:20px;color:var(–brown-mid);font-size:11px;padding:2px 9px;cursor:pointer;transition:all 0.15s;font-family:var(–sans);}
-.ing-swap-option:hover{background:var(–terra-dim2);border-color:rgba(184,92,58,0.4);color:var(–terra);}
-.ing-swap-manual{display:flex;gap:5px;}
-.ing-swap-manual-input{flex:1;background:var(–cream);border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown);font-size:11px;font-family:var(–sans);padding:4px 8px;outline:none;transition:border-color 0.2s;}
-.ing-swap-manual-input:focus{border-color:var(–terra);}
-.ing-swap-manual-input::placeholder{color:var(–brown-dim);}
-.ing-swap-use{background:#b85c3a;border:none;border-radius:var(–radius-sm);color:#fff;font-size:11px;font-family:var(–sans);padding:4px 9px;cursor:pointer;white-space:nowrap;transition:background 0.15s;}
-.ing-swap-use:hover{background:#cd7a5a;}
-.ing-swap-clear{background:transparent;border:1px solid var(–cream-border);border-radius:var(–radius-sm);color:var(–brown-light);font-size:11px;font-family:var(–sans);padding:4px 8px;cursor:pointer;transition:all 0.15s;}
-.ing-swap-clear:hover{border-color:var(–rose);color:var(–rose);}
+/* Ingredient rows */
+.ing-row { display: flex; align-items: center; padding: 7px 0; font-size: 13px; border-bottom: 1px solid var(--cream-mid); gap: 8px; flex-wrap: wrap; }
+.ing-row:last-child { border-bottom: none; }
+.ing-status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.have { background: var(--sage); } .need { background: var(--rose); }
+.ing-name { color: var(--brown); flex: 1; }
+.ing-name .subbed { text-decoration: line-through; color: var(--brown-light); font-size: 11px; }
+.ing-name .sub-val { color: var(--terra); font-weight: 500; margin-left: 4px; }
+.ing-qty { color: var(--brown-light); font-size: 12px; white-space: nowrap; }
+.ing-swap-btn { background: transparent; border: 1px solid var(--cream-border); border-radius: 20px; color: var(--brown-light); font-size: 10px; padding: 3px 8px; cursor: pointer; transition: all 0.15s; font-family: var(--sans); white-space: nowrap; flex-shrink: 0; min-height: 28px; }
+.ing-swap-btn:active { border-color: var(--terra); color: var(--terra); background: var(--terra-dim); }
+.ing-swap-btn.active { border-color: var(--terra); color: var(--terra); background: var(--terra-dim); }
+.ing-swap-panel { width: 100%; background: var(--cream-dark); border: 1px solid var(--cream-border); border-radius: var(--radius-sm); padding: 10px 12px; margin: 4px 0 6px 14px; display: none; }
+.ing-swap-panel.open { display: block; }
+.ing-swap-panel-title { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brown-light); margin-bottom: 7px; }
+.ing-swap-loading { display: none; align-items: center; gap: 5px; font-size: 11px; color: var(--brown-light); font-style: italic; }
+.ing-swap-loading.visible { display: flex; }
+.ing-swap-options { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 7px; }
+.ing-swap-option { background: var(--cream); border: 1px solid var(--cream-border); border-radius: 20px; color: var(--brown-mid); font-size: 11px; padding: 3px 10px; cursor: pointer; transition: all 0.15s; font-family: var(--sans); }
+.ing-swap-option:active { background: var(--terra-dim2); border-color: rgba(184,92,58,0.4); color: var(--terra); }
+.ing-swap-manual { display: flex; gap: 5px; }
+.ing-swap-manual-input { flex: 1; background: var(--cream); border: 1px solid var(--cream-border); border-radius: var(--radius-sm); color: var(--brown); font-size: 12px; font-family: var(--sans); padding: 6px 9px; outline: none; }
+.ing-swap-manual-input:focus { border-color: var(--terra); }
+.ing-swap-manual-input::placeholder { color: var(--brown-dim); }
+.ing-swap-use { background: #b85c3a; border: none; border-radius: var(--radius-sm); color: #fff; font-size: 11px; font-family: var(--sans); padding: 6px 10px; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+.ing-swap-use:active { background: #9a4d30; }
+.ing-swap-clear { background: transparent; border: 1px solid var(--cream-border); border-radius: var(--radius-sm); color: var(--brown-light); font-size: 11px; font-family: var(--sans); padding: 6px 9px; cursor: pointer; }
 
 /* Steps */
-.step-list{list-style:none;counter-reset:steps;}
-.step-list li{counter-increment:steps;display:flex;gap:12px;margin-bottom:12px;font-size:13px;line-height:1.65;color:var(–brown);}
-.step-list li::before{content:counter(steps);background:var(–terra-dim);border:1px solid rgba(184,92,58,0.2);color:var(–terra);border-radius:50%;min-width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;margin-top:1px;flex-shrink:0;font-family:var(–sans);}
+.step-list { list-style: none; counter-reset: steps; }
+.step-list li { counter-increment: steps; display: flex; gap: 12px; margin-bottom: 12px; font-size: 13px; line-height: 1.65; color: var(--brown); }
+.step-list li::before { content: counter(steps); background: var(--terra-dim); border: 1px solid rgba(184,92,58,0.2); color: var(--terra); border-radius: 50%; min-width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; margin-top: 1px; flex-shrink: 0; font-family: var(--sans); }
 
-/* Shop Section */
-.shop-section{padding:1.25rem 2rem 1.5rem;border-top:1px solid var(–cream-border);background:var(–cream-dark);}
-.shop-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
-.shop-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:6px;}
-.shop-item{background:var(–cream);border:1px solid var(–cream-border);border-radius:var(–radius-sm);padding:7px 11px;font-size:12.5px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all 0.15s;color:var(–brown-mid);}
-.shop-item:hover{border-color:var(–terra);background:var(–terra-dim);}
-.shop-item.checked{opacity:0.45;text-decoration:line-through;}
-.check-box{width:15px;height:15px;border:1.5px solid var(–cream-border);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all 0.15s;}
-.shop-item:hover .check-box{border-color:var(–terra);}
-.shop-item.checked .check-box{background:var(–sage);border-color:var(–sage);color:#fff;}
-.all-good{padding:0.85rem 1rem;background:var(–sage-dim);border:1px solid rgba(74,124,89,0.2);border-radius:var(–radius-sm);color:var(–sage);font-size:13px;display:flex;align-items:center;gap:8px;}
-.print-btn{background:transparent;border:1px solid var(–cream-border);color:var(–brown-light);font-size:12px;font-family:var(–sans);border-radius:var(–radius-sm);padding:5px 12px;cursor:pointer;transition:all 0.15s;}
-.print-btn:hover{border-color:var(–terra);color:var(–terra);}
-.error-msg{background:var(–rose-dim);border:1px solid rgba(184,74,74,0.2);border-radius:var(–radius-sm);padding:1rem 1.25rem;color:var(–rose);font-size:13px;margin-bottom:1rem;}
+/* Shopping list */
+.shop-section { padding: 1rem 1.25rem 1.25rem; border-top: 1px solid var(--cream-border); background: var(--cream-dark); }
+.shop-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.85rem; }
+.shop-items { display: flex; flex-direction: column; gap: 5px; }
+.shop-item { background: var(--cream); border: 1px solid var(--cream-border); border-radius: var(--radius-sm); padding: 10px 12px; font-size: 13px; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.15s; color: var(--brown-mid); min-height: 44px; }
+.shop-item:active { border-color: var(--terra); background: var(--terra-dim); }
+.shop-item.checked { opacity: 0.45; text-decoration: line-through; }
+.check-box { width: 18px; height: 18px; border: 1.5px solid var(--cream-border); border-radius: 5px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; transition: all 0.15s; }
+.shop-item.checked .check-box { background: var(--sage); border-color: var(--sage); color: #fff; }
+.all-good { padding: 0.85rem 1rem; background: var(--sage-dim); border: 1px solid rgba(74,124,89,0.2); border-radius: var(--radius-sm); color: var(--sage); font-size: 13px; display: flex; align-items: center; gap: 8px; }
+.print-btn { background: transparent; border: 1px solid var(--cream-border); color: var(--brown-light); font-size: 12px; font-family: var(--sans); border-radius: var(--radius-sm); padding: 6px 12px; cursor: pointer; transition: all 0.15s; }
+.print-btn:active { border-color: var(--terra); color: var(--terra); }
 
-@media print{.api-bar,.hero,.left-panel,.recipe-grid,.results-header,.print-btn,.close-btn{display:none!important;}.app{display:block;}.right-panel{padding:0;}.detail-panel{border:none;}body{background:#fff;color:#000;}}
-@media(max-width:800px){.app{grid-template-columns:1fr;}.left-panel{max-height:none;position:relative;overflow:visible;display:block;}.ingredients-list{overflow-y:visible;max-height:none;flex:none;display:block;}.action-bar{position:relative;}.hero-title{font-size:2rem;}.right-panel{padding:1.25rem 1.25rem 6rem;}.detail-body{grid-template-columns:1fr;}.detail-section+.detail-section{border-left:none;border-top:1px solid var(–cream-border);}}
+/* Nutrition */
+.nutr-section { border-top: 1px solid var(--cream-border); background: var(--cream-dark); }
+.nutr-toggle { display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1.25rem; cursor: pointer; }
+.nutr-toggle:active { background: var(--cream-mid); }
+.nutr-toggle-label { font-size: 9.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--brown-light); display: flex; align-items: center; gap: 8px; }
+.nutr-toggle-label::after { content: ''; width: 32px; height: 1px; background: var(--cream-border); }
+.nutr-toggle-arrow { font-size: 12px; color: var(--brown-light); transition: transform 0.2s; }
+.nutr-toggle-arrow.open { transform: rotate(180deg); }
+.nutr-facts { display: none; padding: 0 1.25rem 1.25rem; }
+.nutr-facts.open { display: block; }
+.nutr-facts-inner { background: #fff; border: 1px solid var(--cream-border); border-radius: var(--radius-sm); overflow: hidden; }
+.nutr-header { background: var(--brown); padding: 0.75rem 1rem; }
+.nutr-header-title { font-family: var(--serif); font-size: 1.05rem; color: var(--cream); }
+.nutr-header-sub { font-size: 11px; color: var(--brown-dim); margin-top: 2px; }
+.nutr-calories-row { display: flex; align-items: baseline; justify-content: space-between; padding: 0.6rem 1rem; border-bottom: 3px solid var(--brown); }
+.nutr-cal-label { font-size: 13px; font-weight: 600; color: var(--brown); }
+.nutr-cal-val { font-size: 1.9rem; font-weight: 700; color: var(--brown); font-family: var(--serif); }
+.nutr-dv-note { font-size: 9px; color: var(--brown-light); text-align: right; padding: 4px 1rem; border-bottom: 1px solid var(--cream-border); }
+.nutr-macros-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; padding: 0.85rem; }
+.nutr-macro { text-align: center; padding: 7px 4px; background: var(--cream-dark); border-radius: var(--radius-sm); }
+.nutr-macro-val { font-size: 1rem; font-weight: 600; color: var(--brown); font-family: var(--serif); }
+.nutr-macro-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--brown-light); margin-top: 2px; }
+.nutr-macro-bar { height: 3px; border-radius: 2px; margin-top: 5px; background: var(--cream-border); }
+.nutr-macro-bar-fill { height: 100%; border-radius: 2px; }
+.nutr-row { display: flex; align-items: center; justify-content: space-between; padding: 5px 1rem; border-bottom: 1px solid var(--cream-mid); font-size: 12px; }
+.nutr-row:last-child { border-bottom: none; }
+.nutr-row.sub { padding-left: 1.75rem; }
+.nutr-row.thick { border-bottom: 4px solid var(--brown-mid); }
+.nutr-row-name { color: var(--brown-mid); } .nutr-row-name b { color: var(--brown); font-weight: 600; }
+.nutr-row-val { color: var(--brown); font-weight: 500; white-space: nowrap; }
+
+/* Floating action button */
+.fab-wrap { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 300; pointer-events: none; }
+.fab { background: #b85c3a; color: #fff; font-family: var(--sans); font-size: 15px; font-weight: 600; border: none; border-radius: 50px; padding: 14px 28px; cursor: pointer; pointer-events: all; box-shadow: 0 4px 20px rgba(184,92,58,0.45); display: flex; align-items: center; gap: 10px; white-space: nowrap; opacity: 0; transform: translateY(16px); transition: opacity 0.25s ease, transform 0.25s ease; }
+.fab.visible { opacity: 1; transform: translateY(0); }
+.fab:active { background: #9a4d30; }
+.fab-count { background: rgba(255,255,255,0.3); border-radius: 20px; font-size: 12px; font-weight: 700; padding: 2px 9px; }
+
+/* Error */
+.error-msg { background: var(--rose-dim); border: 1px solid rgba(184,74,74,0.2); border-radius: var(--radius-sm); padding: 1rem 1.25rem; color: var(--rose); font-size: 13px; margin-bottom: 1rem; }
+
+/* ── Desktop layout (≥640px) ────────────────────── */
+@media (min-width: 640px) {
+  .hero { padding: 2.25rem 2rem 1.75rem; }
+  .hero-title { font-size: 2.4rem; }
+
+  .app-layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .ingredient-panel {
+    width: 340px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--cream-border);
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+  .ingredient-panel::-webkit-scrollbar { width: 4px; }
+  .ingredient-panel::-webkit-scrollbar-thumb { background: var(--cream-border); border-radius: 4px; }
+
+  .results-panel {
+    flex: 1;
+    border-top: none;
+    border-left: none;
+    padding: 1.5rem 2rem 6rem;
+    min-height: 100vh;
+  }
+
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .detail-body {
+    flex-direction: row;
+  }
+  .detail-section { border-bottom: none; flex: 1; }
+  .detail-section + .detail-section { border-left: 1px solid var(--cream-border); }
+
+  .shop-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 6px;
+  }
+
+  .ing-btn:hover { border-color: var(--terra); color: var(--brown); background: var(--terra-dim); }
+  .sub-option:hover { background: var(--terra-dim2); border-color: rgba(184,92,58,0.4); color: var(--terra); }
+  .ing-swap-option:hover { background: var(--terra-dim2); border-color: rgba(184,92,58,0.4); color: var(--terra); }
+  .shop-item:hover { border-color: var(--terra); background: var(--terra-dim); }
+  .recipe-card:hover { border-color: var(--terra); box-shadow: 0 4px 16px rgba(44,26,14,0.08); }
+  .time-pill:hover { border-color: var(--terra); color: var(--terra); }
+  .diet-pill:hover { border-color: var(--sage); color: var(--sage); }
+}
+
+/* ── Print ───────────────────────────────────────── */
+@media print {
+  .api-bar, .hero, .ingredient-panel, .recipe-grid, .results-header, .print-btn, .close-btn, .fab-wrap { display: none !important; }
+  .results-panel { padding: 0; border: none; }
+  .detail-panel { border: none; }
+  body { background: #fff; color: #000; }
+}
 </style>
-
 </head>
 <body>
+<div class="page">
 
-<div class="api-bar">
-  <label for="apiKey">Anthropic API key</label>
-  <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off"/>
-  <span class="api-status" id="apiStatus">not set</span>
-</div>
-
-<header class="hero">
-  <svg class="hero-botanical" viewBox="0 0 1200 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-    <g fill="none" stroke="#c2a06a" stroke-width="1.2">
-      <path d="M20,140 Q40,80 60,100 Q80,120 100,60 Q120,20 140,80"/><path d="M60,100 Q70,70 80,90"/><path d="M80,90 Q90,65 100,60"/>
-      <ellipse cx="52" cy="88" rx="14" ry="8" transform="rotate(-30,52,88)"/><ellipse cx="72" cy="72" rx="12" ry="7" transform="rotate(20,72,72)"/><ellipse cx="98" cy="58" rx="13" ry="7" transform="rotate(-15,98,58)"/>
-      <path d="M1060,150 Q1080,90 1100,110 Q1120,130 1140,70 Q1155,30 1170,90"/><path d="M1100,110 Q1110,80 1120,95"/><path d="M1120,95 Q1130,68 1140,70"/>
-      <ellipse cx="1092" cy="98" rx="14" ry="8" transform="rotate(-30,1092,98)"/><ellipse cx="1112" cy="82" rx="12" ry="7" transform="rotate(20,1112,82)"/><ellipse cx="1138" cy="68" rx="13" ry="7" transform="rotate(-15,1138,68)"/>
-      <path d="M200,155 Q210,120 220,135 Q230,150 245,115"/><ellipse cx="215" cy="125" rx="10" ry="6" transform="rotate(25,215,125)"/><ellipse cx="240" cy="112" rx="10" ry="5" transform="rotate(-20,240,112)"/>
-      <path d="M950,155 Q960,120 970,135 Q980,150 995,115"/><ellipse cx="965" cy="125" rx="10" ry="6" transform="rotate(25,965,125)"/><ellipse cx="990" cy="112" rx="10" ry="5" transform="rotate(-20,990,112)"/>
-      <circle cx="160" cy="90" r="3"/><circle cx="175" cy="70" r="2"/><circle cx="185" cy="100" r="2.5"/>
-      <circle cx="1020" cy="85" r="3"/><circle cx="1035" cy="65" r="2"/><circle cx="1045" cy="95" r="2.5"/>
-      <path d="M300,160 Q310,130 325,145 Q335,155 350,125 Q360,105 375,130"/><ellipse cx="318" cy="138" rx="11" ry="6" transform="rotate(-20,318,138)"/><ellipse cx="348" cy="122" rx="11" ry="6" transform="rotate(15,348,122)"/>
-      <path d="M820,160 Q830,130 845,145 Q855,155 870,125 Q880,105 895,130"/><ellipse cx="838" cy="138" rx="11" ry="6" transform="rotate(-20,838,138)"/><ellipse cx="868" cy="122" rx="11" ry="6" transform="rotate(15,868,122)"/>
-    </g>
-  </svg>
-  <div class="hero-eyebrow">From your kitchen</div>
-  <h1 class="hero-title">What shall we <em>cook</em> tonight?</h1>
-  <p class="hero-sub">Tell us what's in your pantry &mdash; we'll find the perfect recipe</p>
-  <div class="hero-divider"><div class="hero-divider-line"></div><div class="hero-divider-icon">&#10022;</div><div class="hero-divider-line"></div></div>
-</header>
-
-<div class="app">
-  <aside class="left-panel">
-
-```
-<!-- Chat -->
-<div class="chat-box">
-  <div class="chat-label">Tell us what you have&hellip;</div>
-  <div class="chat-input-row">
-    <textarea class="chat-textarea" id="chatInput" placeholder="e.g. &quot;I have leftover chicken, garlic, heavy cream and spinach&quot;" rows="3"></textarea>
-    <button class="chat-send" id="chatSendBtn" onclick="parseIngredients()" title="Detect ingredients">&#10148;</button>
+  <!-- API bar -->
+  <div class="api-bar">
+    <label for="apiKey">API key</label>
+    <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off"/>
+    <span class="api-status" id="apiStatus">not set</span>
   </div>
-  <div class="chat-thinking" id="chatThinking"><div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div><span>Detecting ingredients&hellip;</span></div>
-  <div class="chat-feedback" id="chatFeedback"></div>
-</div>
 
-<!-- Preferences -->
-<div class="prefs-section">
-  <div class="prefs-toggle" onclick="togglePrefs()">
-    <div class="prefs-toggle-label">
-      <span>Recipe Preferences</span>
-      <span class="prefs-active-dot" id="prefsActiveDot"></span>
-    </div>
-    <span class="prefs-arrow" id="prefsArrow">&#8964;</span>
-  </div>
-  <div class="prefs-body" id="prefsBody">
-    <div class="prefs-row">
-      <div class="prefs-row-label">Prep time</div>
-      <div class="time-pills" id="prepPills">
-        <span class="time-pill active" data-val="any" onclick="setTime('prep','any',this)">Any</span>
-        <span class="time-pill" data-val="<15" onclick="setTime('prep','&lt;15',this)">&lt;15 min</span>
-        <span class="time-pill" data-val="15-30" onclick="setTime('prep','15-30',this)">15–30 min</span>
-        <span class="time-pill" data-val="30-60" onclick="setTime('prep','30-60',this)">30–60 min</span>
-        <span class="time-pill" data-val="60+" onclick="setTime('prep','60+',this)">1 hr+</span>
+  <!-- Hero -->
+  <header class="hero">
+    <svg class="hero-botanical" viewBox="0 0 900 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="#c2a06a" stroke-width="1">
+        <path d="M10,110 Q25,65 40,80 Q55,95 70,45 Q85,15 100,65"/><path d="M40,80 Q47,58 54,70"/><path d="M54,70 Q62,48 70,45"/>
+        <ellipse cx="36" cy="72" rx="10" ry="6" transform="rotate(-30,36,72)"/><ellipse cx="51" cy="58" rx="9" ry="5" transform="rotate(20,51,58)"/><ellipse cx="68" cy="43" rx="9" ry="5" transform="rotate(-15,68,43)"/>
+        <path d="M790,115 Q805,70 820,85 Q835,100 850,50 Q862,18 875,68"/>
+        <ellipse cx="816" cy="77" rx="10" ry="6" transform="rotate(-30,816,77)"/><ellipse cx="831" cy="63" rx="9" ry="5" transform="rotate(20,831,63)"/><ellipse cx="848" cy="48" rx="9" ry="5" transform="rotate(-15,848,48)"/>
+        <circle cx="120" cy="72" r="2.5"/><circle cx="130" cy="55" r="1.8"/><circle cx="142" cy="78" r="2"/>
+        <circle cx="758" cy="68" r="2.5"/><circle cx="768" cy="52" r="1.8"/><circle cx="780" cy="74" r="2"/>
+      </g>
+    </svg>
+    <div class="hero-eyebrow">From your kitchen</div>
+    <h1 class="hero-title">What shall we <em>cook</em> tonight?</h1>
+    <p class="hero-sub">Tell us what's in your pantry — we'll find the perfect recipe</p>
+  </header>
+
+  <!-- Main -->
+  <div class="app-layout">
+
+    <!-- Ingredient Panel -->
+    <div class="ingredient-panel">
+
+      <!-- Chat -->
+      <div class="chat-box">
+        <div class="chat-label">Tell us what you have&hellip;</div>
+        <div class="chat-row">
+          <textarea class="chat-textarea" id="chatInput" placeholder='e.g. "I have leftover chicken, garlic, heavy cream and spinach"' rows="3"></textarea>
+          <button class="chat-send" id="chatSendBtn" onclick="parseIngredients()" title="Detect ingredients">&#10148;</button>
+        </div>
+        <div class="chat-thinking" id="chatThinking"><div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div><span>Detecting ingredients&hellip;</span></div>
+        <div class="chat-feedback" id="chatFeedback"></div>
+      </div>
+
+      <!-- Preferences -->
+      <div class="prefs-section">
+        <div class="prefs-toggle" onclick="togglePrefs()">
+          <div class="prefs-toggle-label">Recipe Preferences<span class="prefs-active-dot" id="prefsActiveDot"></span></div>
+          <span class="prefs-arrow" id="prefsArrow">&#8964;</span>
+        </div>
+        <div class="prefs-body" id="prefsBody">
+          <div class="prefs-row">
+            <div class="prefs-row-label">Prep time</div>
+            <div class="pill-row" id="prepPills">
+              <span class="time-pill active" onclick="setTime('prep','any',this)">Any</span>
+              <span class="time-pill" onclick="setTime('prep','&lt;15',this)">&lt;15 min</span>
+              <span class="time-pill" onclick="setTime('prep','15-30',this)">15–30 min</span>
+              <span class="time-pill" onclick="setTime('prep','30-60',this)">30–60 min</span>
+              <span class="time-pill" onclick="setTime('prep','60+',this)">1 hr+</span>
+            </div>
+          </div>
+          <div class="prefs-row">
+            <div class="prefs-row-label">Cook time</div>
+            <div class="pill-row" id="cookPills">
+              <span class="time-pill active" onclick="setTime('cook','any',this)">Any</span>
+              <span class="time-pill" onclick="setTime('cook','&lt;15',this)">&lt;15 min</span>
+              <span class="time-pill" onclick="setTime('cook','15-30',this)">15–30 min</span>
+              <span class="time-pill" onclick="setTime('cook','30-60',this)">30–60 min</span>
+              <span class="time-pill" onclick="setTime('cook','60+',this)">1 hr+</span>
+            </div>
+          </div>
+          <div class="prefs-row">
+            <div class="prefs-row-label">Kid friendly</div>
+            <div class="kid-row" onclick="toggleKidFriendly()">
+              <div class="toggle-track" id="kidTrack"><div class="toggle-thumb"></div></div>
+              <span class="kid-label" id="kidLabel">Off</span>
+            </div>
+          </div>
+          <div class="prefs-row">
+            <div class="prefs-row-label">Dietary restrictions</div>
+            <div class="pill-row">
+              <span class="diet-pill" onclick="toggleDiet('vegetarian',this)">Vegetarian</span>
+              <span class="diet-pill" onclick="toggleDiet('vegan',this)">Vegan</span>
+              <span class="diet-pill" onclick="toggleDiet('gluten-free',this)">Gluten-free</span>
+              <span class="diet-pill" onclick="toggleDiet('dairy-free',this)">Dairy-free</span>
+              <span class="diet-pill" onclick="toggleDiet('nut-free',this)">Nut-free</span>
+              <span class="diet-pill" onclick="toggleDiet('low-carb',this)">Low-carb</span>
+              <span class="diet-pill" onclick="toggleDiet('paleo',this)">Paleo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Browse -->
+      <div class="browse-section">
+        <div class="browse-label">Browse ingredients</div>
+        <input class="search-box" id="searchBox" placeholder="Filter ingredients..."/>
+        <div class="custom-row">
+          <input class="custom-input" id="customInput" placeholder="Add your own..." maxlength="60"/>
+          <button class="btn-add" onclick="addCustomIngredient()" title="Add">+</button>
+        </div>
+      </div>
+
+      <!-- Selected -->
+      <div class="selected-strip">
+        <div class="selected-strip-label">Selected &mdash; <span id="selCount">0</span> ingredients</div>
+        <div class="chips" id="chipsRow"></div>
+      </div>
+
+      <!-- Sub panel -->
+      <div class="sub-panel" id="subPanel">
+        <div class="sub-panel-header">
+          <div class="sub-panel-title">Swap <span id="subIngName"></span> for&hellip;</div>
+          <button class="sub-close" onclick="closeSubPanel()">&#215;</button>
+        </div>
+        <div class="sub-loading" id="subLoading"><div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div><span>Finding substitutes&hellip;</span></div>
+        <div class="sub-options" id="subOptions"></div>
+        <div class="sub-manual-row">
+          <input class="sub-manual-input" id="subManualInput" placeholder="Type your own substitute..."/>
+          <button class="sub-use-btn" onclick="applyManualSub()">Use it</button>
+        </div>
+      </div>
+
+      <!-- Ingredient list -->
+      <div class="ing-list" id="ingList"></div>
+
+      <!-- Find bar -->
+      <div class="find-bar">
+        <div class="web-toggle" onclick="toggleWebSearch()">
+          <div class="web-toggle-track" id="webTrack"><div class="web-toggle-thumb"></div></div>
+          <div class="web-toggle-label" id="webLabel">Search the web for <b>real recipes</b></div>
+          <span class="web-badge" id="webBadge">Live</span>
+        </div>
+        <div class="find-buttons">
+          <button class="btn-clear" onclick="clearAll()">Clear all</button>
+          <button class="btn-find" id="findBtn" onclick="findRecipes()" disabled>Find Recipes &rarr;</button>
+        </div>
       </div>
     </div>
-    <div class="prefs-row">
-      <div class="prefs-row-label">Cook time</div>
-      <div class="time-pills" id="cookPills">
-        <span class="time-pill active" data-val="any" onclick="setTime('cook','any',this)">Any</span>
-        <span class="time-pill" data-val="<15" onclick="setTime('cook','&lt;15',this)">&lt;15 min</span>
-        <span class="time-pill" data-val="15-30" onclick="setTime('cook','15-30',this)">15–30 min</span>
-        <span class="time-pill" data-val="30-60" onclick="setTime('cook','30-60',this)">30–60 min</span>
-        <span class="time-pill" data-val="60+" onclick="setTime('cook','60+',this)">1 hr+</span>
+
+    <!-- Results Panel -->
+    <div class="results-panel" id="rightPanel">
+      <div class="empty-state">
+        <div class="empty-icon">&#127859;</div>
+        <div class="empty-divider"><div class="empty-divider-line"></div><div class="empty-divider-dot"></div><div class="empty-divider-line"></div></div>
+        <h2>Select your ingredients</h2>
+        <p>Pick what you have on hand and we'll find the perfect recipe — plus a shopping list for anything missing.</p>
       </div>
     </div>
-    <div class="prefs-row">
-      <div class="prefs-row-label">Kid friendly</div>
-      <div class="kid-toggle" onclick="toggleKidFriendly()">
-        <div class="toggle-track" id="kidTrack"><div class="toggle-thumb"></div></div>
-        <span class="kid-label" id="kidLabel">Off</span>
-      </div>
-    </div>
-    <div class="prefs-row">
-      <div class="prefs-row-label">Dietary restrictions</div>
-      <div class="diet-pills">
-        <span class="diet-pill" onclick="toggleDiet('vegetarian',this)">Vegetarian</span>
-        <span class="diet-pill" onclick="toggleDiet('vegan',this)">Vegan</span>
-        <span class="diet-pill" onclick="toggleDiet('gluten-free',this)">Gluten-free</span>
-        <span class="diet-pill" onclick="toggleDiet('dairy-free',this)">Dairy-free</span>
-        <span class="diet-pill" onclick="toggleDiet('nut-free',this)">Nut-free</span>
-        <span class="diet-pill" onclick="toggleDiet('low-carb',this)">Low-carb</span>
-        <span class="diet-pill" onclick="toggleDiet('paleo',this)">Paleo</span>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Browse -->
-<div class="panel-header">
-  <div class="panel-title">Browse ingredients</div>
-  <input class="search-box" id="searchBox" placeholder="Filter ingredients..."/>
-  <div class="custom-row">
-    <input class="custom-input" id="customInput" placeholder="Add your own..." maxlength="60"/>
-    <button class="btn-add" onclick="addCustomIngredient()" title="Add">+</button>
-  </div>
-</div>
+  </div><!-- end app-layout -->
+</div><!-- end page -->
 
-<!-- Selected chips -->
-<div class="selected-strip">
-  <div class="selected-strip-label">Selected &mdash; <span id="selCount">0</span> ingredients</div>
-  <div class="chips" id="chipsRow"></div>
-</div>
-
-<!-- Substitution panel (chip level) -->
-<div class="sub-panel" id="subPanel">
-  <div class="sub-panel-header">
-    <div class="sub-panel-title">Swap <span id="subIngName"></span> for&hellip;</div>
-    <button class="sub-close" onclick="closeSubPanel()">&#215;</button>
-  </div>
-  <div class="sub-loading" id="subLoading"><div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div><span>Finding substitutes&hellip;</span></div>
-  <div class="sub-options" id="subOptions"></div>
-  <div class="sub-manual-row">
-    <input class="sub-manual-input" id="subManualInput" placeholder="Type your own substitute..."/>
-    <button class="sub-use-btn" onclick="applyManualSub()">Use it</button>
-  </div>
-</div>
-
-<div class="ingredients-list" id="ingList"></div>
-
-<div class="action-bar">
-  <div class="mode-toggle" onclick="toggleWebSearch()">
-    <div class="mode-toggle-track" id="webTrack"><div class="mode-toggle-thumb"></div></div>
-    <div class="mode-toggle-label" id="webLabel">Search the web for <b>real recipes</b></div>
-    <span class="mode-toggle-badge" id="webBadge" style="display:none;">Live</span>
-  </div>
-  <div class="action-row">
-    <button class="btn-clear" onclick="clearAll()">Clear all</button>
-    <button class="btn-primary" id="findBtn" onclick="findRecipes()" disabled>Find Recipes &rarr;</button>
-  </div>
-</div>
-```
-
-  </aside>
-
-  <main class="right-panel" id="rightPanel">
-    <div class="empty-state">
-      <div class="empty-icon">&#127859;</div>
-      <div class="empty-divider"><div class="empty-divider-line"></div><div class="empty-divider-dot"></div><div class="empty-divider-line"></div></div>
-      <h2>Select your ingredients</h2>
-      <p>Pick what you have on hand and we'll suggest recipes &mdash; plus a shopping list for anything missing.</p>
-    </div>
-  </main>
+<!-- FAB -->
+<div class="fab-wrap">
+  <button class="fab" id="fabBtn" onclick="findRecipes()" disabled>
+    <span id="fabLabel">Find Recipes</span>
+    <span class="fab-count" id="fabCount">0</span>
+    <span>&#8599;</span>
+  </button>
 </div>
 
 <script>
@@ -526,36 +686,37 @@ const CATEGORIES={
   "Nuts & Seeds":["Almonds","Walnuts","Cashews","Pine nuts","Sesame seeds","Chia seeds","Peanuts"],
 };
 
-// State
-let selected=new Set(),customIngredients=new Set(),recipes=[],activeRecipeIdx=null,checkedItems=new Set();
-let activeSubItem=null;
-let detailSwaps={};
-let activeDetailSwap=null;
-let currentServings={};
-let webSearchMode=false;
-
+// ── State ────────────────────────────────────────
+let selected=new Set(), customIngredients=new Set(), recipes=[], activeRecipeIdx=null, checkedItems=new Set();
+let activeSubItem=null, detailSwaps={}, activeDetailSwap=null, currentServings={}, webSearchMode=false;
+const collapsedCats=new Set();
 const prefs={prepTime:'any',cookTime:'any',kidFriendly:false,dietary:new Set()};
+
+// ── API Key ──────────────────────────────────────
+const apiKeyEl=document.getElementById('apiKey');
+const apiStatusEl=document.getElementById('apiStatus');
+apiKeyEl.addEventListener('input',()=>{
+  const v=apiKeyEl.value.trim();
+  if(v.startsWith('sk-ant-')||v.startsWith('sk-')){apiStatusEl.className='api-status ok';apiStatusEl.textContent='ready';localStorage.setItem('rfApiKey',v);}
+  else{apiStatusEl.className='api-status';apiStatusEl.textContent=v?'check key':'not set';}
+});
+const _saved=localStorage.getItem('rfApiKey');
+if(_saved){apiKeyEl.value=_saved;apiKeyEl.dispatchEvent(new Event('input'));}
 
 // ── Preferences ──────────────────────────────────
 function togglePrefs(){
-  const body=document.getElementById('prefsBody');
-  const arrow=document.getElementById('prefsArrow');
-  body.classList.toggle('open');
-  arrow.classList.toggle('open');
+  document.getElementById('prefsBody').classList.toggle('open');
+  document.getElementById('prefsArrow').classList.toggle('open');
 }
 function setTime(type,val,el){
   prefs[type+'Time']=val;
-  const container=type==='prep'?'prepPills':'cookPills';
-  document.querySelectorAll('#'+container+' .time-pill').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
-  updatePrefsIndicator();
+  document.querySelectorAll('#'+(type==='prep'?'prepPills':'cookPills')+' .time-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');updatePrefsIndicator();
 }
 function toggleKidFriendly(){
   prefs.kidFriendly=!prefs.kidFriendly;
   document.getElementById('kidTrack').classList.toggle('on',prefs.kidFriendly);
-  const lbl=document.getElementById('kidLabel');
-  lbl.textContent=prefs.kidFriendly?'On':'Off';
-  lbl.classList.toggle('on',prefs.kidFriendly);
+  const lbl=document.getElementById('kidLabel');lbl.textContent=prefs.kidFriendly?'On':'Off';lbl.classList.toggle('on',prefs.kidFriendly);
   updatePrefsIndicator();
 }
 function toggleDiet(val,el){
@@ -569,10 +730,10 @@ function updatePrefsIndicator(){
 }
 function prefsText(){
   const parts=[];
-  if(prefs.prepTime!=='any') parts.push(`Prep time: ${prefs.prepTime} minutes`);
-  if(prefs.cookTime!=='any') parts.push(`Cook time: ${prefs.cookTime} minutes`);
-  if(prefs.kidFriendly) parts.push('Kid friendly: yes (mild flavors, simple ingredients, nothing too spicy or exotic)');
-  if(prefs.dietary.size>0) parts.push(`Dietary restrictions: ${[...prefs.dietary].join(', ')}`);
+  if(prefs.prepTime!=='any')parts.push(`Prep time: ${prefs.prepTime} minutes`);
+  if(prefs.cookTime!=='any')parts.push(`Cook time: ${prefs.cookTime} minutes`);
+  if(prefs.kidFriendly)parts.push('Kid friendly: yes (mild flavors, nothing too spicy or exotic)');
+  if(prefs.dietary.size>0)parts.push(`Dietary restrictions: ${[...prefs.dietary].join(', ')}`);
   return parts.length?'\n\nPreferences to strictly follow:\n'+parts.map(p=>'- '+p).join('\n'):'';
 }
 function activePrefTags(){
@@ -584,9 +745,7 @@ function activePrefTags(){
   return tags;
 }
 
-// ── Ingredient List ───────────────────────────────
-const collapsedCats=new Set();
-
+// ── Ingredient list ──────────────────────────────
 function buildList(filter=''){
   const fl=filter.toLowerCase();let html='';
   for(const[cat,items]of Object.entries(CATEGORIES)){
@@ -595,7 +754,7 @@ function buildList(filter=''){
     const catId='cat-'+cat.replace(/[^a-z0-9]/gi,'_');
     const isCollapsed=collapsedCats.has(cat)&&!fl;
     const selCount=filtered.filter(i=>selected.has(i)).length;
-    const gridH=Math.ceil(filtered.length/2)*38+8;
+    const gridH=Math.ceil(filtered.length/2)*50+12;
     html+=`<div class="category">
       <div class="cat-label" onclick="toggleCat('${cat.replace(/'/g,"\\'")}','${catId}')">
         <span>${cat}</span>
@@ -603,10 +762,12 @@ function buildList(filter=''){
         <span class="cat-label-arrow${isCollapsed?' collapsed':''}" id="arr-${catId}">&#8964;</span>
       </div>
       <div class="ing-grid${isCollapsed?' collapsed':''}" id="${catId}" style="max-height:${isCollapsed?0:gridH}px">`;
-    for(const item of filtered){html+=`<button class="ing-btn${selected.has(item)?' selected':''}" onclick="toggle('${item.replace(/'/g,"\\'")}',this)">${item}</button>`;}
+    for(const item of filtered){
+      html+=`<button class="ing-btn${selected.has(item)?' selected':''}" onclick="toggle('${item.replace(/'/g,"\\'")}',this)">${item}</button>`;
+    }
     html+=`</div></div>`;
   }
-  document.getElementById('ingList').innerHTML=html||`<p style="padding:1.25rem;color:var(--brown-light);font-size:13px;font-style:italic;">No matches found.</p>`;
+  document.getElementById('ingList').innerHTML=html||`<p style="padding:1.25rem;color:var(--brown-light);font-size:13px;font-style:italic;">No matches.</p>`;
 }
 
 function toggleCat(cat,catId){
@@ -616,53 +777,50 @@ function toggleCat(cat,catId){
   if(collapsedCats.has(cat)){
     collapsedCats.delete(cat);
     grid.style.maxHeight=grid.scrollHeight+'px';
-    grid.classList.remove('collapsed');
-    arrow.classList.remove('collapsed');
+    grid.classList.remove('collapsed');arrow.classList.remove('collapsed');
   }else{
     collapsedCats.add(cat);
     grid.style.maxHeight=grid.scrollHeight+'px';
     requestAnimationFrame(()=>{grid.style.maxHeight='0px';});
-    grid.classList.add('collapsed');
-    arrow.classList.add('collapsed');
+    grid.classList.add('collapsed');arrow.classList.add('collapsed');
   }
 }
 
-function updateCatCounts(){
-  for(const cat of Object.keys(CATEGORIES)){
-    const catId='cat-'+cat.replace(/[^a-z0-9]/gi,'_');
-    const el=document.getElementById('csc-'+catId);
-    if(!el)continue;
-    const count=CATEGORIES[cat].filter(i=>selected.has(i)).length;
-    el.textContent=count;
-    el.classList.toggle('visible',count>0);
-  }
-}
 function toggle(item,btn){
   if(selected.has(item)){selected.delete(item);btn.classList.remove('selected');}
   else{selected.add(item);btn.classList.add('selected');}
   updateStrip();updateCatCounts();
 }
+
+function updateCatCounts(){
+  for(const cat of Object.keys(CATEGORIES)){
+    const catId='cat-'+cat.replace(/[^a-z0-9]/gi,'_');
+    const el=document.getElementById('csc-'+catId);if(!el)continue;
+    const count=CATEGORIES[cat].filter(i=>selected.has(i)).length;
+    el.textContent=count;el.classList.toggle('visible',count>0);
+  }
+}
+
 function updateStrip(){
   const count=selected.size;
   document.getElementById('selCount').textContent=count;
   document.getElementById('findBtn').disabled=count===0;
-  const chips=[...selected].map(i=>{
+  document.getElementById('chipsRow').innerHTML=[...selected].map(i=>{
     const isCustom=customIngredients.has(i);
     const iname=i.replace(/'/g,"\\'");
     return `<span class="chip${isCustom?' custom':' selected-chip'}">
       <span style="cursor:default">${i}</span>
-      <span class="chip-sub" onclick="openSubPanel('${iname}')" title="Find substitute">&#8644;</span>
+      <span class="chip-sub" onclick="openSubPanel('${iname}')" title="Substitute">&#8644;</span>
       <span class="chip-x" onclick="removeChip('${iname}')">&#215;</span>
     </span>`;
   }).join('');
-  document.getElementById('chipsRow').innerHTML=chips;
   // FAB
   const fab=document.getElementById('fabBtn');
-  const fabCount=document.getElementById('fabCount');
-  fabCount.textContent=count;
+  document.getElementById('fabCount').textContent=count;
   fab.disabled=count===0;
   fab.classList.toggle('visible',count>0);
 }
+
 function addCustomIngredient(){
   const input=document.getElementById('customInput');
   const val=input.value.trim();if(!val)return;
@@ -670,50 +828,50 @@ function addCustomIngredient(){
   if(!selected.has(cap)){selected.add(cap);customIngredients.add(cap);updateStrip();}
   input.value='';input.focus();
 }
+
 function removeChip(item){
   selected.delete(item);customIngredients.delete(item);
   if(activeSubItem===item)closeSubPanel();
   document.querySelectorAll('.ing-btn').forEach(b=>{if(b.textContent===item)b.classList.remove('selected');});
-  updateStrip();
+  updateStrip();updateCatCounts();
 }
+
 function clearAll(){
   selected.clear();customIngredients.clear();
   document.querySelectorAll('.ing-btn').forEach(b=>b.classList.remove('selected'));
-  closeSubPanel();updateStrip();showEmpty();
+  closeSubPanel();updateStrip();updateCatCounts();showEmpty();
 }
 
-// ── Chip-level Substitution ───────────────────────
+document.getElementById('searchBox').addEventListener('input',e=>buildList(e.target.value));
+document.getElementById('customInput').addEventListener('keydown',e=>{if(e.key==='Enter')addCustomIngredient();});
+document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();parseIngredients();}});
+
+// ── Substitution (chip level) ────────────────────
 function openSubPanel(item){
   if(activeSubItem===item){closeSubPanel();return;}
   activeSubItem=item;
   const panel=document.getElementById('subPanel');
-  const nameEl=document.getElementById('subIngName');
   const loading=document.getElementById('subLoading');
   const options=document.getElementById('subOptions');
-  nameEl.textContent=item;
-  options.innerHTML='';
-  document.getElementById('subManualInput').value='';
-  panel.classList.add('open');
-  loading.classList.add('visible');
+  document.getElementById('subIngName').textContent=item;
+  options.innerHTML='';document.getElementById('subManualInput').value='';
+  panel.classList.add('open');loading.classList.add('visible');
   fetchSubstitutes(item).then(subs=>{
     loading.classList.remove('visible');
     options.innerHTML=subs.map(s=>`<span class="sub-option" onclick="applySubstitute('${item.replace(/'/g,"\\'")}','${s.replace(/'/g,"\\'")}')">&#10227; ${s}</span>`).join('');
-  }).catch(()=>{loading.classList.remove('visible');options.innerHTML='<span style="font-size:11px;color:var(--brown-light);font-style:italic;">Could not load suggestions.</span>';});
+  }).catch(()=>{loading.classList.remove('visible');options.innerHTML='<span style="font-size:11px;color:var(--brown-light);font-style:italic;">Could not load.</span>';});
 }
 function closeSubPanel(){activeSubItem=null;document.getElementById('subPanel').classList.remove('open');}
 async function fetchSubstitutes(item){
-  const key=apiKeyEl.value.trim();if(!key)throw new Error('No API key');
-  const dietCtx=prefs.dietary.size>0?` The user follows these dietary restrictions: ${[...prefs.dietary].join(', ')}.`:'';
-  const raw=await callClaude(`List 4 practical kitchen substitutes for "${item}" in home cooking.${dietCtx} Return ONLY a JSON array of short ingredient name strings, no explanation.\nExample: ["Greek yogurt","Coconut cream","Cashew cream","Tofu cream"]`,200);
-  const m=raw.match(/\[[\s\S]*?\]/);if(!m)throw new Error('parse error');
-  return JSON.parse(m[0]).slice(0,4);
+  const dietCtx=prefs.dietary.size>0?` Dietary restrictions: ${[...prefs.dietary].join(', ')}.`:'';
+  const raw=await callClaude(`List 4 practical kitchen substitutes for "${item}".${dietCtx} Return ONLY a JSON array of short ingredient name strings.\nExample: ["Greek yogurt","Coconut cream","Cashew cream","Tofu cream"]`,200);
+  const m=raw.match(/\[[\s\S]*?\]/);if(!m)throw new Error();return JSON.parse(m[0]).slice(0,4);
 }
 function applySubstitute(original,substitute){
-  selected.delete(original);
-  customIngredients.delete(original);
+  selected.delete(original);customIngredients.delete(original);
   if(!selected.has(substitute)){selected.add(substitute);customIngredients.add(substitute);}
   document.querySelectorAll('.ing-btn').forEach(b=>{if(b.textContent===original)b.classList.remove('selected');if(b.textContent===substitute)b.classList.add('selected');});
-  closeSubPanel();updateStrip();
+  closeSubPanel();updateStrip();updateCatCounts();
 }
 function applyManualSub(){
   const val=document.getElementById('subManualInput').value.trim();
@@ -721,22 +879,24 @@ function applyManualSub(){
   applySubstitute(activeSubItem,val.charAt(0).toUpperCase()+val.slice(1));
 }
 
-// ── API & Core ────────────────────────────────────
-document.getElementById('searchBox').addEventListener('input',e=>buildList(e.target.value));
-document.getElementById('customInput').addEventListener('keydown',e=>{if(e.key==='Enter')addCustomIngredient();});
-document.getElementById('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();parseIngredients();}});
+// ── Web search toggle ────────────────────────────
+function toggleWebSearch(){
+  webSearchMode=!webSearchMode;
+  const track=document.getElementById('webTrack');
+  const label=document.getElementById('webLabel');
+  const badge=document.getElementById('webBadge');
+  track.classList.toggle('on',webSearchMode);
+  badge.style.display=webSearchMode?'inline':'none';
+  label.innerHTML=webSearchMode?'Searching <b>the web</b> for real tested recipes':'Search the web for <b>real recipes</b>';
+  const btnText=webSearchMode?'Search Recipes →':'Find Recipes →';
+  document.getElementById('findBtn').textContent=btnText;
+  document.getElementById('fabLabel').textContent=webSearchMode?'Search Recipes':'Find Recipes';
+}
 
-const apiKeyEl=document.getElementById('apiKey'),apiStatusEl=document.getElementById('apiStatus');
-apiKeyEl.addEventListener('input',()=>{
-  const v=apiKeyEl.value.trim();
-  if(v.startsWith('sk-ant-')||v.startsWith('sk-')){apiStatusEl.className='api-status ok';apiStatusEl.textContent='ready';localStorage.setItem('rfApiKey',v);}
-  else{apiStatusEl.className='api-status';apiStatusEl.textContent=v?'check key':'not set';}
-});
-const saved=localStorage.getItem('rfApiKey');
-if(saved){apiKeyEl.value=saved;apiKeyEl.dispatchEvent(new Event('input'));}
-
-async function callClaude(prompt,maxTokens=2500){
-  const key=apiKeyEl.value.trim();if(!key)throw new Error('Please enter your Anthropic API key.');
+// ── Claude API ───────────────────────────────────
+async function callClaude(prompt,maxTokens=3000){
+  const key=apiKeyEl.value.trim();
+  if(!key)throw new Error('Please enter your Anthropic API key.');
   const resp=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
@@ -746,24 +906,20 @@ async function callClaude(prompt,maxTokens=2500){
   return (await resp.json()).content?.[0]?.text||'';
 }
 
+// ── Empty / Loading ──────────────────────────────
 function showEmpty(){
   document.getElementById('rightPanel').innerHTML=`<div class="empty-state">
     <div class="empty-icon">&#127859;</div>
     <div class="empty-divider"><div class="empty-divider-line"></div><div class="empty-divider-dot"></div><div class="empty-divider-line"></div></div>
     <h2>Select your ingredients</h2>
-    <p>Pick what you have on hand and we'll suggest recipes &mdash; plus a shopping list for anything missing.</p>
+    <p>Pick what you have on hand and we'll find the perfect recipe — plus a shopping list for anything missing.</p>
   </div>`;
 }
+
 function showLoading(){
   document.getElementById('rightPanel').innerHTML=`<div class="loading">
     <svg width="100" height="125" viewBox="0 0 100 125" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
-      <defs>
-        <clipPath id="cup-clip">
-          <rect x="16" y="27" width="60" height="72"/>
-        </clipPath>
-      </defs>
-
-      <!-- Steam (SMIL animate opacity + y) -->
+      <defs><clipPath id="cup-clip"><rect x="16" y="27" width="60" height="72"/></clipPath></defs>
       <line x1="33" y1="18" x2="31" y2="5" stroke="#b85c3a" stroke-width="2" stroke-linecap="round" opacity="0">
         <animate attributeName="opacity" values="0;0;0.6;0;0" dur="2.6s" repeatCount="indefinite" keyTimes="0;0.6;0.75;0.9;1"/>
         <animate attributeName="y2" values="5;5;-4;-4;5" dur="2.6s" repeatCount="indefinite" keyTimes="0;0.6;0.75;0.9;1"/>
@@ -776,124 +932,91 @@ function showLoading(){
         <animate attributeName="opacity" values="0;0;0.6;0;0" dur="2.6s" begin="0.1s" repeatCount="indefinite" keyTimes="0;0.6;0.75;0.9;1"/>
         <animate attributeName="y2" values="5;5;-4;-4;5" dur="2.6s" begin="0.1s" repeatCount="indefinite" keyTimes="0;0.6;0.75;0.9;1"/>
       </line>
-
-      <!-- Cup rim -->
       <rect x="13" y="17" width="66" height="10" rx="4" fill="#f2ede4" stroke="#b85c3a" stroke-width="2.5"/>
-
-      <!-- Cup body background -->
       <rect x="16" y="26" width="60" height="73" rx="0" fill="#f2ede4"/>
       <path d="M16,26 L16,94 Q16,99 21,99 L71,99 Q76,99 76,94 L76,26 Z" fill="#f2ede4"/>
-
-      <!-- Liquid — SMIL animates y and height so fill rises from bottom -->
       <rect x="16" fill="#b85c3a" opacity="0.82" clip-path="url(#cup-clip)">
-        <animate attributeName="y"      values="99;27;27;99" dur="2.6s" repeatCount="indefinite"
-          calcMode="spline" keyTimes="0;0.7;0.87;1"
-          keySplines="0.42 0 0.58 1; 0 0 1 1; 0.42 0 0.58 1"/>
-        <animate attributeName="height" values="0;72;72;0"   dur="2.6s" repeatCount="indefinite"
-          calcMode="spline" keyTimes="0;0.7;0.87;1"
-          keySplines="0.42 0 0.58 1; 0 0 1 1; 0.42 0 0.58 1"/>
-        <animate attributeName="width"  values="60;60;60;60" dur="2.6s" repeatCount="indefinite"/>
+        <animate attributeName="y" values="99;27;27;99" dur="2.6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.7;0.87;1" keySplines="0.42 0 0.58 1;0 0 1 1;0.42 0 0.58 1"/>
+        <animate attributeName="height" values="0;72;72;0" dur="2.6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.7;0.87;1" keySplines="0.42 0 0.58 1;0 0 1 1;0.42 0 0.58 1"/>
+        <animate attributeName="width" values="60;60;60;60" dur="2.6s" repeatCount="indefinite"/>
       </rect>
-
-      <!-- Cup body outline (drawn on top so it covers liquid edges) -->
       <path d="M16,26 L16,94 Q16,99 21,99 L71,99 Q76,99 76,94 L76,26" fill="none" stroke="#b85c3a" stroke-width="2.5"/>
-
-      <!-- Handle -->
       <path d="M76,44 C94,44 94,80 76,80" fill="none" stroke="#b85c3a" stroke-width="2.5"/>
     </svg>
-    <div class="loading-label">${webSearchMode?'Searching the web for recipes&hellip;':'Finding recipes for you&hellip;'}</div>
+    <div class="loading-label">${webSearchMode?'Searching the web&hellip;':'Finding recipes for you&hellip;'}</div>
     <div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
   </div>`;
 }
 
-function toggleWebSearch(){
-  webSearchMode=!webSearchMode;
-  const track=document.getElementById('webTrack');
-  const label=document.getElementById('webLabel');
-  const badge=document.getElementById('webBadge');
-  track.classList.toggle('on',webSearchMode);
-  badge.style.display=webSearchMode?'inline':'none';
-  label.innerHTML=webSearchMode
-    ?'Searching <b>the web</b> for real tested recipes'
-    :'Search the web for <b>real recipes</b>';
-  document.getElementById('findBtn').textContent=webSearchMode?'Search Recipes →':'Find Recipes →';
-  document.getElementById('fabLabel').textContent=webSearchMode?'Search Recipes':'Find Recipes';
-}
-
+// ── Find recipes ─────────────────────────────────
 async function findRecipes(){
-  if(!apiKeyEl.value.trim()){alert('Please enter your Anthropic API key at the top of the page.');return;}
+  if(!apiKeyEl.value.trim()){alert('Please enter your Anthropic API key.');return;}
   if(selected.size===0)return;
   showLoading();checkedItems.clear();activeRecipeIdx=null;detailSwaps={};activeDetailSwap=null;currentServings={};
-  if(webSearchMode) return findRecipesWeb();
+  // Scroll to results on mobile
+  document.getElementById('rightPanel').scrollIntoView({behavior:'smooth',block:'start'});
+  if(webSearchMode)return findRecipesWeb();
   const ingList=[...selected].join(', ');
   const prompt=`You are a helpful home cooking assistant. The user has these ingredients on hand: ${ingList}.${prefsText()}
 
-Suggest exactly 4 recipes that use some or all of these ingredients. Return ONLY a valid JSON array — no markdown, no explanation. Use this exact structure:
+Suggest exactly 4 recipes. Return ONLY a valid JSON array — no markdown, no explanation:
 
 [{"name":"Recipe Name","description":"One sentence, max 20 words","prepTime":"10 mins","cookTime":"20 mins","servings":4,"difficulty":"Easy","kidFriendly":false,"nutrition":{"calories":450,"protein":32,"fat":18,"carbs":42,"fiber":5,"sugar":8,"sodium":680,"saturatedFat":6},"ingredients":[{"name":"ingredient","quantity":"1 cup","have":true}],"steps":["Step one.","Step two."],"matchPercent":85}]
 
 Rules:
 - "have": true if the ingredient is in the user's list
 - matchPercent: % of recipe ingredients the user has (0-100), sort descending
-- kidFriendly: true if the recipe is appropriate and enjoyable for children
-- nutrition: estimated values PER SERVING — calories (kcal), protein/fat/carbs/fiber/sugar/saturatedFat (grams), sodium (mg)
-- Strictly honour all dietary restrictions and time preferences if given
+- kidFriendly: true if appropriate for children
+- nutrition: estimated values PER SERVING
 - Vary cuisine types, mix difficulties
 - JSON array only`;
   try{
-    const raw=await callClaude(prompt,3000);
+    const raw=await callClaude(prompt);
     const m=raw.match(/\[[\s\S]*\]/);if(!m)throw new Error('Could not parse recipe data.');
     recipes=JSON.parse(m[0]);renderResults();
   }catch(err){
-    document.getElementById('rightPanel').innerHTML=`<div class="error-msg">&#9888; ${err.message}</div><div style="text-align:center;margin-top:1.5rem;"><button class="btn-primary" style="width:auto;padding:10px 24px;" onclick="findRecipes()">Try again</button></div>`;
+    document.getElementById('rightPanel').innerHTML=`<div class="error-msg">&#9888; ${err.message}</div><div style="text-align:center;margin-top:1.5rem;"><button class="btn-find" style="width:auto;padding:12px 24px;" onclick="findRecipes()">Try again</button></div>`;
   }
 }
 
 async function findRecipesWeb(){
   const ingList=[...selected].join(', ');
   const dietCtx=prefs.dietary.size>0?` Dietary restrictions: ${[...prefs.dietary].join(', ')}.`:'';
-  const kidCtx=prefs.kidFriendly?' Kid-friendly recipes only.':'';
-  const timeCtx=(prefs.prepTime!=='any'||prefs.cookTime!=='any')?` Prep time: ${prefs.prepTime}, Cook time: ${prefs.cookTime}.`:'';
-  const searchPrompt=`Search the web and find 4 highly-rated real recipes from reputable cooking websites (such as Serious Eats, NYT Cooking, AllRecipes, BBC Good Food, or similar) that use these ingredients: ${ingList}.${dietCtx}${kidCtx}${timeCtx}
+  const kidCtx=prefs.kidFriendly?' Kid-friendly only.':'';
+  const prompt=`Search the web and find 4 highly-rated real recipes from reputable cooking websites (Serious Eats, NYT Cooking, AllRecipes, BBC Good Food, etc.) that use these ingredients: ${ingList}.${dietCtx}${kidCtx}
 
-For each recipe found, extract the details and return ONLY a valid JSON array with this exact structure — no markdown, no explanation:
+Return ONLY a valid JSON array — no markdown, no explanation:
 
 [{"name":"Recipe Name","source":"Website Name","sourceUrl":"https://...","description":"One sentence, max 20 words","prepTime":"10 mins","cookTime":"20 mins","servings":4,"difficulty":"Easy","kidFriendly":false,"nutrition":{"calories":450,"protein":32,"fat":18,"carbs":42,"fiber":5,"sugar":8,"sodium":680,"saturatedFat":6},"ingredients":[{"name":"ingredient","quantity":"1 cup","have":true}],"steps":["Step one.","Step two."],"matchPercent":85}]
 
 Rules:
-- Only include recipes actually found on the web — do not invent recipes
-- "have": true if the ingredient is in the user's list: ${ingList}
-- matchPercent: % of recipe ingredients the user has (0-100), sort descending
-- nutrition: use values from the source if available, otherwise estimate
-- source and sourceUrl: the real website name and URL of the recipe
+- Only include recipes actually found on the web
+- "have": true if ingredient is in: ${ingList}
+- matchPercent: % the user has, sort descending
 - JSON array only`;
   try{
     const key=apiKeyEl.value.trim();
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-6',
-        max_tokens:4000,
-        tools:[{"type":"web_search_20250305","name":"web_search"}],
-        messages:[{role:'user',content:searchPrompt}]
-      })
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,tools:[{"type":"web_search_20250305","name":"web_search"}],messages:[{role:'user',content:prompt}]})
     });
     if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`API error ${resp.status}`);}
     const data=await resp.json();
     const text=data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
-    const m=text.match(/\[[\s\S]*\]/);if(!m)throw new Error('Could not parse recipe data from search results.');
+    const m=text.match(/\[[\s\S]*\]/);if(!m)throw new Error('Could not parse recipe data.');
     recipes=JSON.parse(m[0]);renderResults();
   }catch(err){
-    document.getElementById('rightPanel').innerHTML=`<div class="error-msg">&#9888; ${err.message}</div><div style="text-align:center;margin-top:1.5rem;"><button class="btn-primary" style="width:auto;padding:10px 24px;" onclick="findRecipes()">Try again</button></div>`;
+    document.getElementById('rightPanel').innerHTML=`<div class="error-msg">&#9888; ${err.message}</div><div style="text-align:center;margin-top:1.5rem;"><button class="btn-find" style="width:auto;padding:12px 24px;" onclick="findRecipes()">Try again</button></div>`;
   }
 }
 
+// ── Render results ───────────────────────────────
 function renderResults(){
   const ingCount=selected.size;
   const tags=activePrefTags();
   let html=`<div class="results-header"><h2>Recipes for you</h2><div class="results-meta">Based on ${ingCount} ingredient${ingCount!==1?'s':''}</div></div>`;
-  if(tags.length)html+=`<div class="active-prefs-bar">${tags.map(t=>`<span class="active-pref-tag">${t}</span>`).join('')}</div>`;
+  if(tags.length)html+=`<div class="pref-tags">${tags.map(t=>`<span class="pref-tag">${t}</span>`).join('')}</div>`;
   html+=`<div class="recipe-grid">`;
   recipes.forEach((r,i)=>{
     const pct=Math.min(100,Math.max(0,r.matchPercent||0));
@@ -910,11 +1033,11 @@ function renderResults(){
           </div>
         </div>
         <div class="card-desc">${r.description}</div>
-        ${r.source?`<div style="font-size:11px;color:var(--sage);margin-bottom:8px;">&#127758; <a href="${r.sourceUrl||'#'}" target="_blank" rel="noopener" style="color:var(--sage);text-decoration:underline;" onclick="event.stopPropagation()">${r.source}</a></div>`:''}
+        ${r.source?`<div class="card-source">&#127758; <a href="${r.sourceUrl||'#'}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${r.source}</a></div>`:''}
         <div class="card-meta">
-          <span class="meta-pill"><span class="meta-icon">&#9197;</span>Prep: ${r.prepTime||'—'}</span>
-          <span class="meta-pill"><span class="meta-icon">&#8987;</span>Cook: ${r.cookTime||r.time||'—'}</span>
-          <span class="meta-pill"><span class="meta-icon">&#128101;</span>${r.servings} servings</span>
+          <span class="meta-pill">&#9197; Prep: ${r.prepTime||'—'}</span>
+          <span class="meta-pill">&#8987; Cook: ${r.cookTime||r.time||'—'}</span>
+          <span class="meta-pill">&#128101; ${r.servings} servings</span>
         </div>
       </div>
       ${n.calories?`<div class="card-nutrition">
@@ -933,36 +1056,45 @@ function renderResults(){
   document.getElementById('rightPanel').innerHTML=html;
 }
 
+// ── Select recipe ────────────────────────────────
 function selectRecipe(i){
   document.querySelectorAll('.recipe-card').forEach(c=>c.classList.remove('active'));
   document.getElementById(`card-${i}`)?.classList.add('active');
-  activeRecipeIdx=i;activeDetailSwap=null;renderDetail(recipes[i]);
+  activeRecipeIdx=i;activeDetailSwap=null;
+  renderDetail(recipes[i]);
   document.getElementById('detailArea').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
+// ── Render detail ────────────────────────────────
 function renderDetail(r){
   const i=activeRecipeIdx;
   const swapsForRecipe=detailSwaps[i]||{};
-  const needItems=r.ingredients.filter(x=>{
-    const swapped=swapsForRecipe[x.name];
-    return !x.have&&!swapped;
-  });
+  const needItems=r.ingredients.filter(x=>!x.have&&!swapsForRecipe[x.name]);
   const diffClass=r.difficulty==='Easy'?'diff-easy':r.difficulty==='Hard'?'diff-hard':'diff-medium';
+  const baseServings=r.servings||4;
+  if(currentServings[i]==null)currentServings[i]=baseServings;
+  const sv=currentServings[i];
+  const scale=sv/baseServings;
+  const n=r.nutrition||{};
+  const ns=val=>val?Math.round(val*scale):null;
+  const totalMacroCal=(ns(n.protein)||0)*4+(ns(n.fat)||0)*9+(ns(n.carbs)||0)*4;
+  const pctP=totalMacroCal?Math.round(((ns(n.protein)||0)*4/totalMacroCal)*100):0;
+  const pctF=totalMacroCal?Math.round(((ns(n.fat)||0)*9/totalMacroCal)*100):0;
+  const pctC=totalMacroCal?Math.round(((ns(n.carbs)||0)*4/totalMacroCal)*100):0;
 
   const ingRows=r.ingredients.map(ing=>{
     const swapKey=`${i}::${ing.name}`;
     const swapped=swapsForRecipe[ing.name];
     const isOpen=activeDetailSwap===swapKey;
-    const nameHtml=swapped
-      ?`<span class="subbed">${ing.name}</span><span class="sub-val">&#8594; ${swapped}</span>`
-      :ing.name;
-    const swapPanel=isOpen?`<div class="ing-swap-panel open" id="dsp-${swapKey.replace(/[^a-z0-9]/gi,'_')}">
+    const nameHtml=swapped?`<span class="subbed">${ing.name}</span><span class="sub-val">&#8594; ${swapped}</span>`:ing.name;
+    const safeKey=swapKey.replace(/[^a-z0-9]/gi,'_');
+    const swapPanel=isOpen?`<div class="ing-swap-panel open" id="dsp-${safeKey}">
       <div class="ing-swap-panel-title">Swap for&hellip;</div>
-      <div class="ing-swap-loading" id="dsl-${swapKey.replace(/[^a-z0-9]/gi,'_')}"><div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div><span>Finding substitutes&hellip;</span></div>
-      <div class="ing-swap-options" id="dso-${swapKey.replace(/[^a-z0-9]/gi,'_')}"></div>
+      <div class="ing-swap-loading" id="dsl-${safeKey}"><div class="think-dot"></div><div class="think-dot"></div><div class="think-dot"></div><span>Finding&hellip;</span></div>
+      <div class="ing-swap-options" id="dso-${safeKey}"></div>
       <div class="ing-swap-manual">
-        <input class="ing-swap-manual-input" id="dsm-${swapKey.replace(/[^a-z0-9]/gi,'_')}" placeholder="Type your own substitute..."/>
-        <button class="ing-swap-use" onclick="applyDetailSwapManual('${ing.name.replace(/'/g,"\\'")}')">Use</button>
+        <input class="ing-swap-manual-input" id="dsm-${safeKey}" placeholder="Type your own..."/>
+        <button class="ing-swap-use" onclick="applyDetailSwap_manual('${ing.name.replace(/'/g,"\\'")}')">Use</button>
         ${swapped?`<button class="ing-swap-clear" onclick="clearDetailSwap('${ing.name.replace(/'/g,"\\'")}')">Clear</button>`:''}
       </div>
     </div>`:'';
@@ -970,7 +1102,7 @@ function renderDetail(r){
       <span class="ing-status-dot ${ing.have?'have':'need'}"></span>
       <span class="ing-name">${nameHtml}</span>
       <span class="ing-qty">${ing.quantity}</span>
-      <button class="ing-swap-btn${isOpen?' active':''}" onclick="toggleDetailSwap('${ing.name.replace(/'/g,"\\'")}','${r.name.replace(/'/g,"\\'")}')">&#8644; Swap</button>
+      <button class="ing-swap-btn${isOpen?' active':''}" onclick="toggleDetailSwap('${ing.name.replace(/'/g,"\\'")}')">&#8644; Swap</button>
     </div>${swapPanel}`;
   }).join('');
 
@@ -978,44 +1110,33 @@ function renderDetail(r){
 
   let shopSection='';
   if(needItems.length===0){
-    shopSection=`<div class="shop-section"><div class="all-good">&#10003;&ensp;You have everything needed for this recipe!</div></div>`;
+    shopSection=`<div class="shop-section"><div class="all-good">&#10003;&ensp;You have everything needed!</div></div>`;
   }else{
     const shopItems=needItems.map(ing=>{
       const key=`${r.name}::${ing.name}`;const chk=checkedItems.has(key);
-      return `<div class="shop-item${chk?' checked':''}" onclick="toggleShop('${key.replace(/'/g,"\\'")}')"><div class="check-box">${chk?'&#10003;':''}</div><span>${ing.name}&ensp;<span style="color:var(--brown-light);font-size:11px;">${ing.quantity}</span></span></div>`;
+      return `<div class="shop-item${chk?' checked':''}" onclick="toggleShop('${key.replace(/'/g,"\\'")}')">
+        <div class="check-box">${chk?'&#10003;':''}</div>
+        <span>${ing.name}&ensp;<span style="color:var(--brown-light);font-size:11px;">${ing.quantity}</span></span>
+      </div>`;
     }).join('');
-    shopSection=`<div class="shop-section"><div class="shop-header"><div class="section-title">Shopping list &mdash; ${needItems.length} item${needItems.length!==1?'s':''}</div><button class="print-btn" onclick="window.print()">&#128438; Print list</button></div><div class="shop-items">${shopItems}</div></div>`;
+    shopSection=`<div class="shop-section">
+      <div class="shop-header">
+        <div class="section-title">Shopping list &mdash; ${needItems.length} item${needItems.length!==1?'s':''}</div>
+        <button class="print-btn" onclick="window.print()">&#128438; Print</button>
+      </div>
+      <div class="shop-items">${shopItems}</div>
+    </div>`;
   }
 
-  const baseServings=r.servings||4;
-  if(currentServings[activeRecipeIdx]==null) currentServings[activeRecipeIdx]=baseServings;
-  const sv=currentServings[activeRecipeIdx];
-  const scale=sv/baseServings;
-  const n=r.nutrition||{};
-  const ns=(val)=>val?Math.round(val*scale):null;
-
-  // Macro bar widths (out of total cals)
-  const totalMacroCal=(ns(n.protein)||0)*4+(ns(n.fat)||0)*9+(ns(n.carbs)||0)*4;
-  const pctP=totalMacroCal?Math.round(((ns(n.protein)||0)*4/totalMacroCal)*100):0;
-  const pctF=totalMacroCal?Math.round(((ns(n.fat)||0)*9/totalMacroCal)*100):0;
-  const pctC=totalMacroCal?Math.round(((ns(n.carbs)||0)*4/totalMacroCal)*100):0;
-
-  const nutrSection=n.calories?`
-  <div class="nutr-section">
+  const nutrSection=n.calories?`<div class="nutr-section">
     <div class="nutr-toggle" onclick="toggleNutrFacts()">
       <div class="nutr-toggle-label">Full nutrition facts</div>
       <span class="nutr-toggle-arrow" id="nutrArrow">&#8964;</span>
     </div>
     <div class="nutr-facts" id="nutrFacts">
       <div class="nutr-facts-inner">
-        <div class="nutr-header">
-          <div class="nutr-header-title">Nutrition Facts</div>
-          <div class="nutr-header-sub">${sv} serving${sv!==1?'s':''} &mdash; values scaled to your portion</div>
-        </div>
-        <div class="nutr-calories-row">
-          <span class="nutr-cal-label">Calories</span>
-          <span class="nutr-cal-val">${ns(n.calories)||'—'}</span>
-        </div>
+        <div class="nutr-header"><div class="nutr-header-title">Nutrition Facts</div><div class="nutr-header-sub">${sv} serving${sv!==1?'s':''} &mdash; scaled to your portion</div></div>
+        <div class="nutr-calories-row"><span class="nutr-cal-label">Calories</span><span class="nutr-cal-val">${ns(n.calories)||'—'}</span></div>
         <div class="nutr-dv-note">* % Daily Value based on 2,000 calorie diet</div>
         <div class="nutr-macros-grid">
           <div class="nutr-macro"><div class="nutr-macro-val">${ns(n.carbs)||0}g</div><div class="nutr-macro-lbl">Carbs</div><div class="nutr-macro-bar"><div class="nutr-macro-bar-fill" style="width:${pctC}%;background:#b85c3a;"></div></div></div>
@@ -1036,17 +1157,15 @@ function renderDetail(r){
 
   document.getElementById('detailArea').innerHTML=`<div class="detail-panel">
     <div class="detail-header">
-      <div class="detail-header-left">
-        <div>
-          <div class="detail-title">${r.name}</div>
-          <div class="detail-desc">${r.description}</div>
-          ${r.source?`<div style="font-size:12px;color:var(--sage);margin-top:5px;">&#127758; From <a href="${r.sourceUrl||'#'}" target="_blank" rel="noopener" style="color:var(--sage);font-weight:500;text-decoration:underline;">${r.source}</a></div>`:''}
-          <div class="detail-pills">
-            <span class="detail-pill">&#9197; Prep: ${r.prepTime||'—'}</span>
-            <span class="detail-pill">&#8987; Cook: ${r.cookTime||r.time||'—'}</span>
-            <span class="card-difficulty ${diffClass}" style="font-size:10px;padding:3px 9px;">${r.difficulty}</span>
-            ${r.kidFriendly?'<span class="card-kid-badge" style="font-size:10px;padding:3px 9px;">&#128118; Kid friendly</span>':''}
-          </div>
+      <div>
+        <div class="detail-title">${r.name}</div>
+        <div class="detail-desc">${r.description}</div>
+        ${r.source?`<div class="detail-source">&#127758; From <a href="${r.sourceUrl||'#'}" target="_blank" rel="noopener">${r.source}</a></div>`:''}
+        <div class="detail-pills">
+          <span class="detail-pill">&#9197; Prep: ${r.prepTime||'—'}</span>
+          <span class="detail-pill">&#8987; Cook: ${r.cookTime||r.time||'—'}</span>
+          <span class="card-difficulty ${diffClass}" style="font-size:10px;padding:3px 9px;">${r.difficulty}</span>
+          ${r.kidFriendly?'<span class="card-kid-badge" style="font-size:10px;padding:3px 9px;">&#128118; Kid friendly</span>':''}
         </div>
       </div>
       <button class="close-btn" onclick="closeDetail()">&#215;</button>
@@ -1058,7 +1177,7 @@ function renderDetail(r){
           <span>Servings</span>
           <div class="servings-adjuster">
             <button class="serv-btn" onclick="changeServings(-1)">&#8722;</button>
-            <span class="serv-count" id="servCount">${sv}</span>
+            <span class="serv-count">${sv}</span>
             <button class="serv-btn" onclick="changeServings(1)">+</button>
           </div>
           ${sv!==baseServings?`<span class="servings-note">Base: ${baseServings}</span>`:''}
@@ -1074,7 +1193,7 @@ function renderDetail(r){
     ${nutrSection}
   </div>`;
 
-  // Fetch substitutes for any open swap panel
+  // Load substitutes if swap panel open
   if(activeDetailSwap){
     const parts=activeDetailSwap.split('::');const ingName=parts.slice(1).join('::');
     const safeKey=activeDetailSwap.replace(/[^a-z0-9]/gi,'_');
@@ -1090,7 +1209,19 @@ function renderDetail(r){
   }
 }
 
-function toggleDetailSwap(ingName,recipeName){
+function toggleNutrFacts(){
+  const panel=document.getElementById('nutrFacts');
+  const arrow=document.getElementById('nutrArrow');
+  if(!panel)return;
+  panel.classList.toggle('open');arrow?.classList.toggle('open');
+}
+function changeServings(delta){
+  const r=recipes[activeRecipeIdx];
+  const base=r.servings||4;
+  currentServings[activeRecipeIdx]=Math.max(1,Math.min(20,(currentServings[activeRecipeIdx]??base)+delta));
+  renderDetail(r);
+}
+function toggleDetailSwap(ingName){
   const key=`${activeRecipeIdx}::${ingName}`;
   activeDetailSwap=activeDetailSwap===key?null:key;
   renderDetail(recipes[activeRecipeIdx]);
@@ -1100,40 +1231,16 @@ function applyDetailSwap(ingName,substitute){
   detailSwaps[activeRecipeIdx][ingName]=substitute;
   activeDetailSwap=null;renderDetail(recipes[activeRecipeIdx]);
 }
-function applyDetailSwapManual(ingName){
+function applyDetailSwap_manual(ingName){
   const safeKey=`${activeRecipeIdx}::${ingName}`.replace(/[^a-z0-9]/gi,'_');
   const input=document.getElementById(`dsm-${safeKey}`);
-  if(!input)return;
-  const val=input.value.trim();if(!val)return;
+  if(!input)return;const val=input.value.trim();if(!val)return;
   applyDetailSwap(ingName,val.charAt(0).toUpperCase()+val.slice(1));
 }
 function clearDetailSwap(ingName){
   if(detailSwaps[activeRecipeIdx])delete detailSwaps[activeRecipeIdx][ingName];
   activeDetailSwap=null;renderDetail(recipes[activeRecipeIdx]);
 }
-
-function changeServings(delta){
-  const r=recipes[activeRecipeIdx];
-  const base=r.servings||4;
-  const cur=currentServings[activeRecipeIdx]??base;
-  const next=Math.max(1,Math.min(20,cur+delta));
-  currentServings[activeRecipeIdx]=next;
-  renderDetail(r);
-  // Re-open nutrition facts if it was open
-  if(document.getElementById('nutrFacts')?.classList.contains('open')){
-    document.getElementById('nutrFacts').classList.add('open');
-    document.getElementById('nutrArrow')?.classList.add('open');
-  }
-}
-
-function toggleNutrFacts(){
-  const panel=document.getElementById('nutrFacts');
-  const arrow=document.getElementById('nutrArrow');
-  if(!panel)return;
-  panel.classList.toggle('open');
-  arrow?.classList.toggle('open');
-}
-
 function toggleShop(key){
   if(checkedItems.has(key))checkedItems.delete(key);else checkedItems.add(key);
   renderDetail(recipes[activeRecipeIdx]);
@@ -1144,10 +1251,13 @@ function closeDetail(){
   activeRecipeIdx=null;activeDetailSwap=null;
 }
 
+// ── Chat ingredient detection ────────────────────
 async function parseIngredients(){
-  if(!apiKeyEl.value.trim()){alert('Please enter your Anthropic API key at the top of the page.');return;}
+  if(!apiKeyEl.value.trim()){alert('Please enter your Anthropic API key.');return;}
   const text=document.getElementById('chatInput').value.trim();if(!text)return;
-  const sendBtn=document.getElementById('chatSendBtn'),thinking=document.getElementById('chatThinking'),feedback=document.getElementById('chatFeedback');
+  const sendBtn=document.getElementById('chatSendBtn');
+  const thinking=document.getElementById('chatThinking');
+  const feedback=document.getElementById('chatFeedback');
   sendBtn.disabled=true;thinking.classList.add('visible');feedback.className='chat-feedback';feedback.textContent='';
   const allKnown=Object.values(CATEGORIES).flat();
   const prompt=`Extract all food ingredients from: "${text}"\nKnown list (match exactly when close): ${allKnown.join(', ')}\nReturn ONLY a JSON array of ingredient name strings. No quantities. No markdown.\nExample: ["Chicken breast","Garlic","Fish sauce"]`;
@@ -1163,7 +1273,7 @@ async function parseIngredients(){
       selected.add(name);if(!match)customIngredients.add(name);
       newlyAdded.push(name);added++;
     });
-    buildList();updateStrip();
+    buildList();updateStrip();updateCatCounts();
     let msg='';
     if(added>0)msg+=`Added ${added} ingredient${added!==1?'s':''}: ${newlyAdded.join(', ')}.`;
     if(existing>0)msg+=`${added>0?' ':''}${existing} already selected.`;
@@ -1173,16 +1283,9 @@ async function parseIngredients(){
   finally{sendBtn.disabled=false;thinking.classList.remove('visible');}
 }
 
-buildList();updateStrip();showEmpty();
+// ── Init ─────────────────────────────────────────
+buildList();
+updateStrip();
 </script>
-
-<div class="fab-wrap">
-  <button class="fab" id="fabBtn" onclick="findRecipes()" disabled>
-    <span id="fabLabel">Find Recipes</span>
-    <span class="fab-count" id="fabCount">0</span>
-    <span>&#8599;</span>
-  </button>
-</div>
-
 </body>
 </html>
