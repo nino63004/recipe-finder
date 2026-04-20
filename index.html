@@ -526,6 +526,8 @@ const CATEGORIES={
   "Nuts & Seeds":["Almonds","Walnuts","Cashews","Pine nuts","Sesame seeds","Chia seeds","Peanuts"],
 };
 
+// State
+let selected=new Set(),customIngredients=new Set(),recipes=[],activeRecipeIdx=null,checkedItems=new Set();
 let activeSubItem=null;
 let detailSwaps={};
 let activeDetailSwap=null;
