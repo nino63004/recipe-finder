@@ -717,12 +717,13 @@ const prefs={prepTime:'any',cookTime:'any',kidFriendly:false,dietary:new Set()};
 // ── Cloudflare Worker URL ─────────────────────────
 // Your API key lives safely on Cloudflare — not in this file
 const WORKER_URL = 'https://pantry-proxy.mgn630.workers.dev';
+const FAMILY_PASSWORD = 'yummy2026$';
 
 // ── Password gate ─────────────────────────────────
 function checkPassword(){
   const val=document.getElementById('gateInput').value;
   const errEl=document.getElementById('gateError');
-  if(val===_PW){
+  if(val===FAMILY_PASSWORD){
     document.getElementById('gate').classList.add('hidden');
     sessionStorage.setItem('pantry_ok','1');
   } else {
