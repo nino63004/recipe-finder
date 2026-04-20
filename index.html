@@ -159,8 +159,29 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 .ing-btn.selected{background:var(–terra-dim2);border-color:rgba(184,92,58,0.45);color:var(–terra);font-weight:500;}
 
 /* Action Bar */
-.action-bar{padding:0.85rem 1.25rem;border-top:1px solid var(–cream-border);background:var(–cream);display:flex;gap:8px;align-items:center;}
+.action-bar{padding:0.85rem 1.25rem;border-top:1px solid var(–cream-border);background:var(–cream);display:flex;flex-direction:column;gap:8px;}
+.mode-toggle{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:var(–radius-sm);cursor:pointer;}
+.mode-toggle-track{width:34px;height:18px;background:var(–cream-border);border-radius:9px;position:relative;transition:background 0.2s;flex-shrink:0;}
+.mode-toggle-track.on{background:var(–sage);}
+.mode-toggle-thumb{position:absolute;top:2px;left:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:transform 0.2s;box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.mode-toggle-track.on .mode-toggle-thumb{transform:translateX(16px);}
+.mode-toggle-label{font-size:11px;color:var(–brown-mid);flex:1;user-select:none;line-height:1.4;}
+.mode-toggle-label b{color:var(–sage);}
+.mode-toggle-badge{font-size:9px;background:var(–sage-dim);color:var(–sage);border:1px solid rgba(74,124,89,0.2);border-radius:20px;padding:1px 7px;font-weight:600;white-space:nowrap;}
+.action-row{display:flex;gap:8px;}
 .btn-primary{flex:1;background:var(–terra);color:#fff;font-weight:500;font-size:13.5px;font-family:var(–sans);letter-spacing:0.02em;border:none;border-radius:var(–radius-sm);padding:10px 18px;cursor:pointer;transition:background 0.15s,transform 0.1s;}
+.btn-primary:hover{background:var(–terra-light);}
+.btn-primary:active{transform:scale(0.98);}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+
+/* Floating Find Button */
+.fab-wrap{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:200;pointer-events:none;display:flex;justify-content:center;}
+.fab{background:var(–terra);color:#fff;font-family:var(–sans);font-size:14px;font-weight:600;border:none;border-radius:50px;padding:14px 28px;cursor:pointer;pointer-events:all;box-shadow:0 4px 20px rgba(184,92,58,0.45);display:flex;align-items:center;gap:10px;white-space:nowrap;opacity:0;transform:translateY(16px);transition:opacity 0.25s ease,transform 0.25s ease,background 0.15s;}
+.fab.visible{opacity:1;transform:translateY(0);}
+.fab:hover{background:var(–terra-light);}
+.fab:active{transform:scale(0.97);}
+.fab:disabled{opacity:0.45;cursor:not-allowed;}
+.fab-count{background:rgba(255,255,255,0.25);border-radius:20px;font-size:11px;font-weight:700;padding:2px 8px;}
 .btn-primary:hover{background:var(–terra-light);}
 .btn-primary:active{transform:scale(0.98);}
 .btn-primary:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
@@ -479,8 +500,15 @@ body{background:var(--cream);color:var(--brown);font-family:var(--sans);font-siz
 <div class="ingredients-list" id="ingList"></div>
 
 <div class="action-bar">
-  <button class="btn-clear" onclick="clearAll()">Clear all</button>
-  <button class="btn-primary" id="findBtn" onclick="findRecipes()" disabled>Find Recipes &rarr;</button>
+  <div class="mode-toggle" onclick="toggleWebSearch()">
+    <div class="mode-toggle-track" id="webTrack"><div class="mode-toggle-thumb"></div></div>
+    <div class="mode-toggle-label" id="webLabel">Search the web for <b>real recipes</b></div>
+    <span class="mode-toggle-badge" id="webBadge" style="display:none;">Live</span>
+  </div>
+  <div class="action-row">
+    <button class="btn-clear" onclick="clearAll()">Clear all</button>
+    <button class="btn-primary" id="findBtn" onclick="findRecipes()" disabled>Find Recipes &rarr;</button>
+  </div>
 </div>
 ```
 
@@ -512,7 +540,8 @@ let selected=new Set(),customIngredients=new Set(),recipes=[],activeRecipeIdx=nu
 let activeSubItem=null;
 let detailSwaps={};
 let activeDetailSwap=null;
-let currentServings={}; // {recipeIdx: count}
+let currentServings={};
+let webSearchMode=false;
 
 const prefs={prepTime:'any',cookTime:'any',kidFriendly:false,dietary:new Set()};
 
@@ -636,6 +665,12 @@ function updateStrip(){
     </span>`;
   }).join('');
   document.getElementById('chipsRow').innerHTML=chips;
+  // FAB
+  const fab=document.getElementById('fabBtn');
+  const fabCount=document.getElementById('fabCount');
+  fabCount.textContent=count;
+  fab.disabled=count===0;
+  fab.classList.toggle('visible',count>0);
 }
 function addCustomIngredient(){
   const input=document.getElementById('customInput');
@@ -738,15 +773,30 @@ function showLoading(){
       <rect x="7" y="16" width="76" height="10" rx="4" fill="#f2ede4" stroke="#b85c3a" stroke-width="2.5"/>
       <path d="M76,38 C92,38 92,76 76,76" fill="none" stroke="#b85c3a" stroke-width="2.5"/>
     </svg>
-    <div class="loading-label">Finding recipes for you&hellip;</div>
+    <div class="loading-label">${webSearchMode?'Searching the web for recipes&hellip;':'Finding recipes for you&hellip;'}</div>
     <div class="loading-dots"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>
   </div>`;
+}
+
+function toggleWebSearch(){
+  webSearchMode=!webSearchMode;
+  const track=document.getElementById('webTrack');
+  const label=document.getElementById('webLabel');
+  const badge=document.getElementById('webBadge');
+  track.classList.toggle('on',webSearchMode);
+  badge.style.display=webSearchMode?'inline':'none';
+  label.innerHTML=webSearchMode
+    ?'Searching <b>the web</b> for real tested recipes'
+    :'Search the web for <b>real recipes</b>';
+  document.getElementById('findBtn').textContent=webSearchMode?'Search Recipes →':'Find Recipes →';
+  document.getElementById('fabLabel').textContent=webSearchMode?'Search Recipes':'Find Recipes';
 }
 
 async function findRecipes(){
   if(!apiKeyEl.value.trim()){alert('Please enter your Anthropic API key at the top of the page.');return;}
   if(selected.size===0)return;
   showLoading();checkedItems.clear();activeRecipeIdx=null;detailSwaps={};activeDetailSwap=null;currentServings={};
+  if(webSearchMode) return findRecipesWeb();
   const ingList=[...selected].join(', ');
   const prompt=`You are a helpful home cooking assistant. The user has these ingredients on hand: ${ingList}.${prefsText()}
 
@@ -765,6 +815,46 @@ Rules:
   try{
     const raw=await callClaude(prompt,3000);
     const m=raw.match(/\[[\s\S]*\]/);if(!m)throw new Error('Could not parse recipe data.');
+    recipes=JSON.parse(m[0]);renderResults();
+  }catch(err){
+    document.getElementById('rightPanel').innerHTML=`<div class="error-msg">&#9888; ${err.message}</div><div style="text-align:center;margin-top:1.5rem;"><button class="btn-primary" style="width:auto;padding:10px 24px;" onclick="findRecipes()">Try again</button></div>`;
+  }
+}
+
+async function findRecipesWeb(){
+  const ingList=[...selected].join(', ');
+  const dietCtx=prefs.dietary.size>0?` Dietary restrictions: ${[...prefs.dietary].join(', ')}.`:'';
+  const kidCtx=prefs.kidFriendly?' Kid-friendly recipes only.':'';
+  const timeCtx=(prefs.prepTime!=='any'||prefs.cookTime!=='any')?` Prep time: ${prefs.prepTime}, Cook time: ${prefs.cookTime}.`:'';
+  const searchPrompt=`Search the web and find 4 highly-rated real recipes from reputable cooking websites (such as Serious Eats, NYT Cooking, AllRecipes, BBC Good Food, or similar) that use these ingredients: ${ingList}.${dietCtx}${kidCtx}${timeCtx}
+
+For each recipe found, extract the details and return ONLY a valid JSON array with this exact structure — no markdown, no explanation:
+
+[{"name":"Recipe Name","source":"Website Name","sourceUrl":"https://...","description":"One sentence, max 20 words","prepTime":"10 mins","cookTime":"20 mins","servings":4,"difficulty":"Easy","kidFriendly":false,"nutrition":{"calories":450,"protein":32,"fat":18,"carbs":42,"fiber":5,"sugar":8,"sodium":680,"saturatedFat":6},"ingredients":[{"name":"ingredient","quantity":"1 cup","have":true}],"steps":["Step one.","Step two."],"matchPercent":85}]
+
+Rules:
+- Only include recipes actually found on the web — do not invent recipes
+- "have": true if the ingredient is in the user's list: ${ingList}
+- matchPercent: % of recipe ingredients the user has (0-100), sort descending
+- nutrition: use values from the source if available, otherwise estimate
+- source and sourceUrl: the real website name and URL of the recipe
+- JSON array only`;
+  try{
+    const key=apiKeyEl.value.trim();
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:4000,
+        tools:[{"type":"web_search_20250305","name":"web_search"}],
+        messages:[{role:'user',content:searchPrompt}]
+      })
+    });
+    if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`API error ${resp.status}`);}
+    const data=await resp.json();
+    const text=data.content.filter(b=>b.type==='text').map(b=>b.text).join('');
+    const m=text.match(/\[[\s\S]*\]/);if(!m)throw new Error('Could not parse recipe data from search results.');
     recipes=JSON.parse(m[0]);renderResults();
   }catch(err){
     document.getElementById('rightPanel').innerHTML=`<div class="error-msg">&#9888; ${err.message}</div><div style="text-align:center;margin-top:1.5rem;"><button class="btn-primary" style="width:auto;padding:10px 24px;" onclick="findRecipes()">Try again</button></div>`;
@@ -792,6 +882,7 @@ function renderResults(){
           </div>
         </div>
         <div class="card-desc">${r.description}</div>
+        ${r.source?`<div style="font-size:11px;color:var(--sage);margin-bottom:8px;">&#127758; <a href="${r.sourceUrl||'#'}" target="_blank" rel="noopener" style="color:var(--sage);text-decoration:underline;" onclick="event.stopPropagation()">${r.source}</a></div>`:''}
         <div class="card-meta">
           <span class="meta-pill"><span class="meta-icon">&#9197;</span>Prep: ${r.prepTime||'—'}</span>
           <span class="meta-pill"><span class="meta-icon">&#8987;</span>Cook: ${r.cookTime||r.time||'—'}</span>
@@ -921,6 +1012,7 @@ function renderDetail(r){
         <div>
           <div class="detail-title">${r.name}</div>
           <div class="detail-desc">${r.description}</div>
+          ${r.source?`<div style="font-size:12px;color:var(--sage);margin-top:5px;">&#127758; From <a href="${r.sourceUrl||'#'}" target="_blank" rel="noopener" style="color:var(--sage);font-weight:500;text-decoration:underline;">${r.source}</a></div>`:''}
           <div class="detail-pills">
             <span class="detail-pill">&#9197; Prep: ${r.prepTime||'—'}</span>
             <span class="detail-pill">&#8987; Cook: ${r.cookTime||r.time||'—'}</span>
@@ -1055,6 +1147,14 @@ async function parseIngredients(){
 
 buildList();updateStrip();
 </script>
+
+<div class="fab-wrap">
+  <button class="fab" id="fabBtn" onclick="findRecipes()" disabled>
+    <span id="fabLabel">Find Recipes</span>
+    <span class="fab-count" id="fabCount">0</span>
+    <span>&#8599;</span>
+  </button>
+</div>
 
 </body>
 </html>
