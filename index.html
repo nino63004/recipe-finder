@@ -57,31 +57,30 @@ body {
   flex-direction: column;
 }
 
-/* ── API bar ─────────────────────────────────────── */
-.api-bar {
-  background: var(--brown);
-  padding: 6px 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 8px;
-  flex-shrink: 0;
+/* ── Password gate ───────────────────────────────── */
+.gate {
+  position: fixed; inset: 0; background: var(--brown);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  z-index: 9999; padding: 2rem;
 }
-.api-bar label { font-size: 11px; color: var(--brown-dim); }
-.api-bar input {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 6px;
-  color: #e8e0d0;
-  font-size: 11px;
-  padding: 4px 10px;
-  width: 200px;
-  outline: none;
-  font-family: monospace;
-}
-.api-bar input:focus { border-color: var(--terra-light); }
-.api-status { font-size: 10px; padding: 2px 8px; border-radius: 20px; background: rgba(255,255,255,0.08); color: var(--brown-dim); white-space: nowrap; }
-.api-status.ok { background: rgba(74,124,89,0.3); color: #8ec9a0; }
+.gate-botanical { position: absolute; inset: 0; opacity: 0.1; pointer-events: none; }
+.gate-logo { font-family: var(--serif); font-size: 2rem; font-weight: 400; color: var(--cream); text-align: center; margin-bottom: 4px; position: relative; }
+.gate-logo em { font-style: italic; color: var(--terra-light); }
+.gate-sub { font-size: 12px; color: var(--brown-dim); text-align: center; margin-bottom: 2rem; position: relative; }
+.gate-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 1.75rem 1.5rem; width: 100%; max-width: 340px; position: relative; display: flex; flex-direction: column; gap: 12px; }
+.gate-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--brown-dim); }
+.gate-input-wrap { position: relative; }
+.gate-input { width: 100%; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15); border-radius: 10px; color: var(--cream); font-size: 16px; font-family: var(--sans); padding: 12px 44px 12px 14px; outline: none; transition: border-color 0.2s; }
+.gate-input:focus { border-color: var(--terra-light); }
+.gate-input::placeholder { color: rgba(196,170,148,0.4); }
+.gate-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--brown-dim); cursor: pointer; font-size: 16px; padding: 4px; line-height: 1; }
+.gate-btn { background: #b85c3a; color: #fff; font-family: var(--sans); font-size: 15px; font-weight: 600; border: none; border-radius: 10px; padding: 13px; cursor: pointer; transition: background 0.15s; }
+.gate-btn:hover { background: #9a4d30; }
+.gate-error { font-size: 12px; color: #f09898; text-align: center; min-height: 18px; }
+.gate-error.shake { animation: shake 0.35s ease; }
+@keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
+.gate-hint { font-size: 11px; color: rgba(196,170,148,0.4); text-align: center; }
+.gate.hidden { display: none; }
 
 /* ── Hero ────────────────────────────────────────── */
 .hero {
@@ -506,7 +505,7 @@ body {
 
 /* ── Print ───────────────────────────────────────── */
 @media print {
-  .api-bar, .hero, .ingredient-panel, .recipe-grid, .results-header, .print-btn, .close-btn, .fab-wrap { display: none !important; }
+  .hero, .ingredient-panel, .recipe-grid, .results-header, .print-btn, .close-btn, .fab-wrap { display: none !important; }
   .results-panel { padding: 0; border: none; }
   .detail-panel { border: none; }
   body { background: #fff; color: #000; }
@@ -516,11 +515,34 @@ body {
 <body>
 <div class="page">
 
-  <!-- API bar -->
-  <div class="api-bar">
-    <label for="apiKey">Anthropic API key</label>
-    <input type="password" id="apiKey" placeholder="sk-ant-..." autocomplete="off"/>
-    <span class="api-status" id="apiStatus">not set</span>
+  <!-- Password gate -->
+  <div class="gate" id="gate">
+    <svg class="gate-botanical" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="#c2a06a" stroke-width="1">
+        <path d="M20,500 Q60,350 100,400 Q140,450 180,300 Q210,180 250,320"/>
+        <ellipse cx="88" cy="372" rx="22" ry="13" transform="rotate(-30,88,372)"/>
+        <ellipse cx="128" cy="318" rx="18" ry="11" transform="rotate(20,128,318)"/>
+        <ellipse cx="174" cy="292" rx="20" ry="11" transform="rotate(-15,174,292)"/>
+        <path d="M580,500 Q620,350 660,400 Q700,450 740,300 Q760,180 780,320"/>
+        <ellipse cx="648" cy="372" rx="22" ry="13" transform="rotate(-30,648,372)"/>
+        <ellipse cx="688" cy="318" rx="18" ry="11" transform="rotate(20,688,318)"/>
+        <ellipse cx="734" cy="292" rx="20" ry="11" transform="rotate(-15,734,292)"/>
+        <circle cx="290" cy="280" r="4"/><circle cx="310" cy="240" r="3"/><circle cx="330" cy="300" r="3.5"/>
+        <circle cx="490" cy="280" r="4"/><circle cx="470" cy="240" r="3"/><circle cx="450" cy="300" r="3.5"/>
+      </g>
+    </svg>
+    <div class="gate-logo">The <em>Pantry</em></div>
+    <div class="gate-sub">Family Recipe Finder</div>
+    <div class="gate-card">
+      <div class="gate-label">Enter family password</div>
+      <div class="gate-input-wrap">
+        <input class="gate-input" id="gateInput" type="password" placeholder="Password" autocomplete="off"/>
+        <button class="gate-eye" id="gateEye" onclick="toggleGateEye()" tabindex="-1">&#128065;</button>
+      </div>
+      <div class="gate-error" id="gateError"></div>
+      <button class="gate-btn" onclick="checkPassword()">Enter &rarr;</button>
+      <div class="gate-hint">Ask a family member for the password</div>
+    </div>
   </div>
 
   <!-- Hero -->
@@ -692,16 +714,34 @@ let activeSubItem=null, detailSwaps={}, activeDetailSwap=null, currentServings={
 const collapsedCats=new Set();
 const prefs={prepTime:'any',cookTime:'any',kidFriendly:false,dietary:new Set()};
 
-// ── API Key ──────────────────────────────────────
-const apiKeyEl=document.getElementById('apiKey');
-const apiStatusEl=document.getElementById('apiStatus');
-apiKeyEl.addEventListener('input',()=>{
-  const v=apiKeyEl.value.trim();
-  if(v.startsWith('sk-')){apiStatusEl.className='api-status ok';apiStatusEl.textContent='ready';localStorage.setItem('rfApiKey',v);}
-  else{apiStatusEl.className='api-status';apiStatusEl.textContent=v?'check key':'not set';}
-});
-const _saved=localStorage.getItem('rfApiKey');
-if(_saved){apiKeyEl.value=_saved;apiKeyEl.dispatchEvent(new Event('input'));}
+// ── Embedded config ───────────────────────────────
+const _PW  = 'yummy2026$';
+const _KEY = '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';
+
+// ── Password gate ─────────────────────────────────
+function checkPassword(){
+  const val=document.getElementById('gateInput').value;
+  const errEl=document.getElementById('gateError');
+  if(val===_PW){
+    document.getElementById('gate').classList.add('hidden');
+    sessionStorage.setItem('pantry_ok','1');
+  } else {
+    errEl.textContent='Wrong password — try again';
+    errEl.className='gate-error';
+    void errEl.offsetWidth;
+    errEl.className='gate-error shake';
+    document.getElementById('gateInput').value='';
+    document.getElementById('gateInput').focus();
+  }
+}
+function toggleGateEye(){
+  const i=document.getElementById('gateInput');
+  const e=document.getElementById('gateEye');
+  if(i.type==='password'){i.type='text';e.textContent='🙈';}
+  else{i.type='password';e.textContent='👁';}
+}
+document.getElementById('gateInput').addEventListener('keydown',e=>{if(e.key==='Enter')checkPassword();});
+if(sessionStorage.getItem('pantry_ok')==='1') document.getElementById('gate').classList.add('hidden');
 
 // ── Preferences ──────────────────────────────────
 function togglePrefs(){
@@ -895,11 +935,9 @@ function toggleWebSearch(){
 
 // ── Claude API ───────────────────────────────────
 async function callClaude(prompt,maxTokens=3000){
-  const key=apiKeyEl.value.trim();
-  if(!key)throw new Error('Please enter your Anthropic API key.');
   const resp=await fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
-    headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    headers:{'Content-Type':'application/json','x-api-key':_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
     body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})
   });
   if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`API error ${resp.status}`);}
@@ -950,7 +988,6 @@ function showLoading(){
 
 // ── Find recipes ─────────────────────────────────
 async function findRecipes(){
-  if(!apiKeyEl.value.trim()){alert('Please enter your Anthropic API key.');return;}
   if(selected.size===0)return;
   showLoading();checkedItems.clear();activeRecipeIdx=null;detailSwaps={};activeDetailSwap=null;currentServings={};
   // Scroll to results on mobile
@@ -995,10 +1032,9 @@ Rules:
 - matchPercent: % the user has, sort descending
 - JSON array only`;
   try{
-    const key=apiKeyEl.value.trim();
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{'Content-Type':'application/json','x-api-key':_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
       body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,tools:[{"type":"web_search_20250305","name":"web_search"}],messages:[{role:'user',content:prompt}]})
     });
     if(!resp.ok){const e=await resp.json().catch(()=>({}));throw new Error(e.error?.message||`API error ${resp.status}`);}
@@ -1289,7 +1325,6 @@ function closeDetail(){
 
 // ── Chat ingredient detection ────────────────────
 async function parseIngredients(){
-  if(!apiKeyEl.value.trim()){alert('Please enter your Anthropic API key.');return;}
   const text=document.getElementById('chatInput').value.trim();if(!text)return;
   const sendBtn=document.getElementById('chatSendBtn');
   const thinking=document.getElementById('chatThinking');
