@@ -593,6 +593,13 @@ body {
         <div class="chat-feedback" id="chatFeedback"></div>
       </div>
 
+      <!-- Web search toggle -->
+      <div class="web-toggle" onclick="toggleWebSearch()" style="margin:0;border-radius:0;border-left:none;border-right:none;border-top:none;">
+        <div class="web-toggle-track" id="webTrack"><div class="web-toggle-thumb"></div></div>
+        <div class="web-toggle-label" id="webLabel">Search the web for <b>real recipes</b></div>
+        <span class="web-badge" id="webBadge">Live</span>
+      </div>
+
       <!-- Preferences -->
       <div class="prefs-section">
         <div class="prefs-toggle" onclick="togglePrefs()">
@@ -677,11 +684,6 @@ body {
 
       <!-- Find bar -->
       <div class="find-bar">
-        <div class="web-toggle" onclick="toggleWebSearch()">
-          <div class="web-toggle-track" id="webTrack"><div class="web-toggle-thumb"></div></div>
-          <div class="web-toggle-label" id="webLabel">Search the web for <b>real recipes</b></div>
-          <span class="web-badge" id="webBadge">Live</span>
-        </div>
         <div class="find-buttons">
           <button class="btn-clear" onclick="clearAll()">Clear all</button>
           <button class="btn-find" id="findBtn" onclick="findRecipes()" disabled>Find Recipes &rarr;</button>
