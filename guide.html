@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pantry — How to Use</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream:#faf7f2; --cream-dark:#f2ede4; --cream-border:#ddd4c0;
+  --terra:#b85c3a; --terra-dim:rgba(184,92,58,0.09); --terra-dim2:rgba(184,92,58,0.18);
+  --brown:#2c1a0e; --brown-mid:#5a3e2b; --brown-light:#9a7d68; --brown-dim:#c4aa94;
+  --sage:#4a7c59; --sage-dim:rgba(74,124,89,0.12);
+  --amber:#8a6a1a; --amber-dim:rgba(138,106,26,0.1);
+  --serif:'Playfair Display',Georgia,serif; --sans:'Inter',-apple-system,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cream-dark);font-family:var(--sans);color:var(--brown);font-size:15px;line-height:1.6;}
+
+.page{max-width:680px;margin:0 auto;background:var(–cream);min-height:100vh;}
+
+/* Hero */
+.hero{background:var(–brown);padding:2rem 1.5rem 1.75rem;text-align:center;position:relative;overflow:hidden;}
+.hero-botanical{position:absolute;inset:0;opacity:0.12;pointer-events:none;}
+.hero-eyebrow{font-size:9px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#cd7a5a;margin-bottom:8px;position:relative;display:flex;align-items:center;justify-content:center;gap:10px;}
+.hero-eyebrow::before,.hero-eyebrow::after{content:’’;height:1px;width:30px;background:#cd7a5a;opacity:0.5;}
+.hero-title{font-family:var(–serif);font-size:2rem;font-weight:400;color:#faf7f2;line-height:1.2;position:relative;}
+.hero-title em{font-style:italic;color:#cd7a5a;}
+.hero-sub{font-size:13px;color:var(–brown-dim);margin-top:8px;position:relative;}
+
+/* Content */
+.content{padding:1.75rem 1.5rem 3rem;}
+
+.intro{font-size:14px;color:var(–brown-light);line-height:1.7;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(–cream-border);}
+
+/* Steps */
+.step{display:flex;gap:1rem;margin-bottom:1.75rem;padding-bottom:1.75rem;border-bottom:1px solid var(–cream-border);}
+.step:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+
+.step-num{
+width:36px;height:36px;border-radius:50%;
+background:var(–terra-dim2);border:1.5px solid rgba(184,92,58,0.3);
+color:var(–terra);font-size:14px;font-weight:600;
+display:flex;align-items:center;justify-content:center;
+flex-shrink:0;margin-top:2px;font-family:var(–sans);
+}
+.step-body{flex:1;}
+.step-title{font-family:var(–serif);font-size:1.15rem;font-weight:600;color:var(–brown);margin-bottom:6px;line-height:1.3;}
+.step-desc{font-size:13.5px;color:var(–brown-mid);line-height:1.7;margin-bottom:10px;}
+
+/* Tips */
+.tips{display:flex;flex-direction:column;gap:6px;}
+.tip{background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:8px;padding:8px 12px;font-size:12.5px;color:var(–brown-mid);display:flex;align-items:flex-start;gap:8px;}
+.tip-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+.tip b{color:var(–brown);font-weight:600;}
+
+/* Badges */
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;}
+.badge-terra{background:var(–terra-dim2);color:var(–terra);border:1px solid rgba(184,92,58,0.25);}
+.badge-sage{background:var(–sage-dim);color:var(–sage);border:1px solid rgba(74,124,89,0.2);}
+.badge-amber{background:var(–amber-dim);color:var(–amber);border:1px solid rgba(138,106,26,0.2);}
+
+/* Section label */
+.section-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(–brown-light);margin:2rem 0 1rem;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:’’;flex:1;height:1px;background:var(–cream-border);}
+
+/* Quick ref */
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:0.5rem;}
+.quick-card{background:var(–cream-dark);border:1px solid var(–cream-border);border-radius:10px;padding:12px;}
+.quick-card-icon{font-size:20px;margin-bottom:6px;}
+.quick-card-title{font-size:12px;font-weight:600;color:var(–brown);margin-bottom:3px;}
+.quick-card-desc{font-size:11.5px;color:var(–brown-light);line-height:1.5;}
+
+/* Password box */
+.password-box{background:var(–brown);border-radius:12px;padding:1.25rem;margin-bottom:2rem;text-align:center;}
+.password-box-label{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(–brown-dim);margin-bottom:6px;}
+.password-box-pw{font-family:var(–serif);font-size:1.5rem;font-style:italic;color:#faf7f2;}
+.password-box-hint{font-size:11px;color:var(–brown-dim);margin-top:6px;}
+
+/* Footer */
+.footer{padding:1.25rem 1.5rem;border-top:1px solid var(–cream-border);text-align:center;font-size:12px;color:var(–brown-light);}
+.footer a{color:var(–terra);text-decoration:none;}
+</style>
+
+</head>
+<body>
+<div class="page">
+
+  <header class="hero">
+    <svg class="hero-botanical" viewBox="0 0 680 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+      <g fill="none" stroke="#c2a06a" stroke-width="1">
+        <path d="M10,140 Q30,80 50,100 Q70,120 90,55 Q105,20 125,75"/>
+        <ellipse cx="44" cy="88" rx="14" ry="8" transform="rotate(-30,44,88)"/>
+        <ellipse cx="64" cy="72" rx="12" ry="7" transform="rotate(20,64,72)"/>
+        <ellipse cx="88" cy="52" rx="13" ry="7" transform="rotate(-15,88,52)"/>
+        <path d="M555,145 Q575,85 595,105 Q615,125 635,60 Q648,22 665,78"/>
+        <ellipse cx="588" cy="93" rx="14" ry="8" transform="rotate(-30,588,93)"/>
+        <ellipse cx="608" cy="77" rx="12" ry="7" transform="rotate(20,608,77)"/>
+        <ellipse cx="632" cy="57" rx="13" ry="7" transform="rotate(-15,632,57)"/>
+        <circle cx="148" cy="85" r="3"/><circle cx="162" cy="65" r="2.2"/><circle cx="176" cy="95" r="2.5"/>
+        <circle cx="508" cy="80" r="3"/><circle cx="522" cy="60" r="2.2"/><circle cx="536" cy="90" r="2.5"/>
+      </g>
+    </svg>
+    <div class="hero-eyebrow">User Guide</div>
+    <h1 class="hero-title">How to use <em>The Pantry</em></h1>
+    <p class="hero-sub">Everything you need to know to find your perfect recipe</p>
+  </header>
+
+  <div class="content">
+
+```
+<p class="intro">The Pantry helps you find recipes based on ingredients you already have at home. Tell it what's in your kitchen and it suggests meals — complete with a shopping list for anything missing.</p>
+
+<!-- Password -->
+<div class="section-label">Getting in</div>
+<div class="password-box">
+  <div class="password-box-label">Family password</div>
+  <div class="password-box-pw">yummy2026$</div>
+  <div class="password-box-hint">Enter this when you open the app. You won't need to enter it again on the same device for the rest of your session.</div>
+</div>
+
+<!-- Steps -->
+<div class="section-label">Step by step</div>
+
+<div class="step">
+  <div class="step-num">1</div>
+  <div class="step-body">
+    <div class="step-title">Add your ingredients</div>
+    <div class="step-desc">There are three ways to tell the app what you have:</div>
+    <div class="tips">
+      <div class="tip"><span class="tip-icon">💬</span><span><b>Type naturally</b> — use the "Tell us what you have" box at the top. Type something like <em>"I have chicken, garlic, heavy cream and spinach"</em> and the app figures out the ingredients automatically.</span></div>
+      <div class="tip"><span class="tip-icon">👆</span><span><b>Browse and tap</b> — scroll through the ingredient categories (Proteins, Produce, Dairy, etc.) and tap anything you have. Tap again to deselect.</span></div>
+      <div class="tip"><span class="tip-icon">✏️</span><span><b>Add your own</b> — if something isn't in the list, type it in the "Add your own" box and tap +.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">2</div>
+  <div class="step-body">
+    <div class="step-title">Set your preferences <em>(optional)</em></div>
+    <div class="step-desc">Tap <b>Recipe Preferences</b> to filter results before searching.</div>
+    <div class="tips">
+      <div class="tip"><span class="tip-icon">⏱</span><span><b>Prep &amp; cook time</b> — choose how much time you have available.</span></div>
+      <div class="tip"><span class="tip-icon">👶</span><span><b>Kid friendly</b> — toggle on for mild, family-appropriate meals.</span></div>
+      <div class="tip"><span class="tip-icon">🥗</span><span><b>Dietary restrictions</b> — pick from Vegetarian, Vegan, Gluten-free, Dairy-free, Nut-free, Low-carb, or Paleo.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">3</div>
+  <div class="step-body">
+    <div class="step-title">Find your recipes</div>
+    <div class="step-desc">Tap the <b>Find Recipes</b> button — either the one at the bottom of the ingredient panel, or the floating button that appears on screen once you've selected ingredients. A cup animation will appear while results are loading.</div>
+    <div class="tips">
+      <div class="tip"><span class="tip-icon">🌐</span><span><b>Web search mode</b> — toggle "Search the web for real recipes" to get results from sites like Serious Eats, NYT Cooking, and AllRecipes instead of AI-generated recipes.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">4</div>
+  <div class="step-body">
+    <div class="step-title">Read your recipe cards</div>
+    <div class="step-desc">You'll get 4 recipe suggestions, each showing:</div>
+    <div class="badge-row">
+      <span class="badge badge-sage">Easy / Medium / Hard</span>
+      <span class="badge badge-amber">👶 Kid friendly</span>
+      <span class="badge badge-terra">87% match</span>
+    </div>
+    <div class="tips" style="margin-top:8px;">
+      <div class="tip"><span class="tip-icon">📊</span><span>The <b>% match</b> shows how many ingredients you already have. Higher is better. The bar turns red if you need to buy things, green if you have everything.</span></div>
+      <div class="tip"><span class="tip-icon">🔢</span><span>The <b>nutrition strip</b> shows calories, protein, fat, and carbs per serving at a glance.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">5</div>
+  <div class="step-body">
+    <div class="step-title">Open a recipe</div>
+    <div class="step-desc">Tap any card to expand the full recipe. You'll see the complete ingredient list and step-by-step instructions.</div>
+    <div class="tips">
+      <div class="tip"><span class="tip-icon">🟢</span><span><b>Green dot</b> = you have this ingredient. <b>Red dot</b> = you need to buy it.</span></div>
+      <div class="tip"><span class="tip-icon">⇌</span><span><b>Swap button</b> — tap next to any ingredient to get substitution suggestions, or type your own.</span></div>
+      <div class="tip"><span class="tip-icon">👥</span><span><b>Servings adjuster</b> — tap − or + to change the serving count. Ingredient quantities and nutrition values scale automatically.</span></div>
+      <div class="tip"><span class="tip-icon">📋</span><span><b>Full nutrition facts</b> — tap at the bottom of the recipe to expand a detailed nutrition panel.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-num">6</div>
+  <div class="step-body">
+    <div class="step-title">Use the shopping list</div>
+    <div class="step-desc">Any ingredient you don't have automatically appears in a shopping list at the bottom of the recipe. Tap an item to check it off as you shop. Tap <b>Print list</b> to print or share it.</div>
+  </div>
+</div>
+
+<!-- Quick reference -->
+<div class="section-label">Quick reference</div>
+<div class="quick-grid">
+  <div class="quick-card">
+    <div class="quick-card-icon">🔍</div>
+    <div class="quick-card-title">Filter ingredients</div>
+    <div class="quick-card-desc">Type in the filter box to search the ingredient list quickly.</div>
+  </div>
+  <div class="quick-card">
+    <div class="quick-card-icon">📂</div>
+    <div class="quick-card-title">Collapse categories</div>
+    <div class="quick-card-desc">Tap a category name to collapse or expand it. A number shows how many from that group you've selected.</div>
+  </div>
+  <div class="quick-card">
+    <div class="quick-card-icon">⇌</div>
+    <div class="quick-card-title">Substitute ingredients</div>
+    <div class="quick-card-desc">Tap the ⇌ icon on any selected chip to swap it for something else before searching.</div>
+  </div>
+  <div class="quick-card">
+    <div class="quick-card-icon">🗑</div>
+    <div class="quick-card-title">Start over</div>
+    <div class="quick-card-desc">Tap "Clear all" to deselect everything and start a fresh search.</div>
+  </div>
+  <div class="quick-card">
+    <div class="quick-card-icon">🖨</div>
+    <div class="quick-card-title">Print shopping list</div>
+    <div class="quick-card-desc">Open a recipe → scroll to Shopping List → tap "Print list".</div>
+  </div>
+  <div class="quick-card">
+    <div class="quick-card-icon">🌐</div>
+    <div class="quick-card-title">Real recipes</div>
+    <div class="quick-card-desc">Toggle "Search the web" for recipes from trusted cooking websites with source links.</div>
+  </div>
+</div>
+```
+
+  </div>
+
+  <div class="footer">
+    The Pantry &mdash; Family Recipe Finder &nbsp;·&nbsp; <a href="index.html">Back to app</a>
+  </div>
+
+</div>
+</body>
+</html>
